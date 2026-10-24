@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+/* paleta del dossier v2: seis colores, cada uno con una función */
+@theme {
+  --color-verde: #39463a; /* texto y títulos */
+  --color-arena: #e6d8c7; /* fondo y tarjetas */
+  --color-terracota: #b0604a; /* botones, y nada más */
+  --color-salvia: #a9bca1; /* secciones */
+  --color-violeta: #7a6193; /* resaltar texto, la flor */
+  --color-celeste: #a4c8d8; /* información */
+
+  /* versiones claras (40 % del color con blanco), para fondos grandes */
+  --color-pagina: #f5efe9;
+  --color-salvia-clara: #dde4d9;
+  --color-celeste-clara: #dbe9ef;
+
+  --ease-souple: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-ddin), system-ui, sans-serif;
+  --font-display: var(--font-ddin-cond), var(--font-ddin), sans-serif;
+  --font-mano: var(--font-caveat), cursive;
+}
+
+@layer base {
+  html {
+    background: var(--color-pagina);
+    color: var(--color-verde);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* grano muy suave encima de todo, para que el crema no quede plano */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .22 0 0 0 0 .27 0 0 0 0 .23 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: var(--color-celeste-clara);
+    color: var(--color-verde);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-violeta);
+    outline-offset: 4px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  /* títulos: D-DIN Condensed en mayúsculas, como en el dossier */
+  .titre {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -0.005em;
+  }
+
+  /* la palabra resaltada: violeta y manuscrita, una o dos por pantalla */
+  .mano {
+    font-family: var(--font-mano);
+    font-weight: 700;
+    color: var(--color-violeta);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 0.8;
+  }
+
+  .contenedor {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+
+    @media (min-width: 64rem) {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  /* botón de acción: terracota, el único lugar donde va ese color */
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3.25rem;
+    padding: 0 1.6rem;
+    border-radius: 999px;
+    background: var(--color-terracota);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    letter-spacing: 0.01em;
+    transition: background-color 0.3s var(--ease-souple);
+    will-change: transform;
+
+    &:hover {
+      background: #9e5441;
+    }
+  }
+
+  /* link dentro del texto: verde subrayado, con la línea que se corre al pasar */
+  .enlace {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    transition: text-underline-offset 0.3s var(--ease-souple);
+
+    &:hover {
+      text-underline-offset: 0.45em;
+    }
+  }
+}
+
+/* lo que entra animado arranca escondido solo si hay JS y movimiento */
+.js .entra {
+  visibility: hidden;
+}
+
+/* el marco del programa: los tres títulos encimados en la misma celda */
+.marco-titulos {
+  display: grid;
+}
+
+.marco-titulos > * {
+  grid-area: 1 / 1;
+}
+
+.js .marco-titulos > *:not(:first-child) {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .entra {
+    visibility: visible;
+  }
+
+  .marco-titulos {
+    font-size: clamp(1.8rem, 4.4vw, 3rem);
+  }
+
+  .marco-titulos > * {
+    grid-area: auto;
+  }
+
+  .js .marco-titulos > *:not(:first-child) {
+    visibility: visible;
+  }
+}
+
+/* ordinales en francés: 1er, 2e, en chiquito y sin mayúsculas.
+   Se sube con top y no con vertical-align, así no lo corta la máscara de las letras */
+.sufijo {
+  position: relative;
+  top: -0.95em;
+  vertical-align: baseline;
+  font-size: 0.42em;
+  line-height: 1;
+  text-transform: lowercase;
+  margin-left: 0.04em;
+}
+
+/* el lugar de la barra de scroll queda siempre reservado, así el ancho de la página no cambia cuando la entrada
+   frena el scroll. Por eso Lenis frena con hidden y no con clip (clip no reserva ese lugar) */
+html {
+  scrollbar-gutter: stable;
+}
+
+html.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: hidden;
+}
+
+/* palabra calada: solo el contorno, en verde oscuro (sin relleno) */
+.texto-calado {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-verde);
+}
+
+/* el telón de la entrada: la página se abre por un hueco con la forma de la flor, que crece desde el centro.
+   Entrada.tsx anima --flor (el tamaño del hueco). La flor del hueco ya viene girada 30°, como queda la que se dibuja */
+.entrada {
+  --flor: 0px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-112 -112 224 224%22%3E%3Cg fill=%22black%22%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%2830%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%2890%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28150%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28210%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28270%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28330%29%22/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-112 -112 224 224%22%3E%3Cg fill=%22black%22%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%2830%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%2890%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28150%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28210%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28270%29%22/%3E%3Cellipse cx=%220%22 cy=%22-52%22 rx=%2224%22 ry=%2252%22 transform=%22rotate%28330%29%22/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: var(--flor) var(--flor), 100% 100%;
+  mask-size: var(--flor) var(--flor), 100% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entrada {
+    display: none;
+  }
+}
+
+/* la entrada se ve una vez por visita: en las cargas siguientes el telón no se pinta */
+.entrada-vista .entrada {
+  display: none;
+}
