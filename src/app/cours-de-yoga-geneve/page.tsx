@@ -8,6 +8,7 @@ import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { IlustracionQueRespira } from "@/components/pagina/IlustracionQueRespira";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
+import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
 import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { SurCettePage } from "@/components/pagina/SurCettePage";
@@ -31,6 +32,7 @@ const DATOS = [
   { dato: "Tarifs", valor: <AConfirmer /> },
   { dato: "Paiement", valor: <AConfirmer /> },
   { dato: "Langue", valor: "Français" },
+  { dato: "Avec qui", valor: "Sofia Costa, professeure de yoga formée en Inde et en Suisse" },
   { dato: "Niveau", valor: "Tous niveaux : nul besoin d’être fort.e ou souple" },
 ];
 
@@ -164,7 +166,13 @@ export default function CoursDeYoga() {
           { href: "#questions", texto: "Questions" },
         ]}
       />
-      <Flux />
+      <Flux>
+        <InvitarAEscribir
+          texto={<>Un de ces styles te parle&nbsp;? Écris-moi, je te dis où et quand ont lieu les prochains cours.</>}
+          mensaje={MENSAJES.ouQuand}
+          asunto="Cours de yoga"
+        />
+      </Flux>
       <Reperes
         id="apports"
         fondo="salvia"

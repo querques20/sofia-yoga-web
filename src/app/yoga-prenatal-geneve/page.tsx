@@ -7,6 +7,7 @@ import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { IlustracionQueRespira } from "@/components/pagina/IlustracionQueRespira";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
+import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
 import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Questions } from "@/components/pagina/Questions";
@@ -21,7 +22,7 @@ import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 export const metadata: Metadata = {
   title: "Yoga prénatal à Genève",
   description:
-    "Cours de yoga prénatal à Genève avec Sofia Costa, formée en yoga pré et postnatal (60 h). Avec l’accord de ta sage-femme ou de ta gynécologue.",
+    "Cours de yoga prénatal à Genève avec Sofia Costa, formée en yoga pré et postnatal. Avec l’accord de ta sage-femme ou de ta gynécologue.",
 };
 
 // lo que sabemos del curso; lo demás lo tiene que confirmar Sofía
@@ -33,7 +34,7 @@ const DATOS = [
   { dato: "Tarif", valor: <AConfirmer /> },
   { dato: "Paiement", valor: <AConfirmer /> },
   { dato: "Langue", valor: "Français" },
-  { dato: "Avec qui", valor: "Sofia Costa, formée en yoga pré et postnatal (60 h)" },
+  { dato: "Avec qui", valor: "Sofia Costa, professeure de yoga, formée en yoga pré et postnatal" },
 ];
 
 // por qué moverse en el embarazo, con recomendaciones oficiales y estudios (y sin prometer de más)
@@ -152,7 +153,7 @@ const PREGUNTAS = [
   },
   {
     pregunta: "Tu es sage-femme ou physiothérapeute ?",
-    respuesta: "Non. Je suis professeure de yoga, enregistrée auprès de Yoga Alliance et formée en yoga pré et postnatal (60 h).",
+    respuesta: "Non. Je suis professeure de yoga, enregistrée auprès de Yoga Alliance et formée en yoga pré et postnatal.",
   },
   {
     pregunta: "Mon assurance rembourse le cours ?",
@@ -268,13 +269,18 @@ export default function YogaPrenatal() {
               Si tu es enceinte et que tu as envie de bouger, oui. Nul besoin d’être fort.e ou souple, viens comme tu es&nbsp;:)
             </p>
             <p className="max-w-[38rem] text-[1.12rem] leading-relaxed">
-              Le cours est en français. Je suis enregistrée auprès de Yoga Alliance et formée en yoga pré et postnatal (60 h).{" "}
+              Le cours est en français. Je suis enregistrée auprès de Yoga Alliance et formée en yoga pré et postnatal.{" "}
               <Link className="enlace font-bold" href="/a-propos">
                 Mon parcours
               </Link>
             </p>
           </div>
         </div>
+        <InvitarAEscribir
+          texto={<>Tu te reconnais&nbsp;? Dis-moi à combien de semaines tu es, je te réponds.</>}
+          mensaje={MENSAJES.prenatal}
+          asunto="Yoga prénatal"
+        />
       </section>
 
       <Reperes

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useRef } from "react";
+import { Fragment, useRef, type ReactNode } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
@@ -21,7 +21,7 @@ const CAMINO = "M-260 236 C -60 96 140 96 360 216 S 780 336 1000 206 S 1400 96 1
  * Los estilos corren sobre una ola, como un flow: el texto avanza solo, se apura si bajás rápido y
  * cambia de sentido si subís (igual que la franja del inicio). Abajo, su forma de enseñar en sus palabras
  */
-export function Flux() {
+export function Flux({ children }: { children?: ReactNode }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -111,6 +111,8 @@ export function Flux() {
           </div>
         ))}
       </dl>
+      {/* lo que va al cierre de la sección, por ejemplo el botón para escribirle */}
+      {children}
     </section>
   );
 }
