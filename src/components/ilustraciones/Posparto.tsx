@@ -1,5 +1,8 @@
+import { Aro, BOCA, CARA, Oreja } from "./cara";
+import { PieDeAdelante, PieDeAtras, RIBETE } from "./partes";
+
 // la mamá con su bebé (ilustraciones/posparto-bebe.svg), partida en grupos para animarla como la embarazada.
-// Sin el filtro de grano: la página ya tiene el suyo encima
+// Sin el filtro de grano: la página ya tiene el suyo encima. La cara, la oreja y los pies son los de la embarazada
 export function Posparto() {
   return (
     <>
@@ -16,7 +19,8 @@ export function Posparto() {
       </pattern>
 
       {/* las formas que se usan más de una vez (relleno + recorte) */}
-      <path id="pp-forma-vestido" d="M204 160 C 194 164 186 172 184 186 C 181 220 180 256 180 292 C 178 340 168 400 158 462 C 172 468 188 466 202 470 C 218 474 234 468 250 472 C 264 475 276 468 286 462 C 282 420 274 372 264 332 C 258 308 252 292 250 278 C 249 264 250 252 253 240 C 258 226 262 212 260 198 C 257 184 247 172 236 163 C 226 168 212 166 204 160 Z"/>
+      {/* el escote se ve de perfil: alto atrás y bajando en diagonal hasta el pecho */}
+      <path id="pp-forma-vestido" d="M203 163 C 194 166 187 174 185 186 C 181 220 180 256 180 292 C 178 340 168 400 158 462 C 172 468 188 466 202 470 C 218 474 234 468 250 472 C 264 475 276 468 286 462 C 282 420 274 372 264 332 C 258 308 252 292 250 278 C 249 264 250 252 253 240 C 258 226 262 212 260 198 C 258 191 252 186 244 184 C 231 181 216 173 203 163 Z"/>
       <path id="pp-forma-manga" d="M190 194 C 188 178 197 166 209 165 C 222 165 230 178 230 194 C 230 202 231 208 233 213 C 220 218 204 218 191 214 C 189 207 189 200 190 194 Z"/>
       <path id="pp-forma-brazo" d="M195 192 C 194 181 201 173 210 173 C 219 174 222 185 221 197 C 220 212 221 228 226 241 C 240 237 256 232 270 228 C 275 226 279 223 283 219 C 286 215 289 212.5 293 212 C 296 211.5 297.5 214.5 295.5 216.5 C 294 218 292.5 219 292 220 C 295.5 217.8 300 216.5 303.5 216.3 C 306.5 216.2 307.8 219 305.8 221 C 307.8 222.6 308.2 225.4 306.2 227.2 C 308 229 308 232 306 233.8 C 306.8 236.6 304.3 238.8 300.8 238.8 C 294 240 285 242 276 242 C 262 247 244 253 230 259 C 220 264 208 266 203 257 C 199 240 196 216 195 192 Z"/>
       <path id="pp-forma-cuello" d="M206 118 L 233 132 C 231 145 232 154 237 163 C 241 171 245 180 247 190 L 196 192 C 198 174 200 158 202 146 C 203 136 204 126 206 118 Z"/>
@@ -122,13 +126,17 @@ export function Posparto() {
         {/* sombra del piso */}
         <ellipse cx="224" cy="488" rx="100" ry="9" fill="#A9BCA1" opacity="0.55"/>
 
+        {/* los pies con sandalias van antes del vestido: el ruedo les tapa el empeine */}
+        <PieDeAtras />
+        <PieDeAdelante />
+
         {/* cuello: baja por debajo del vestido y se abre hacia los hombros; y la sombra que le hace la mandíbula */}
         <use href="#pp-forma-cuello" fill="#E6D8C7"/>
         <path clipPath="url(#pp-recorte-cuello)" fill="#39463A" opacity="0.07" d="M208 137 C 215 145 225 150 235 150 C 230 153.5 222 154.5 215 152 C 211 149 209 143 208 137 Z"/>
 
         {/* cabeza, cara, coronilla y oreja: la misma de la embarazada, pero inclinada hacia el bebé */}
         <g transform="translate(5 6) rotate(20 212 124)">
-          <path fill="#E6D8C7" d="M196 72 C 214 62 238 70 242 92 C 244 99 247 104 251 110 C 252 112 250 114 246 114 C 247 118 246 122 243 124 C 243 128 241 133 236 136 C 228 141 214 140 206 134 C 192 124 186 104 190 88 C 192 80 193 76 196 72 Z"/>
+          <path fill="#E6D8C7" d={CARA}/>
           {/* ojos cerrados, ceja, una sonrisa apenas y un rubor chiquito debajo del ojo */}
           <ellipse cx="229.5" cy="110.5" rx="3.8" ry="2.3" fill="#7A6193" opacity="0.2"/>
           <g fill="none" stroke="#39463A" strokeLinecap="round">
@@ -136,7 +144,7 @@ export function Posparto() {
             <path d="M229.5 103 L 228.5 106" strokeWidth="1.2"/>
             <path d="M233.5 103.6 L 233.5 106.6" strokeWidth="1.2"/>
             <path d="M227 92.5 C 231 90 235 90 238.5 92" strokeWidth="1.5" opacity="0.85"/>
-            <path d="M243 121.5 C 244.5 122.5 246 122 247 120.8" strokeWidth="1.2" opacity="0.6"/>
+            <path d={BOCA} strokeWidth="1.2" opacity="0.65"/>
           </g>
           {/* pelo de arriba: cubre la coronilla y pasa por detrás de la oreja */}
           <path fill="#39463A" d="M241 86 C 239 66 214 58 196 62 C 172 68 160 92 164 120 C 165 128 165 134 164 140 L 201 140 C 200 130 200 120 201 112 C 202 104 206 98 213 95 C 219 89 230 83 241 86 Z"/>
@@ -164,13 +172,10 @@ export function Posparto() {
             <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(240)"/>
             <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(300)"/>
           </g>
-          <path fill="#E6D8C7" d="M205 101 C 212 97 219 103 218 111 C 217.5 118 213.5 123 208 121.5 C 205 115 203.5 107 205 101 Z"/>
-          <path d="M206 101 C 212 98 218.5 103 218 111 C 217.6 117.5 214 122 208.5 121.5" fill="none" stroke="#39463A" strokeWidth="1.1" strokeLinecap="round" opacity="0.28"/>
-          <path d="M209 105.5 C 213 106.5 214.2 111 211.5 115.5" fill="none" stroke="#39463A" strokeWidth="1.1" strokeLinecap="round" opacity="0.32"/>
+          <Oreja aro={false} />
         </g>
-        {/* el aro cuelga derecho del lóbulo (no gira con la cabeza) */}
-        <path d="M217.2 127.4 L 217.2 130" stroke="#7A6193" strokeWidth="1.1" strokeLinecap="round"/>
-        <ellipse cx="217.2" cy="132.6" rx="2" ry="2.5" fill="#7A6193"/>
+        {/* el aro cuelga derecho del lóbulo (no gira con la cabeza): es el lóbulo de la oreja, ya con la cabeza inclinada */}
+        <Aro x={220.8} y={129.4} />
 
 
         {/* el brazo de atrás: sale de detrás del cuerpo y sostiene al bebé por debajo (un poco más en sombra) */}
@@ -197,21 +202,13 @@ export function Posparto() {
           {/* luz sobre el frente de la falda */}
           <path fill="#F5EFE9" opacity="0.25" d="M262 300 C 270 340 278 400 283 452 C 276 402 268 346 257 306 Z"/>
           {/* ribete del escote */}
-          <path d="M205 163.5 C 213 169.5 226 171.5 236 166" fill="none" stroke="#F5EFE9" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+          <path d={RIBETE} fill="none" stroke="#F5EFE9" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
           {/* pliegues */}
           <g fill="none" stroke="#39463A" strokeWidth="2.5" strokeLinecap="round" opacity="0.13">
             <path d="M262 342 C 266 390 270 430 272 460"/>
             <path d="M232 300 C 228 360 224 420 222 466"/>
             <path d="M206 336 C 202 384 198 426 196 466"/>
           </g>
-        </g>
-
-        {/* pies con sandalias */}
-        <path fill="#E6D8C7" d="M250 466 C 252 476 262 482 280 482 C 288 482 290 476 282 472 L 268 468 Z"/>
-        <path fill="#E6D8C7" d="M168 464 C 168 476 176 482 192 480 C 198 478 196 472 188 468 Z"/>
-        <g fill="none" stroke="#39463A" strokeWidth="1.8" strokeLinecap="round" opacity="0.45">
-          <path d="M262 472 C 266 476 270 478 275 478"/>
-          <path d="M178 470 C 181 474 185 476 189 476"/>
         </g>
 
         {/* el bebé, envuelto en su mantita */}

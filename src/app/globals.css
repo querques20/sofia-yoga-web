@@ -151,6 +151,8 @@
 
   .marco-titulos {
     font-size: clamp(1.8rem, 4.4vw, 3rem);
+    /* así los meses quedan con su trimestre y no pegados al de abajo */
+    row-gap: 0.45em;
   }
 
   .marco-titulos > * {

@@ -1,5 +1,13 @@
+import { CabezaDePerfil } from "./cara";
+import { Cuello, Manguita, PieDeAdelante, PieDeAtras, RIBETE } from "./partes";
+
+// el vestido, con el escote de perfil y el borde ondulado
+const VESTIDO =
+  "M203 163 C 194 166 187 174 185 186 C 180 220 178 250 176 290 C 174 340 166 400 156 462 C 170 468 186 466 200 470 C 216 474 232 468 248 472 C 262 475 274 468 284 462 C 280 420 276 380 274 352 C 296 334 308 306 304 278 C 300 250 284 230 262 222 C 268 212 266 198 258 190 C 254 186 249 184 244 184 C 231 181 216 173 203 163 Z";
+
 // la embarazada de perfil, la ilustración con detalle (ilustraciones/embarazada-perfil-detalle.svg),
-// partida en grupos para poder animarla por partes. Sin el filtro de grano: la página ya tiene el suyo encima
+// partida en grupos para poder animarla por partes. Sin el filtro de grano: la página ya tiene el suyo encima.
+// La cabeza, el cuello, la manguita y los pies son los mismos que los de la embarazada del programa (partes.tsx)
 export function Embarazada() {
   return (
     <>
@@ -9,7 +17,7 @@ export function Embarazada() {
       <ellipse cx="4" cy="4" rx="1.5" ry="1.8" fill="#DDE4D9"/>
       <ellipse cx="10.5" cy="10.5" rx="1.2" ry="1.5" fill="#DDE4D9"/>
       </pattern>
-      <clipPath id="h-recorte-vestido"><path d="M204 160 C 194 164 186 172 184 184 C 180 220 178 250 176 290 C 174 340 166 400 156 462 C 170 468 186 466 200 470 C 216 474 232 468 248 472 C 262 475 274 468 284 462 C 280 420 276 380 274 352 C 296 334 308 306 304 278 C 300 250 284 230 262 222 C 268 212 266 196 256 186 C 248 176 240 166 234 162 C 226 168 212 166 204 160 Z"/></clipPath>
+      <clipPath id="h-recorte-vestido"><path d={VESTIDO}/></clipPath>
       </defs>
       <g className="ilus-masas">
         {/* fondo: masas de elipses encimadas */}
@@ -100,51 +108,19 @@ export function Embarazada() {
       {/* sombra del piso */}
       <ellipse cx="224" cy="488" rx="100" ry="9" fill="#A9BCA1" opacity="0.55"/>
       <g className="ilus-figura">
-        {/* cuello, y la sombra que le hace la mandíbula */}
-        <path fill="#E6D8C7" d="M206 116 L 230 118 C 229 134 231 148 238 162 C 242 170 245 178 246 186 L 196 188 C 198 170 200 152 201 140 C 202 130 203 122 206 116 Z"/>
-        <path fill="#39463A" opacity="0.07" d="M207 133 C 214 139 227 140 235 136 C 231 141 224 144 216 144 C 211 142 208 138 207 133 Z"/>
+        {/* los pies con sandalias van primero: el ruedo del vestido les tapa el empeine */}
+        <PieDeAtras />
+        <PieDeAdelante />
+        <Cuello />
         <g className="ilus-cabeza">
-          {/* cabeza de perfil */}
-          <path fill="#E6D8C7" d="M196 72 C 214 62 238 70 242 92 C 244 99 247 104 251 110 C 252 112 250 114 246 114 C 247 118 246 122 243 124 C 243 128 241 133 236 136 C 228 141 214 140 206 134 C 192 124 186 104 190 88 C 192 80 193 76 196 72 Z"/>
-          {/* cara: ojos cerrados, ceja, una sonrisa apenas y un poco de color en la mejilla */}
-          <ellipse cx="229" cy="112" rx="5.5" ry="3.4" fill="#7A6193" opacity="0.17"/>
-          <g fill="none" stroke="#39463A" strokeLinecap="round">
-          <path d="M226 100 C 229 103.5 234 103.5 237 100.5" strokeWidth="1.7"/>
-          <path d="M229.5 103 L 228.5 106" strokeWidth="1.2"/>
-          <path d="M233.5 103.6 L 233.5 106.6" strokeWidth="1.2"/>
-          <path d="M227 92.5 C 231 90 235 90 238.5 92" strokeWidth="1.5" opacity="0.85"/>
-          <path d="M243 121.5 C 244.5 122.5 246 122 247 120.8" strokeWidth="1.2" opacity="0.6"/>
-          </g>
-          {/* pelo: más volumen y dos puntas al final */}
-          <path fill="#39463A" d="M241 86 C 239 66 214 58 196 62 C 172 68 160 92 164 120 C 166 144 156 168 154 198 C 152 232 164 258 158 292 C 156 310 160 328 170 342 C 172 330 175 318 180 308 C 182 320 188 330 196 334 C 190 316 188 296 190 276 C 192 252 188 226 192 204 C 196 184 199 166 200 148 C 200 134 200 122 201 112 C 202 104 206 98 213 95 C 219 89 230 83 241 86 Z"/>
-          {/* brillo y mechones */}
-          <g fill="none" stroke="#A9BCA1" strokeLinecap="round">
-          <path d="M190 72 C 200 66 212 64 224 68" strokeWidth="3.2" opacity="0.6"/>
-          <path d="M180 88 C 170 116 170 154 174 192 C 177 222 172 258 166 292" strokeWidth="2" opacity="0.45"/>
-          <path d="M190 226 C 186 256 182 290 184 322" strokeWidth="1.8" opacity="0.35"/>
-          </g>
-          {/* una flor chiquita en el pelo, como broche */}
-          <g transform="translate(181 100) scale(0.3)" fill="none" stroke="#7A6193" strokeWidth="5" strokeLinecap="round">
-          <ellipse cx="0" cy="-18" rx="8" ry="18"/>
-          <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(60)"/>
-          <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(120)"/>
-          <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(180)"/>
-          <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(240)"/>
-          <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(300)"/>
-          </g>
-          {/* oreja con el pelo por detrás, y un aro */}
-          <path fill="#E6D8C7" d="M205 101 C 212 97 219 103 218 111 C 217.5 118 213.5 123 208 121.5 C 205 115 203.5 107 205 101 Z"/>
-          <path d="M206 101 C 212 98 218.5 103 218 111 C 217.6 117.5 214 122 208.5 121.5" fill="none" stroke="#39463A" strokeWidth="1.1" strokeLinecap="round" opacity="0.28"/>
-          <path d="M209 105.5 C 213 106.5 214.2 111 211.5 115.5" fill="none" stroke="#39463A" strokeWidth="1.1" strokeLinecap="round" opacity="0.32"/>
-          <path d="M209.6 122.5 L 209.6 125" stroke="#7A6193" strokeWidth="1.1" strokeLinecap="round"/>
-          <ellipse cx="209.6" cy="127.6" rx="2" ry="2.5" fill="#7A6193"/>
+          <CabezaDePerfil />
         </g>
         <g className="ilus-torso">
           {/* vestido, con borde ondulado */}
-          <path fill="#A9BCA1" d="M204 160 C 194 164 186 172 184 184 C 180 220 178 250 176 290 C 174 340 166 400 156 462 C 170 468 186 466 200 470 C 216 474 232 468 248 472 C 262 475 274 468 284 462 C 280 420 276 380 274 352 C 296 334 308 306 304 278 C 300 250 284 230 262 222 C 268 212 266 196 256 186 C 248 176 240 166 234 162 C 226 168 212 166 204 160 Z"/>
+          <path fill="#A9BCA1" d={VESTIDO}/>
           <g clipPath="url(#h-recorte-vestido)">
           {/* estampado */}
-          <path fill="url(#h-puntos)" opacity="0.6" d="M204 160 C 194 164 186 172 184 184 C 180 220 178 250 176 290 C 174 340 166 400 156 462 C 170 468 186 466 200 470 C 216 474 232 468 248 472 C 262 475 274 468 284 462 C 280 420 276 380 274 352 C 296 334 308 306 304 278 C 300 250 284 230 262 222 C 268 212 266 196 256 186 C 248 176 240 166 234 162 C 226 168 212 166 204 160 Z"/>
+          <path fill="url(#h-puntos)" opacity="0.6" d={VESTIDO}/>
           {/* volumen: sombra en la espalda, debajo del pecho y debajo de la panza */}
           <g fill="#39463A" opacity="0.11">
           <path d="M184 184 C 180 220 178 250 176 290 C 174 340 166 400 156 462 L 176 465 C 184 400 190 340 192 290 C 194 250 196 220 200 186 Z"/>
@@ -154,7 +130,7 @@ export function Embarazada() {
           {/* luz sobre la panza */}
           <path fill="#F5EFE9" opacity="0.32" d="M264 224 C 286 232 301 252 304 276 C 297 262 287 248 273 238 C 269 234 266 229 264 224 Z"/>
           {/* ribete del escote */}
-          <path d="M205 163.5 C 213 169.5 226 171.5 235 165.5" fill="none" stroke="#F5EFE9" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+          <path d={RIBETE} fill="none" stroke="#F5EFE9" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
           {/* pliegues */}
           <g fill="none" stroke="#39463A" strokeWidth="2.5" strokeLinecap="round" opacity="0.13">
           <path d="M276 350 C 268 357 258 361 246 362"/>
@@ -175,13 +151,7 @@ export function Embarazada() {
           </g>
           {/* pulsera */}
           <path d="M276 271 C 279.5 278 280.5 285 279 292" fill="none" stroke="#7A6193" strokeWidth="2.4" strokeLinecap="round"/>
-        </g>
-        {/* pies con sandalias */}
-        <path fill="#E6D8C7" d="M250 466 C 252 476 262 482 280 482 C 288 482 290 476 282 472 L 268 468 Z"/>
-        <path fill="#E6D8C7" d="M168 464 C 168 476 176 482 192 480 C 198 478 196 472 188 468 Z"/>
-        <g fill="none" stroke="#39463A" strokeWidth="1.8" strokeLinecap="round" opacity="0.45">
-        <path d="M262 472 C 266 476 270 478 275 478"/>
-        <path d="M178 470 C 181 474 185 476 189 476"/>
+          <Manguita puntos="h-puntos" />
         </g>
       </g>
     </>

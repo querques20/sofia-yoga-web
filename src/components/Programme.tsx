@@ -7,13 +7,13 @@ import { escucharSouffle } from "@/lib/souffle";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Magnetique } from "./Magnetique";
 import { Parte } from "./programme/Parte";
-import { BRAZO, Silueta, VESTIDO } from "./programme/Silueta";
+import { aparecerPanza, crecerPanza, PanzaQueCrece, respirarPanza } from "./programme/PanzaQueCrece";
 
 // el ordinal va en superíndice, como se escribe en francés (1er, 2e, 3e)
 const TRIMESTRES = [
-  { n: "1", sufijo: "er" },
-  { n: "2", sufijo: "e" },
-  { n: "3", sufijo: "e" },
+  { n: "1", sufijo: "er", mois: "Mois 1 à 3" },
+  { n: "2", sufijo: "e", mois: "Mois 4 à 6" },
+  { n: "3", sufijo: "e", mois: "Mois 7 à 9" },
 ];
 
 function Trimestre({ n, sufijo }: { n: string; sufijo: string }) {
@@ -34,18 +34,18 @@ export function Programme() {
       if (quieto) return;
       const q = gsap.utils.selector(raiz);
       const titulos = q(".marco-titulo");
-      const partes = titulos.map((t) => SplitText.create(t, { type: "chars", mask: "chars" }));
+      const partes = q(".marco-nombre").map((t) => SplitText.create(t, { type: "chars", mask: "chars" }));
       const letras = partes.map((p) => p.chars);
+      const meses = q(".marco-mois");
       const lineas = q(".indice-linea");
       const items = q(".indice-item");
-      const [vestido] = q(".silueta-vestido");
-      const [brazo] = q(".silueta-brazo");
       const [yang] = q(".forma-yang");
       const [yin] = q(".forma-yin");
 
       // arranca con el primer trimestre armado y los otros esperando abajo
       gsap.set(titulos, { visibility: "visible" });
       gsap.set([...letras[1], ...letras[2]], { yPercent: 115 });
+      gsap.set(meses.slice(1), { opacity: 0, y: 8 });
       gsap.set(lineas, { scaleX: 0, transformOrigin: "left center" });
       gsap.set(items.slice(1), { opacity: 0.38 });
       gsap.set([yang, yin], { transformOrigin: "50% 50%" });
@@ -53,9 +53,10 @@ export function Programme() {
 
       const sale = { yPercent: -115, stagger: 0.03, duration: 0.4, ease: "power2.in" };
       const entra = { yPercent: 0, stagger: 0.03, duration: 0.45, ease: "power2.out" };
-      const crece = { duration: 0.8, ease: "power1.inOut" };
+      const seVa = { opacity: 0, y: -8, duration: 0.3, ease: "power2.in" };
+      const llega = { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" };
 
-      gsap
+      const tl = gsap
         .timeline({
           defaults: { ease: "none" },
           scrollTrigger: {
@@ -68,28 +69,31 @@ export function Programme() {
             anticipatePin: 1,
           },
         })
-        // ella se dibuja sola al entrar
-        .fromTo(q(".silueta .trazo"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.7, stagger: 0.04, ease: "power1.inOut" }, 0)
         .to(lineas[0], { scaleX: 1, duration: 1 }, 0)
-        // del primero al segundo: cambian las letras y crece la panza
+        // del primero al segundo: cambian las letras y los meses, y crece la panza
         .to(letras[0], sale, 1)
+        .to(meses[0], seVa, 1)
         .to(letras[1], entra, 1.2)
+        .to(meses[1], llega, 1.35)
         .to(items[0], { opacity: 0.38, duration: 0.2 }, 1)
         .to(items[1], { opacity: 1, duration: 0.2 }, 1)
-        .to(vestido, { morphSVG: VESTIDO[1], ...crece }, 1)
-        .to(brazo, { morphSVG: BRAZO[1], ...crece }, 1)
         .to(lineas[1], { scaleX: 1, duration: 1 }, 1.25)
         // del segundo al tercero
         .to(letras[1], sale, 2.3)
+        .to(meses[1], seVa, 2.3)
         .to(letras[2], entra, 2.5)
+        .to(meses[2], llega, 2.65)
         .to(items[1], { opacity: 0.38, duration: 0.2 }, 2.3)
         .to(items[2], { opacity: 1, duration: 0.2 }, 2.3)
-        .to(vestido, { morphSVG: VESTIDO[2], ...crece }, 2.3)
-        .to(brazo, { morphSVG: BRAZO[2], ...crece }, 2.3)
         .to(lineas[2], { scaleX: 1, duration: 1 }, 2.55)
         // al final se dice lo que tienen en común los tres
         .to(q(".juntas"), { opacity: 1, y: 0, duration: 0.4 }, 3.5)
         .to({}, { duration: 0.35 });
+
+      // la embarazada: llega cuando aparece el marco, cambia de trimestre con las letras y respira con la web
+      const plantaAlPrincipio = crecerPanza(tl, q, [1, 2.3], 0.8);
+      aparecerPanza(q, q(".marco")[0]);
+      const dejarDeRespirar = respirarPanza(q);
 
       // las dos partes respiran a contratiempo
       const escalaYang = gsap.quickSetter(yang, "scale");
@@ -101,6 +105,8 @@ export function Programme() {
 
       return () => {
         dejar();
+        dejarDeRespirar();
+        plantaAlPrincipio();
         partes.forEach((p) => p.revert());
       };
     },
@@ -131,7 +137,8 @@ export function Programme() {
             {TRIMESTRES.map((t) => (
               <li key={t.n} className="indice-item">
                 <span className="titre block text-[1.15rem] lg:text-[1.7rem]">
-                  <Trimestre {...t} />
+                  <Trimestre n={t.n} sufijo={t.sufijo} />
+                  <span className="sr-only">, {t.mois.toLowerCase()}</span>
                 </span>
                 <span className="mt-2 block h-[3px] overflow-hidden rounded-full bg-verde/15" aria-hidden="true">
                   <span className="indice-linea block h-full bg-verde" />
@@ -145,9 +152,14 @@ export function Programme() {
           <div className="marco relative grid h-[min(64svh,38rem)] grid-cols-[1fr_auto] grid-rows-[auto_1fr_auto] gap-x-4 overflow-hidden rounded-[2rem] bg-arena p-6 lg:h-[min(76svh,40rem)] lg:p-10">
             <div className="marco-titulos titre col-span-2 text-[clamp(2.6rem,7.6vw,6rem)]" aria-hidden="true">
               {TRIMESTRES.map((t) => (
-                <p key={t.n} className="marco-titulo">
-                  <Trimestre {...t} />
-                </p>
+                <div key={t.n} className="marco-titulo">
+                  <p className="marco-nombre">
+                    <Trimestre n={t.n} sufijo={t.sufijo} />
+                  </p>
+                  <p className="marco-mois mt-2 font-sans text-[1rem] font-normal leading-snug tracking-normal normal-case opacity-80 lg:mt-3 lg:text-[1.1rem]">
+                    {t.mois}
+                  </p>
+                </div>
               ))}
             </div>
             <div className="flex flex-col justify-end gap-3 pb-2">
@@ -155,8 +167,8 @@ export function Programme() {
               <Parte clase="forma-yin" color="var(--color-celeste)" texto="Une partie yin, douce" />
               <p className="juntas mt-1 text-[1.02rem]">Les deux, à chaque trimestre.</p>
             </div>
-            <div className="min-h-0 w-[min(30vw,8rem)] py-2 lg:w-[min(13vw,12.5rem)]">
-              <Silueta />
+            <div className="min-h-0 w-[min(40vw,10.5rem)] lg:w-[min(17vw,15.5rem)]">
+              <PanzaQueCrece />
             </div>
             <p className="col-span-2 text-[1rem] leading-snug lg:text-[1.1rem]">Vidéos, PDF et textes, à suivre chez toi.</p>
           </div>

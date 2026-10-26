@@ -1,5 +1,7 @@
+import { BOCA, CARA, Oreja } from "./cara";
+
 // la chica en guerrero II (ilustraciones/cours-postura.svg), partida en grupos: la esterilla aparte, así se desenrolla.
-// Sin el filtro de grano: la página ya tiene el suyo encima
+// Sin el filtro de grano: la página ya tiene el suyo encima. La cara y la oreja son las de la embarazada
 export function Guerrier() {
   return (
     <>
@@ -177,7 +179,7 @@ export function Guerrier() {
           <path d="M159 83 C 155.5 88 154.6 93.5 156.4 99" fill="none" stroke="#39463A" strokeWidth="1.6" strokeLinecap="round"/>
 
           {/* cabeza de perfil */}
-          <path fill="#E6D8C7" d="M196 72 C 214 62 238 70 242 92 C 244 99 247 104 251 110 C 252 112 250 114 246 114 C 247 118 246 122 243 124 C 243 128 241 133 236 136 C 228 141 214 140 206 134 C 192 124 186 104 190 88 C 192 80 193 76 196 72 Z"/>
+          <path fill="#E6D8C7" d={CARA}/>
 
           {/* cara: ojo abierto mirando la mano, ceja, sonrisa apenas y color en la mejilla */}
           <ellipse cx="229" cy="112" rx="5" ry="3.1" fill="#7A6193" opacity="0.17"/>
@@ -185,7 +187,7 @@ export function Guerrier() {
             <path d="M226.5 101 C 229.5 98 234 97.6 237.5 99.8" strokeWidth="1.7"/>
             <path d="M227 100.6 C 225.8 99.6 225 98.6 224.6 97.6" strokeWidth="1.2"/>
             <path d="M227 92.5 C 231 90 235 90 238.5 92" strokeWidth="1.5" opacity="0.85"/>
-            <path d="M243 121.5 C 244.5 122.5 246 122 247 120.8" strokeWidth="1.2" opacity="0.6"/>
+            <path d={BOCA} strokeWidth="1.2" opacity="0.65"/>
           </g>
           <ellipse cx="234.3" cy="101.4" rx="1.5" ry="2" fill="#39463A"/>
 
@@ -211,11 +213,7 @@ export function Guerrier() {
           <path d="M200 128 C 198 133 198.4 137 200.6 141" fill="none" stroke="#39463A" strokeWidth="1.4" strokeLinecap="round"/>
 
           {/* oreja con borde suave y el aro colgando del lóbulo */}
-          <path fill="#E6D8C7" d="M205 101 C 212 97 219 103 218 111 C 217.5 118 213.5 123 208 121.5 C 205 115 203.5 107 205 101 Z"/>
-          <path d="M206 101 C 212 98 218.5 103 218 111 C 217.6 117.5 214 122 208.5 121.5" fill="none" stroke="#39463A" strokeWidth="1.1" strokeLinecap="round" opacity="0.28"/>
-          <path d="M209 105.5 C 213 106.5 214.2 111 211.5 115.5" fill="none" stroke="#39463A" strokeWidth="1.1" strokeLinecap="round" opacity="0.32"/>
-          <path d="M209.6 122.5 L 209.6 125" stroke="#7A6193" strokeWidth="1.1" strokeLinecap="round"/>
-          <ellipse cx="209.6" cy="127.6" rx="2" ry="2.5" fill="#7A6193"/>
+          <Oreja />
         </g>
 
         {/* pie de adelante: lo vemos de costado, del lado del arco */}

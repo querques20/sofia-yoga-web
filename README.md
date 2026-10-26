@@ -41,5 +41,6 @@ Carpetas:
 - `src/app`: las páginas y el layout.
 - `src/components`: las secciones, con una carpeta por página. En `pagina/` están las piezas compartidas y en `ilustraciones/` los dibujos en SVG.
 - `src/lib`: la respiración que marca el ritmo de la web, los datos de contacto y el menú.
+- `scripts`: `regenerar-ilustraciones.mjs` arma los dibujos sueltos de «Par où commencer» (`public/ilustraciones`) a partir de los componentes. Se corre con el servidor de desarrollo prendido. Esos SVG no se editan a mano.
 
 Las tipografías (D-DIN y Caveat) son de uso libre (SIL OFL) y están en `src/app/fonts` con sus licencias.
