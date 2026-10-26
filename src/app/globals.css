@@ -218,3 +218,115 @@ html.lenis:not(.lenis-autoToggle).lenis-stopped {
 .entrada-vista .entrada {
   display: none;
 }
+
+/* LA PILA DE PASOS (PilaDePasos, en «Quand reprendre ?»), como «Cómo trabajamos» en la web de ED: cada paso
+   se traba arriba y el siguiente sube y lo tapa, dejándole a la vista su pestaña. El apilado es CSS (sticky).
+   Las medidas viven acá porque cambian con la pantalla, y las animaciones las leen del DOM (pila/medidas.ts) */
+[data-pila] {
+  /* lo que se deja pasar arriba: el menú flotante */
+  --pila-tope: 5rem;
+  /* el título trabado arriba de la pila, y el aire hasta el primer panel */
+  --pila-titulo: 3rem;
+  --pila-aire: 1rem;
+  /* la pestaña de cada panel: lo que queda a la vista cuando lo tapan */
+  --pila-solapa: 3.6rem;
+  /* el alto del último panel cuando la pantalla da de sobra */
+  --pila-alto-max: 30rem;
+}
+
+@media (min-width: 64rem) {
+  [data-pila] {
+    --pila-tope: 6rem;
+    --pila-titulo: 5.5rem;
+    --pila-aire: 1.5rem;
+    --pila-solapa: 4.75rem;
+    --pila-alto-max: 27rem;
+  }
+}
+
+/* derivadas, no se editan. Las solapas (las pestañas de todos menos el último) las pasa el componente */
+[data-pila] {
+  --pila-franja: calc(var(--pila-titulo) + var(--pila-aire));
+  --pila-alto: min(var(--pila-alto-max), 100svh - var(--pila-tope) - var(--pila-franja) - var(--pila-solapas, 0rem) - 1rem);
+  --pila-total: calc(var(--pila-franja) + var(--pila-solapas, 0rem) + var(--pila-alto));
+}
+
+/* la pila prendida: con movimiento y una pantalla con alto suficiente (la misma condición que en PilaDePasos).
+   Si no, los pasos van uno abajo del otro, con su alto natural */
+@media (prefers-reduced-motion: no-preference) and (min-height: 42rem) {
+  [data-pila-escena] {
+    display: grid;
+  }
+
+  /* el título y la lista comparten la celda: el título se traba arriba y mide lo mismo que la pila
+     trabada, así se despega junto con los paneles y no se queda clavado */
+  [data-pila-titulo],
+  [data-pila-lista] {
+    grid-area: 1 / 1;
+  }
+
+  [data-pila-titulo] {
+    position: sticky;
+    top: var(--pila-tope);
+    height: var(--pila-total);
+    align-self: start;
+    pointer-events: none;
+  }
+
+  [data-pila-franja] {
+    height: var(--pila-titulo);
+    pointer-events: auto;
+  }
+
+  /* entre panel y panel hay aire en el flujo, que no se ve (queda debajo del panel trabado): es para que
+     cada uno descanse solo un momento antes de que asome el siguiente */
+  [data-pila-lista] {
+    display: grid;
+    row-gap: 8rem;
+    margin-top: 0;
+    padding-top: var(--pila-franja);
+  }
+
+  /* el colchón: sin él, el último panel no se traba nunca, porque la lista termina justo en su borde */
+  [data-pila-lista]::after {
+    content: "";
+    display: block;
+    height: 35svh;
+  }
+
+  [data-pila-panel] {
+    position: sticky;
+    top: var(--pila-panel-top);
+    height: var(--pila-panel-alto);
+  }
+
+  /* EL BARRIDO (la banda que cierra, ver PilaDePasos). La sección no lleva aire abajo: la siguiente viene
+     pegada a la banda y tapa lo que queda de la pila */
+  [data-pila-con-banda] {
+    padding-bottom: 0;
+  }
+
+  /* el colchón alcanza para que la banda suba desde el pie de la pantalla hasta el título, con 6rem de
+     descanso antes de que asome: la pantalla, menos el tope, menos los 8rem de aire que la lista pone antes,
+     más el 1,5rem que la banda sube de más (abajo) */
+  [data-pila-con-banda] [data-pila-lista]::after {
+    height: calc(100svh - var(--pila-tope) - 0.5rem);
+  }
+
+  /* la banda retrocede todo el alto de la pila trabada, y 1,5rem más: así termina un poco por encima del
+     título y por sus esquinas redondeadas no asoma la primera letra */
+  [data-pila-banda] {
+    margin-top: calc(-1 * var(--pila-total) - 1.5rem);
+  }
+
+  [data-pila-telon] {
+    display: block;
+  }
+}
+
+/* en el celular, con la pila prendida, la frase de abajo del título no entra en la franja trabada */
+@media (prefers-reduced-motion: no-preference) and (min-height: 42rem) and (max-width: 63.999rem) {
+  [data-pila-intro] {
+    display: none;
+  }
+}

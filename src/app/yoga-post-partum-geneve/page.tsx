@@ -7,6 +7,7 @@ import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { IlustracionQueRespira } from "@/components/pagina/IlustracionQueRespira";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
+import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
 import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Questions } from "@/components/pagina/Questions";
@@ -34,7 +35,7 @@ const DATOS = [
   { dato: "Tarif", valor: <AConfirmer /> },
   { dato: "Paiement", valor: <AConfirmer /> },
   { dato: "Langue", valor: "Français" },
-  { dato: "Avec qui", valor: "Sofia Costa, formée en yoga pré et postnatal (60 h)" },
+  { dato: "Avec qui", valor: "Sofia Costa, professeure de yoga, formée en yoga pré et postnatal" },
 ];
 
 // lo que prevé el seguro básico suizo después del parto (OPAS, en Fedlex; y el folleto del periné de los HUG)
@@ -238,14 +239,25 @@ export default function YogaPostPartum() {
           { href: "#questions", texto: "Questions" },
         ]}
       />
-      <QuandReprendre />
-      <Reperes
-        id="suisse"
-        fondo="salvia"
-        titulo="Bon à savoir en Suisse"
-        intro={<p>Ce que l’assurance de base prévoit après la naissance. Vérifie les détails auprès de ta caisse maladie.</p>}
-        reperes={SUISSE}
-      />
+      <QuandReprendre>
+        <InvitarAEscribir
+          texto={<>Tu en es où&nbsp;? Dis-moi quand tu as accouché, je te réponds.</>}
+          mensaje={MENSAJES.postPartum}
+          asunto="Yoga post-partum"
+          enBanda
+        />
+      </QuandReprendre>
+      {/* va por encima de la pila de arriba (por eso el relative): cuando la banda barre la pila, esta sección
+          viene pegada detrás y su fondo tapa lo que queda */}
+      <div className="relative">
+        <Reperes
+          id="suisse"
+          fondo="salvia"
+          titulo="Bon à savoir en Suisse"
+          intro={<p>Ce que l’assurance de base prévoit après la naissance. Vérifie les détails auprès de ta caisse maladie.</p>}
+          reperes={SUISSE}
+        />
+      </div>
       <Intensite />
       <Reperes
         id="diastase"
