@@ -4,9 +4,12 @@ import { Canaux } from "@/components/contact/Canaux";
 import { Composeur } from "@/components/contact/Composeur";
 import { Fleur } from "@/components/Fleur";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
+import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
+import { negocio, paginaDeContacto } from "@/lib/datos-estructurados";
 
 export const metadata: Metadata = {
   title: "Contact",
+  alternates: { canonical: "/contact" },
   description:
     "Écris à Sofia Costa, professeure de yoga à Genève, par WhatsApp, par e-mail ou sur Instagram, pour une question sur les cours ou sur le programme.",
 };
@@ -21,6 +24,7 @@ const AYUDAS = [
 export default function ContactPage() {
   return (
     <main>
+      <DatosEstructurados datos={[negocio(), paginaDeContacto()]} />
       <EnteteDePage
         fil="Contact"
         titulo={

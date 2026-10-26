@@ -50,7 +50,18 @@ function IconoParque({ className }: Icono) {
 
 const FORMATS: { titulo: string; texto: ReactNode; Icono: (props: Icono) => ReactNode }[] = [
   { titulo: "En groupe", texto: "Le cours collectif, pour pratiquer avec d’autres.", Icono: IconoGrupo },
-  { titulo: "En privé", texto: "Un cours rien que pour toi.", Icono: IconoPrivado },
+  {
+    titulo: "En privé",
+    texto: (
+      <>
+        Un cours rien que pour toi.{" "}
+        <Link className="enlace font-bold" href="/cours-prives-yoga-geneve">
+          Les cours privés
+        </Link>
+      </>
+    ),
+    Icono: IconoPrivado,
+  },
   {
     titulo: "Au parc",
     texto: (

@@ -22,6 +22,11 @@ const DESTINOS = {
     titulo: "Cours de yoga",
     texto: "Vinyasa, yoga flow et yoga dynamique, en groupe, en privé ou au parc.",
   },
+  prives: {
+    href: "/cours-prives-yoga-geneve",
+    titulo: "Cours privés",
+    texto: "Un cours rien que pour toi, à ton rythme.",
+  },
   ateliers: {
     href: "/ateliers-evenements",
     titulo: "Ateliers",

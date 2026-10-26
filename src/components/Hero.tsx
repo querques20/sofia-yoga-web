@@ -81,7 +81,10 @@ export function Hero() {
       <div className="contenedor relative z-10 mt-12 lg:mt-0">
         <div className="hero-texto max-w-[54rem]">
           <h1 className="hero-titulo titre entra text-[clamp(3.2rem,10.5vw,6rem)]">
-            Continuer à <span className="mano mr-[0.12em] inline-block text-[1.12em]">bouger</span> pendant ta grossesse
+            {/* «à Genève» va en el H1: es la búsqueda local que pide el sitemap (frente on-page). Va en su renglón
+                y con espacio fijo, así nunca queda la «à» sola al final de una línea */}
+            Continuer à <span className="mano mr-[0.12em] inline-block text-[1.12em]">bouger</span> pendant ta grossesse,
+            <br />à&nbsp;Genève
           </h1>
           <p className="hero-sub entra mt-7 max-w-[34rem] text-[1.15rem] leading-relaxed lg:text-[1.25rem]">
             Yoga prénatal, post-partum et cours de yoga dynamique à Genève, avec Sofia Costa. En groupe, en privé ou au

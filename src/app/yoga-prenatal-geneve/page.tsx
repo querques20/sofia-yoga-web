@@ -18,9 +18,13 @@ import { SurCettePage } from "@/components/pagina/SurCettePage";
 import { AvantDeVenir } from "@/components/prenatal/AvantDeVenir";
 import { ProgrammeEnLigne } from "@/components/prenatal/ProgrammeEnLigne";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { PREGUNTAS_PRENATAL } from "@/contenido/preguntas";
+import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
+import { preguntasFrecuentes, servicio } from "@/lib/datos-estructurados";
 
 export const metadata: Metadata = {
   title: "Yoga prénatal à Genève",
+  alternates: { canonical: "/yoga-prenatal-geneve" },
   description:
     "Cours de yoga prénatal à Genève avec Sofia Costa, formée en yoga pré et postnatal. Avec l’accord de ta sage-femme ou de ta gynécologue.",
 };
@@ -112,72 +116,6 @@ const TRIMESTRES = [
   },
 ];
 
-const PREGUNTAS = [
-  {
-    pregunta: "Je n’ai jamais fait de yoga. Je peux venir ?",
-    respuesta: "Oui. Nul besoin d’être fort.e ou souple, viens comme tu es :)",
-  },
-  {
-    pregunta: "Je n’ai jamais fait de sport. Je peux commencer pendant la grossesse ?",
-    respuesta:
-      "Oui, en douceur. L’OMS conseille de commencer par de petites quantités, puis d’augmenter peu à peu. Parles-en d’abord à ta sage-femme ou à ta gynécologue.",
-  },
-  {
-    pregunta: "Je peux faire du yoga au premier trimestre ?",
-    respuesta: (
-      <>
-        Si ta grossesse se passe bien et que ta sage-femme ou ta gynécologue est d’accord, bouger au premier trimestre est
-        possible, et si tu pratiquais déjà, tu peux continuer. Les jours de nausées ou de grande fatigue, une pratique douce
-        suffit. Pour mes cours, la semaine à partir de laquelle je t’accueille est <AConfirmer />
-      </>
-    ),
-  },
-  {
-    pregunta: "Pourquoi éviter de rester allongée sur le dos ?",
-    respuesta:
-      "Plus tard dans la grossesse, sur le dos, le poids de l’utérus peut gêner le retour du sang vers le cœur et faire baisser la tension, avec des vertiges. L’OMS conseille d’éviter les activités sur le dos après le premier trimestre.",
-  },
-  {
-    pregunta: "Le yoga chaud (hot yoga, Bikram), c’est possible ?",
-    respuesta:
-      "Mieux vaut l’éviter : la chaleur peut faire trop monter la température du corps. Au premier trimestre, une température au-dessus de 39,2 °C peut être dangereuse pour le développement du bébé, selon la HAS.",
-  },
-  {
-    pregunta: "Dans quels cas l’activité physique est déconseillée ?",
-    respuesta:
-      "C’est ta sage-femme ou ta gynécologue qui décide, selon ta situation. La HAS cite par exemple la rupture de la poche des eaux, une menace d’accouchement prématuré, des saignements inexpliqués, un placenta prævia après 24 semaines ou une prééclampsie.",
-  },
-  {
-    pregunta: "Il me faut un certificat médical ?",
-    respuesta: "Non. Il te faut l’accord de ta sage-femme ou de ta gynécologue, mais je ne te demande aucun document.",
-  },
-  {
-    pregunta: "Tu es sage-femme ou physiothérapeute ?",
-    respuesta: "Non. Je suis professeure de yoga, enregistrée auprès de Yoga Alliance et formée en yoga pré et postnatal.",
-  },
-  {
-    pregunta: "Mon assurance rembourse le cours ?",
-    respuesta:
-      "Non. L’assurance de base participe à hauteur de 150 francs aux cours de préparation à la naissance donnés par une sage-femme. Mes cours ne sont remboursés ni par l’assurance de base ni par la complémentaire.",
-  },
-  {
-    pregunta: "Et après l’accouchement ?",
-    respuesta: (
-      <>
-        Tu peux continuer avec le{" "}
-        <Link className="enlace" href="/yoga-post-partum-geneve">
-          yoga post-partum
-        </Link>
-        , après la rééducation du périnée avec une physio.
-      </>
-    ),
-  },
-  {
-    pregunta: "Je ne peux pas venir au cours. Il existe une version en ligne ?",
-    respuesta: "Le programme Grossesse en mouvement arrive bientôt. Il sera en ligne et organisé par trimestre.",
-  },
-];
-
 const FUENTES = [
   {
     texto: "OMS, lignes directrices sur l’activité physique et la sédentarité, en un coup d’œil, 2020",
@@ -211,6 +149,7 @@ const FUENTES = [
 export default function YogaPrenatal() {
   return (
     <main>
+      <DatosEstructurados datos={[servicio({ nombre: "Yoga prénatal à Genève", tipo: "Yoga prénatal", ruta: "/yoga-prenatal-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_PRENATAL)]} />
       <EnteteDePage
         fil="Yoga prénatal"
         titulo={
@@ -311,7 +250,7 @@ export default function YogaPrenatal() {
         />
       </InfosPratiques>
       <ProgrammeEnLigne />
-      <Questions preguntas={PREGUNTAS} />
+      <Questions preguntas={PREGUNTAS_PRENATAL} />
       <Sources fuentes={FUENTES} />
       <PourContinuer destinos={["postPartum", "cours", "aPropos"]} />
       <Contact mensaje={MENSAJES.prenatal} />

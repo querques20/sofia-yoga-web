@@ -16,9 +16,15 @@ const NAV = [...PAGINAS, CONTACTO_PAGINA];
 // (no certifica), por eso «enregistrée»
 const FORMACIONES = [
   "Enregistrée auprès de Yoga Alliance",
-  "200 h Ashtanga-Vinyasa",
-  "100 h yin yoga et fascias",
-  "60 h yoga pré et postnatal",
+  "Ashtanga Vinyasa, en Inde",
+  "Yin yoga et fascias, en Suisse",
+  "Yoga pré et postnatal",
+];
+
+// las páginas que no están en el menú: van chiquitas abajo, al lado de los legales
+const SECUNDARIAS = [
+  { href: "/cours-prives-yoga-geneve", texto: "Cours privés" },
+  { href: "/faq", texto: "Questions fréquentes" },
 ];
 
 const CONTACTOS = [
@@ -138,7 +144,14 @@ export function Pied() {
           <p>© 2026 Sofia Yoga, Genève</p>
           <p>Version de test&nbsp;: les textes et les infos pratiques sont à confirmer.</p>
           {/* los legales todavía no existen: quedan como texto hasta tener sus páginas */}
-          <ul className="flex gap-6">
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            {SECUNDARIAS.map((enlace) => (
+              <li key={enlace.href}>
+                <Link className="enlace" href={enlace.href}>
+                  {enlace.texto}
+                </Link>
+              </li>
+            ))}
             <li>Mentions légales</li>
             <li>Confidentialité</li>
           </ul>

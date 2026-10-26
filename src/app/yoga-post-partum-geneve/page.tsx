@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Contact } from "@/components/Contact";
 import { Posparto } from "@/components/ilustraciones/Posparto";
 import { Magnetique } from "@/components/Magnetique";
@@ -19,9 +18,13 @@ import { CeQueLeYogaFait } from "@/components/post-partum/CeQueLeYogaFait";
 import { Intensite } from "@/components/post-partum/Intensite";
 import { QuandReprendre } from "@/components/post-partum/QuandReprendre";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { PREGUNTAS_POST_PARTUM } from "@/contenido/preguntas";
+import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
+import { preguntasFrecuentes, servicio } from "@/lib/datos-estructurados";
 
 export const metadata: Metadata = {
   title: "Yoga post-partum à Genève",
+  alternates: { canonical: "/yoga-post-partum-geneve" },
   description:
     "Yoga post-partum et postnatal à Genève avec Sofia Costa : une reprise progressive, après la rééducation du périnée avec une physio.",
 };
@@ -111,64 +114,6 @@ const SIGNAUX = [
   "Un ventre qui bombe au milieu pendant l’effort",
 ];
 
-const PREGUNTAS = [
-  {
-    pregunta: "C’est un cours maman-bébé ? Je peux venir avec mon bébé ?",
-    respuesta: "C’est encore à confirmer. Écris-moi si c’est important pour toi.",
-  },
-  {
-    pregunta: "Combien de temps après l’accouchement je peux reprendre ?",
-    respuesta: (
-      <>
-        Il n’y a pas de délai unique&nbsp;: ça dépend de ton accouchement et de ta récupération. Les recommandations suisses
-        conseillent de commencer par une activité modérée, puis d’augmenter peu à peu. Pour mes cours, c’est après la
-        rééducation du périnée et avec l’accord de ta sage-femme ou de ta gynécologue. Le nombre de semaines est <AConfirmer />
-      </>
-    ),
-  },
-  {
-    pregunta: "J’ai accouché par césarienne. Je peux venir ?",
-    respuesta:
-      "Oui, avec l’accord de ta sage-femme ou de ta gynécologue. Je ne fais pas de différence entre une césarienne et un accouchement par voie basse : on augmente l’intensité petit à petit. Après une césarienne, Santé publique France conseille d’attendre que la paroi du ventre se reconstitue, environ deux mois, avant de reprendre une activité physique.",
-  },
-  {
-    pregunta: "J’allaite. Est-ce que le sport change mon lait ?",
-    respuesta:
-      "Non. Selon le Collège américain des obstétriciens et gynécologues (ACOG), une activité physique régulière ne change ni la quantité ni la composition du lait, ni la croissance du bébé. Pour être plus à l’aise, allaite ou tire ton lait avant la séance, et pense à bien boire.",
-  },
-  {
-    pregunta: "J’ai des fuites quand je fais un effort. Je peux venir ?",
-    respuesta:
-      "C’est fréquent après un accouchement, mais ce n’est pas à ignorer. Parles-en d’abord à ta sage-femme, à ta gynécologue ou à ta physio : la rééducation du périnée est faite pour ça. Aux HUG, on conseille d’en parler si les fuites durent plus de 30 jours après l’accouchement.",
-  },
-  {
-    pregunta: "Le yoga peut guérir ma diastase ?",
-    respuesta:
-      "Non. Mes exercices peuvent aider à la diminuer, mais ils ne la guérissent pas. Si l’écart se voit encore bien huit semaines après la naissance, parles-en à ta gynécologue ou à ton médecin.",
-  },
-  {
-    pregunta: "Je dois d’abord faire la rééducation du périnée ?",
-    respuesta:
-      "Oui, avec une physio. Elle est indispensable, et le yoga ne la remplace pas. Aux HUG, elle commence en général deux à trois mois après l’accouchement et compte six à neuf séances.",
-  },
-  {
-    pregunta: "Le cours est remboursé par l’assurance complémentaire ?",
-    respuesta: "Non, les cours ne sont pas remboursés par l’assurance complémentaire.",
-  },
-  {
-    pregunta: "Tu proposes aussi du yoga pendant la grossesse ?",
-    respuesta: (
-      <>
-        Oui, tout est sur la page{" "}
-        <Link className="enlace" href="/yoga-prenatal-geneve">
-          yoga prénatal
-        </Link>
-        .
-      </>
-    ),
-  },
-];
-
 const FUENTES = [
   { texto: "HUG, « Prendre soin de votre périnée », 2025", href: "https://www.hug.ch/sites/interhug/files/documents/perinee.pdf" },
   {
@@ -193,6 +138,7 @@ const FUENTES = [
 export default function YogaPostPartum() {
   return (
     <main>
+      <DatosEstructurados datos={[servicio({ nombre: "Yoga post-partum à Genève", tipo: "Yoga post-partum", ruta: "/yoga-post-partum-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_POST_PARTUM)]} />
       <EnteteDePage
         fil="Post-partum"
         titulo={
@@ -280,7 +226,7 @@ export default function YogaPostPartum() {
           texto="Le lieu, l’horaire et le tarif arrivent bientôt. En attendant, écris-moi en me disant quand tu as accouché : je te réponds avec les détails."
         />
       </InfosPratiques>
-      <Questions preguntas={PREGUNTAS} />
+      <Questions preguntas={PREGUNTAS_POST_PARTUM} />
       <Sources fuentes={FUENTES} />
       <PourContinuer destinos={["prenatal", "cours", "aPropos"]} />
       <Contact mensaje={MENSAJES.postPartum} />

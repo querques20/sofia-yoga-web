@@ -7,9 +7,12 @@ import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Sources } from "@/components/pagina/Sources";
+import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
+import { paginaSobreSofia, persona } from "@/lib/datos-estructurados";
 
 export const metadata: Metadata = {
   title: "Sofia Costa, professeure de yoga à Genève",
+  alternates: { canonical: "/a-propos" },
   description:
     "Mon parcours, mes formations (enregistrée auprès de Yoga Alliance, 60 h de yoga pré et postnatal) et ma façon d’enseigner le yoga à Genève.",
 };
@@ -40,6 +43,7 @@ const FUENTES = [
 export default function APropos() {
   return (
     <main>
+      <DatosEstructurados datos={[persona(), paginaSobreSofia()]} />
       <EnteteDePage
         fil="À propos"
         titulo={

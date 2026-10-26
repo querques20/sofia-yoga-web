@@ -16,9 +16,13 @@ import { Questions } from "@/components/pagina/Questions";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Sources } from "@/components/pagina/Sources";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { PREGUNTAS_COURS } from "@/contenido/preguntas";
+import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
+import { preguntasFrecuentes, servicio } from "@/lib/datos-estructurados";
 
 export const metadata: Metadata = {
   title: "Cours de yoga à Genève",
+  alternates: { canonical: "/cours-de-yoga-geneve" },
   description:
     "Cours de vinyasa, yoga flow et yoga dynamique à Genève avec Sofia Costa. En groupe, en privé ou au parc. Nul besoin d’être fort.e ou souple.",
 };
@@ -75,53 +79,10 @@ const FUENTES = [
   { texto: "Yoga Suisse, contributions des assurances aux cours de yoga", href: "https://www.yoga.ch/fr/cours-de-yoga/contributions-en-matiere-de-prevention-sante-pour-les-cours-de-yoga" },
 ];
 
-const PREGUNTAS = [
-  {
-    pregunta: "Je débute. Je peux venir ?",
-    respuesta: "Oui ! Nul besoin d’être fort.e ou souple, viens comme tu es :)",
-  },
-  {
-    pregunta: "Quels styles de yoga proposes-tu ?",
-    respuesta: "Le vinyasa, le yoga flow et le yoga dynamique. Je ne donne pas de cours de hatha, d’ashtanga ni de yoga aérien.",
-  },
-  {
-    pregunta: "Tu donnes des cours privés ?",
-    respuesta: (
-      <>
-        Oui.{" "}
-        <a className="enlace" href={enlaceWhatsApp(MENSAJES.prive)} target="_blank" rel="noopener noreferrer">
-          Écris-moi
-        </a>{" "}
-        pour en parler.
-      </>
-    ),
-  },
-  {
-    pregunta: "Tu proposes du yin yoga ?",
-    respuesta: (
-      <>
-        Je suis formée en yin yoga (100 h, en Suisse). Pour savoir s’il y aura des cours de yin, c’est encore <AConfirmer />
-      </>
-    ),
-  },
-  {
-    pregunta: "Qu’est-ce que j’apporte ?",
-    respuesta: (
-      <>
-        Une tenue dans laquelle tu te sens bien et de quoi boire. Pour le tapis, c’est <AConfirmer />
-      </>
-    ),
-  },
-  {
-    pregunta: "Les cours sont remboursés par l’assurance complémentaire ?",
-    respuesta:
-      "Non. En Suisse, l’assurance de base ne rembourse pas le yoga, et les assurances complémentaires ne le font qu’avec certaines reconnaissances (Yoga Suisse, ASCA, RME…), différentes selon l’assureur. Je n’en ai pas : mes cours ne sont pas remboursés.",
-  },
-];
-
 export default function CoursDeYoga() {
   return (
     <main>
+      <DatosEstructurados datos={[servicio({ nombre: "Cours de yoga à Genève", tipo: "Cours de yoga : vinyasa, yoga flow et yoga dynamique", ruta: "/cours-de-yoga-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_COURS)]} />
       <EnteteDePage
         fil="Cours"
         titulo={
@@ -187,9 +148,9 @@ export default function CoursDeYoga() {
           texto="Les lieux et les horaires arrivent bientôt. En attendant, écris-moi : je te dis où et quand ont lieu les prochains cours."
         />
       </InfosPratiques>
-      <Questions preguntas={PREGUNTAS} />
+      <Questions preguntas={PREGUNTAS_COURS} />
       <Sources fuentes={FUENTES} aviso="Ces informations sont générales. Elles ne remplacent pas l’avis de ton médecin." />
-      <PourContinuer destinos={["prenatal", "ateliers", "aPropos"]} />
+      <PourContinuer destinos={["prives", "prenatal", "ateliers", "aPropos"]} />
       <Contact mensaje={MENSAJES.cours} />
     </main>
   );

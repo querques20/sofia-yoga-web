@@ -10,8 +10,9 @@ import { MENSAJES } from "@/lib/contacto";
 
 export const metadata: Metadata = {
   title: "Ateliers et événements de yoga à Genève",
+  alternates: { canonical: "/ateliers-evenements" },
   description:
-    "Les ateliers et événements de yoga de Sofia Costa à Genève. Aucun atelier n’est annoncé pour le moment : écris-moi pour être prévenu.e du prochain.",
+    "Les ateliers et événements de yoga de Sofia Costa à Genève. Aucun n’est annoncé pour le moment : écris-moi pour être prévenu.e du prochain.",
 };
 
 // qué suele ser un atelier (práctica común en estudios y escuelas, no datos de los de ella, que faltan)

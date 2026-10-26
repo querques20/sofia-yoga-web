@@ -5,6 +5,7 @@ import { Entrada } from "@/components/Entrada";
 import { LenisProvider } from "@/components/LenisProvider";
 import { Nav } from "@/components/Nav";
 import { Pied } from "@/components/Pied";
+import { SITIO_URL } from "@/lib/sitio";
 import "./globals.css";
 
 // D-DIN y D-DIN Condensed son las del dossier v2 (licencia SIL OFL, ver fonts/OFL-D-DIN.txt)
@@ -35,6 +36,8 @@ const caveat = localFont({
 });
 
 export const metadata: Metadata = {
+  // la base de los canonicals de cada página (el dominio todavía no está decidido, ver lib/sitio.ts)
+  metadataBase: new URL(SITIO_URL),
   // cada página pone su título y se le suma la marca al final
   title: { default: "Yoga prénatal et cours de yoga à Genève | Sofia Yoga", template: "%s | Sofia Yoga" },
   description:

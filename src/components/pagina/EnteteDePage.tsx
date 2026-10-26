@@ -64,7 +64,8 @@ export function EnteteDePage({ fil, titulo, intro, acciones, visual, paralaje = 
           .add(() => partido?.revert());
       });
 
-      if (paralaje) {
+      // sin dibujo (FAQ, cours privés) no hay nada que mover
+      if (paralaje && q(".entete-visual").length) {
         gsap.to(q(".entete-visual"), {
           yPercent: 8,
           ease: "none",

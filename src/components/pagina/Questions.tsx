@@ -2,9 +2,16 @@
 
 import Link from "next/link";
 import { useId, useState, type ReactNode } from "react";
+import type { Pregunta } from "@/contenido/preguntas";
 import { ScrollTrigger } from "@/lib/gsap";
 
-type Pregunta = { pregunta: string; respuesta: ReactNode };
+type Props = {
+  preguntas: Pregunta[];
+  titulo?: string;
+  id?: string;
+  /** lo que va debajo del título; si no se pasa, la salida para escribirle */
+  nota?: ReactNode;
+};
 
 // el más se vuelve menos: la rayita vertical gira hasta quedar acostada sobre la otra
 function MasMenos({ abierto }: { abierto: boolean }) {
@@ -20,7 +27,7 @@ function MasMenos({ abierto }: { abierto: boolean }) {
 }
 
 /** las preguntas frecuentes: se abre una por vez y la respuesta se despliega con su altura justa */
-export function Questions({ preguntas, titulo = "Questions fréquentes", id = "questions" }: { preguntas: Pregunta[]; titulo?: string; id?: string }) {
+export function Questions({ preguntas, titulo = "Questions fréquentes", id = "questions", nota }: Props) {
   const [abierta, setAbierta] = useState<number | null>(null);
   const base = useId();
 
@@ -31,10 +38,14 @@ export function Questions({ preguntas, titulo = "Questions fréquentes", id = "q
           <h2 className="titre text-[clamp(2.4rem,5.6vw,4.4rem)]">{titulo}</h2>
           {/* si la duda no está en la lista, la salida queda a mano */}
           <p className="mt-5 max-w-[20rem] text-[1.05rem] leading-relaxed">
-            Tu ne trouves pas ta réponse&nbsp;?{" "}
-            <Link className="enlace font-bold" href="/contact">
-              Écris-moi
-            </Link>
+            {nota ?? (
+              <>
+                Tu ne trouves pas ta réponse&nbsp;?{" "}
+                <Link className="enlace font-bold" href="/contact">
+                  Écris-moi
+                </Link>
+              </>
+            )}
           </p>
         </div>
         <ul className="lg:col-span-8">
