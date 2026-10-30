@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export type Repere = {
@@ -26,6 +27,7 @@ type Props = {
  * a la derecha cada dato con su línea, que se dibuja al llegar
  */
 export function Reperes({ id, titulo, intro, reperes, fondo = "pagina" }: Props) {
+  const t = useInterfaz();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -59,7 +61,7 @@ export function Reperes({ id, titulo, intro, reperes, fondo = "pagina" }: Props)
               <p className="titre text-[clamp(1.9rem,3.6vw,2.8rem)] text-violeta">{repere.clave}</p>
               <div>
                 <p className="text-[1.12rem] leading-relaxed">{repere.texto}</p>
-                {repere.fuente && <p className="mt-2 text-[0.92rem] opacity-70">Source&nbsp;: {repere.fuente}</p>}
+                {repere.fuente && <p className="mt-2 text-[0.92rem] opacity-70">{t.fuente} {repere.fuente}</p>}
               </div>
             </li>
           ))}
