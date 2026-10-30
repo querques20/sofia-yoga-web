@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { IDIOMAS, NOMBRES, rutaEn } from "@/lib/idiomas";
-import { guardarIdioma } from "@/lib/preferencia-idioma";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
+import { abreAparte, cambiarIdioma } from "./cambiar-idioma";
 import { ETIQUETA } from "./SelectorDeIdioma";
 
 /**
@@ -15,6 +16,7 @@ import { ETIQUETA } from "./SelectorDeIdioma";
  */
 export function SelectorDeIdiomaCompacto() {
   const { idioma, ruta } = useRuta();
+  const router = useRouter();
   const [abierto, setAbierto] = useState(false);
   const [rutaPrevia, setRutaPrevia] = useState(ruta);
   const caja = useRef<HTMLDivElement>(null);
@@ -92,7 +94,12 @@ export function SelectorDeIdiomaCompacto() {
               hrefLang={opcion}
               lang={opcion}
               aria-current={opcion === idioma ? "true" : undefined}
-              onClick={() => guardarIdioma(opcion)}
+              onClick={(evento) => {
+                if (abreAparte(evento)) return;
+                evento.preventDefault();
+                setAbierto(false);
+                if (opcion !== idioma) cambiarIdioma(router, opcion, rutaEn(opcion, ruta));
+              }}
               className="flex items-center justify-between gap-4 rounded-xl px-3.5 py-2.5 text-[1rem] font-bold transition-colors duration-300 hover:bg-salvia-clara aria-[current=true]:bg-salvia-clara"
             >
               {NOMBRES[opcion].nombre}

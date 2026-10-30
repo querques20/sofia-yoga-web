@@ -214,9 +214,28 @@ html.lenis:not(.lenis-autoToggle).lenis-stopped {
   }
 }
 
-/* la entrada se ve una vez por visita: en las cargas siguientes el telón no se pinta */
-.entrada-vista .entrada {
+/* la entrada se ve una vez por idioma: en las cargas siguientes el telón no se pinta (el cierre al cambiar de
+   idioma sí). Sin JS tampoco: nadie lo abriría */
+.entrada-vista .entrada:not(.entrada-cierre),
+html:not(.js) .entrada {
   display: none;
+}
+
+/* al llegar, el telón aparece suave desde el color de la página, en vez de ponerse verde de golpe */
+.entrada-aparece {
+  animation: entrada-aparece 0.7s ease-out both;
+}
+
+@keyframes entrada-aparece {
+  from {
+    background-color: var(--color-pagina);
+  }
+}
+
+/* la flor y el nombre esperan escondidos a que arranque su animación: si no, se ven enteros antes de dibujarse */
+.entrada-flor,
+.entrada-nombre {
+  opacity: 0;
 }
 
 /* LA PILA DE PASOS (PilaDePasos, en «Quand reprendre ?»), como «Cómo trabajamos» en la web de ED: cada paso

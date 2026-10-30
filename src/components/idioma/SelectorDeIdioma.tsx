@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { IDIOMAS, type Idioma, NOMBRES, rutaEn } from "@/lib/idiomas";
-import { guardarIdioma } from "@/lib/preferencia-idioma";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
+import { abreAparte, cambiarIdioma } from "./cambiar-idioma";
 
 export const ETIQUETA: Record<Idioma, string> = { fr: "Langue", en: "Language", es: "Idioma" };
 
@@ -28,7 +28,7 @@ const ESTILOS = {
 
 /**
  * El cambio de idioma: un link por idioma a la misma página en ese idioma (rastreables, con hreflang). Al
- * elegir uno, el resaltado se desliza hasta él, se guarda la elección y recién ahí se navega
+ * elegir uno, el resaltado se desliza hasta él mientras la página se cierra por la flor, y recién ahí se navega
  */
 export function SelectorDeIdioma({ variante, className = "" }: { variante: keyof typeof ESTILOS; className?: string }) {
   const { idioma, ruta } = useRuta();
@@ -54,23 +54,14 @@ export function SelectorDeIdioma({ variante, className = "" }: { variante: keyof
   );
 
   const elegir = (evento: React.MouseEvent<HTMLAnchorElement>, destino: Idioma, href: string) => {
-    // con Ctrl/Cmd o la rueda se abre en otra pestaña, como cualquier link
-    if (evento.metaKey || evento.ctrlKey || evento.shiftKey || evento.button !== 0) return;
+    if (abreAparte(evento)) return;
     evento.preventDefault();
     if (destino === idioma) return;
-    guardarIdioma(destino);
     const elegido = lista.current?.querySelector<HTMLElement>(`[data-idioma="${destino}"]`);
-    if (quieto || !elegido) {
-      router.push(href);
-      return;
+    if (!quieto && elegido) {
+      gsap.to(indicador.current, { x: elegido.offsetLeft, width: elegido.offsetWidth, duration: 0.45, ease: "power3.inOut" });
     }
-    gsap.to(indicador.current, {
-      x: elegido.offsetLeft,
-      width: elegido.offsetWidth,
-      duration: 0.45,
-      ease: "power3.inOut",
-      onComplete: () => router.push(href),
-    });
+    cambiarIdioma(router, destino, href);
   };
 
   return (
