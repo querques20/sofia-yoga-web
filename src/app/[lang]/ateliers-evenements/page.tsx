@@ -7,6 +7,7 @@ import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Reperes } from "@/components/pagina/Reperes";
 import { MENSAJES } from "@/lib/contacto";
+import { idiomaActual } from "@/lib/idioma-actual";
 
 export const metadata: Metadata = {
   title: "Ateliers et événements de yoga à Genève",
@@ -31,7 +32,8 @@ const ATELIER = [
 ];
 
 // todavía no hay ateliers anunciados: la página lo dice y ofrece avisar del próximo
-export default function Ateliers() {
+export default async function Ateliers() {
+  const idioma = await idiomaActual();
   return (
     <main>
       <EnteteDePage
@@ -57,7 +59,7 @@ export default function Ateliers() {
       />
       <CommentCaMarche />
       <PourContinuer destinos={["cours", "prenatal", "aPropos"]} />
-      <Contact mensaje={MENSAJES.atelier} />
+      <Contact mensaje={MENSAJES[idioma].atelier} />
     </main>
   );
 }

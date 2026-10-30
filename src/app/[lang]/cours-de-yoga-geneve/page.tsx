@@ -16,6 +16,7 @@ import { Questions } from "@/components/pagina/Questions";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Sources } from "@/components/pagina/Sources";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { idiomaActual } from "@/lib/idioma-actual";
 import { PREGUNTAS_COURS } from "@/contenido/preguntas";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { preguntasFrecuentes, servicio } from "@/lib/datos-estructurados";
@@ -79,7 +80,8 @@ const FUENTES = [
   { texto: "Yoga Suisse, contributions des assurances aux cours de yoga", href: "https://www.yoga.ch/fr/cours-de-yoga/contributions-en-matiere-de-prevention-sante-pour-les-cours-de-yoga" },
 ];
 
-export default function CoursDeYoga() {
+export default async function CoursDeYoga() {
+  const idioma = await idiomaActual();
   return (
     <main>
       <DatosEstructurados datos={[servicio({ nombre: "Cours de yoga à Genève", tipo: "Cours de yoga : vinyasa, yoga flow et yoga dynamique", ruta: "/cours-de-yoga-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_COURS)]} />
@@ -99,7 +101,7 @@ export default function CoursDeYoga() {
         acciones={
           <>
             <Magnetique>
-              <a className="boton" href={enlaceWhatsApp(MENSAJES.cours)} target="_blank" rel="noopener noreferrer">
+              <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].cours)} target="_blank" rel="noopener noreferrer">
                 Écrire sur WhatsApp
               </a>
             </Magnetique>
@@ -130,7 +132,7 @@ export default function CoursDeYoga() {
       <Flux>
         <InvitarAEscribir
           texto={<>Un de ces styles te parle&nbsp;? Écris-moi, je te dis où et quand ont lieu les prochains cours.</>}
-          mensaje={MENSAJES.ouQuand}
+          mensaje={MENSAJES[idioma].ouQuand}
           asunto="Cours de yoga"
         />
       </Flux>
@@ -144,14 +146,14 @@ export default function CoursDeYoga() {
       <Formats />
       <InfosPratiques id="ou" titulo="Où et quand" datos={DATOS} nota="Les cours ne sont pas remboursés par l’assurance complémentaire.">
         <PedirInfos
-          mensaje={MENSAJES.ouQuand}
+          mensaje={MENSAJES[idioma].ouQuand}
           texto="Les lieux et les horaires arrivent bientôt. En attendant, écris-moi : je te dis où et quand ont lieu les prochains cours."
         />
       </InfosPratiques>
       <Questions preguntas={PREGUNTAS_COURS} />
       <Sources fuentes={FUENTES} aviso="Ces informations sont générales. Elles ne remplacent pas l’avis de ton médecin." />
       <PourContinuer destinos={["prives", "prenatal", "ateliers", "aPropos"]} />
-      <Contact mensaje={MENSAJES.cours} />
+      <Contact mensaje={MENSAJES[idioma].cours} />
     </main>
   );
 }

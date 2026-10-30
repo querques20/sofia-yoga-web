@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 type Dato = { dato: string; valor: ReactNode };
@@ -19,7 +20,8 @@ type Props = {
  * El recuadro de información de cada página, en celeste (es su función en la paleta), escrito en texto
  * y no en imagen, para que lo lea también Google. Al llegar se dibuja el borde y después las líneas
  */
-export function InfosPratiques({ datos, id = "infos", titulo = "Infos pratiques", nota, children }: Props) {
+export function InfosPratiques({ datos, id = "infos", titulo, nota, children }: Props) {
+  const t = useInterfaz();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -40,7 +42,7 @@ export function InfosPratiques({ datos, id = "infos", titulo = "Infos pratiques"
       <div className="contenedor">
         <div className="infos-recuadro relative overflow-hidden rounded-[1.75rem] bg-celeste-clara py-9 pr-6 pl-8 lg:py-14 lg:pr-14 lg:pl-16">
           <span className="infos-borde absolute inset-y-0 left-0 w-[6px] bg-celeste" aria-hidden="true" />
-          <h2 className="titre text-[clamp(2.2rem,5vw,3.8rem)]">{titulo}</h2>
+          <h2 className="titre text-[clamp(2.2rem,5vw,3.8rem)]">{titulo ?? t.infosPratiques}</h2>
           <dl className="mt-8 grid gap-x-12 gap-y-6 sm:grid-cols-2 lg:mt-10">
             {datos.map((d) => (
               <div key={d.dato} className="relative pt-4">

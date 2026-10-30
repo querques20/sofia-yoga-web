@@ -148,7 +148,7 @@ export const PREGUNTAS_COURS: Pregunta[] = [
     respuesta: (
       <>
         Oui.{" "}
-        <a className="enlace" href={enlaceWhatsApp(MENSAJES.prive)} target="_blank" rel="noopener noreferrer">
+        <a className="enlace" href={enlaceWhatsApp(MENSAJES.fr.prive)} target="_blank" rel="noopener noreferrer">
           Écris-moi
         </a>{" "}
         pour en parler.

@@ -3,46 +3,27 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { rutaEn } from "@/lib/idiomas";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 
-// a dónde se puede seguir desde cada página, con lo único que hace falta saber de cada una
+// a dónde se puede seguir desde cada página (los textos, en cada idioma, están en la interfaz)
 const DESTINOS = {
-  prenatal: {
-    href: "/yoga-prenatal-geneve",
-    titulo: "Yoga prénatal",
-    texto: "Pendant la grossesse, avec l’accord de ta sage-femme ou de ta gynécologue.",
-  },
-  postPartum: {
-    href: "/yoga-post-partum-geneve",
-    titulo: "Yoga post-partum",
-    texto: "Après l’accouchement et la rééducation du périnée, avec une intensité qui monte petit à petit.",
-  },
-  cours: {
-    href: "/cours-de-yoga-geneve",
-    titulo: "Cours de yoga",
-    texto: "Vinyasa, yoga flow et yoga dynamique, en groupe, en privé ou au parc.",
-  },
-  prives: {
-    href: "/cours-prives-yoga-geneve",
-    titulo: "Cours privés",
-    texto: "Un cours rien que pour toi, à ton rythme.",
-  },
-  ateliers: {
-    href: "/ateliers-evenements",
-    titulo: "Ateliers",
-    texto: "Les prochains ateliers et événements, annoncés ici.",
-  },
-  aPropos: {
-    href: "/a-propos",
-    titulo: "À propos",
-    texto: "Mon parcours, mes formations et ma façon d’enseigner.",
-  },
-} as const;
+  prenatal: "/yoga-prenatal-geneve",
+  postPartum: "/yoga-post-partum-geneve",
+  cours: "/cours-de-yoga-geneve",
+  prives: "/cours-prives-yoga-geneve",
+  ateliers: "/ateliers-evenements",
+  aPropos: "/a-propos",
+};
 
 type Destino = keyof typeof DESTINOS;
 
 /** al final de cada página, las que tienen que ver con ella: las líneas se dibujan y al pasar se corre el título */
 export function PourContinuer({ destinos }: { destinos: Destino[] }) {
+  const t = useInterfaz().seguir;
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -62,10 +43,10 @@ export function PourContinuer({ destinos }: { destinos: Destino[] }) {
   return (
     <section ref={raiz} className="pt-[clamp(2rem,6vw,4rem)] pb-[clamp(4rem,10vw,7rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(2.2rem,5vw,3.6rem)]">Pour aller plus loin</h2>
+        <h2 className="titre text-[clamp(2.2rem,5vw,3.6rem)]">{t.titulo}</h2>
         <ul className="seguir mt-8 lg:mt-10">
           {destinos.map((clave) => {
-            const destino = DESTINOS[clave];
+            const destino = { href: rutaEn(idioma, DESTINOS[clave]), ...t.destinos[clave] };
             return (
               <li key={clave} className="relative">
                 <span className="seguir-linea absolute inset-x-0 top-0 h-px origin-left bg-verde/25" aria-hidden="true" />

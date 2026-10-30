@@ -16,10 +16,17 @@ export const NOMBRES: Record<Idioma, { nombre: string; sigla: string }> = {
 // lleva a su idioma en las visitas siguientes; Google no manda cookies, así que siempre ve todas las versiones
 export const COOKIE_IDIOMA = "idioma";
 
-// la URL de cada página en cada idioma. La clave es la ruta francesa (la carpeta); si un idioma no tiene
-// slug propio, usa el francés. PRUEBA: solo prenatal tiene slugs traducidos
+// la URL de cada página en cada idioma, con las palabras que se buscan en ese idioma. La clave es la ruta
+// francesa (la carpeta); si un idioma no tiene slug propio, usa el francés
 export const SLUGS: Record<string, Partial<Record<Idioma, string>>> = {
   "/yoga-prenatal-geneve": { en: "/prenatal-yoga-geneva", es: "/yoga-prenatal-ginebra" },
+  "/yoga-post-partum-geneve": { en: "/postnatal-yoga-geneva", es: "/yoga-posparto-ginebra" },
+  "/cours-de-yoga-geneve": { en: "/yoga-classes-geneva", es: "/clases-de-yoga-ginebra" },
+  "/cours-prives-yoga-geneve": { en: "/private-yoga-classes-geneva", es: "/clases-privadas-yoga-ginebra" },
+  "/ateliers-evenements": { en: "/workshops-events", es: "/talleres-eventos" },
+  "/a-propos": { en: "/about", es: "/sobre-mi" },
+  "/faq": { es: "/preguntas-frecuentes" },
+  "/contact": { es: "/contacto" },
 };
 
 export function esIdioma(valor: string | undefined): valor is Idioma {

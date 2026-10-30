@@ -7,6 +7,7 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
 import { lenisActual } from "@/lib/lenis";
 import { CONTACTO_PAGINA, esActual, PAGINAS } from "@/lib/navegacion";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "../FleurQuiRespire";
@@ -15,6 +16,7 @@ import { SelectorDeIdioma } from "../idioma/SelectorDeIdioma";
 /** el menú del celular: el botón es una islita y abre un panel verde a pantalla completa, como en ED */
 export function MenuMovil() {
   const { idioma, ruta } = useRuta();
+  const t = useInterfaz();
   const hoja = useRef<HTMLDivElement>(null);
   const boton = useRef<HTMLButtonElement>(null);
   const [abierto, setAbierto] = useState(false);
@@ -107,7 +109,7 @@ export function MenuMovil() {
         data-fuera-del-menu
         aria-expanded={abierto}
         aria-controls="menu-movil"
-        aria-label="Ouvrir le menu"
+        aria-label={t.nav.abrirMenu}
         onClick={() => setAbierto(true)}
         className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-3xl border border-verde/10 bg-pagina shadow-[0_8px_24px_-12px_rgba(57,70,58,0.45)] transition-colors hover:bg-salvia-clara lg:hidden"
       >
@@ -122,7 +124,7 @@ export function MenuMovil() {
         ref={hoja}
         role="dialog"
         aria-modal="true"
-        aria-label="Menu"
+        aria-label={t.nav.menu}
         className="invisible fixed inset-0 z-[60] flex flex-col bg-verde px-5 pb-10 text-pagina lg:hidden"
         style={{ clipPath: "inset(0% 0% 100% 0%)" }}
       >
@@ -133,7 +135,7 @@ export function MenuMovil() {
           </span>
           <button
             type="button"
-            aria-label="Fermer le menu"
+            aria-label={t.nav.cerrarMenu}
             onClick={() => {
               devolverFoco.current = true;
               setAbierto(false);
@@ -146,7 +148,7 @@ export function MenuMovil() {
           </button>
         </div>
         <ul className="mt-8 flex flex-col">
-          {[{ href: "/", texto: "Accueil" }, ...PAGINAS].map((pagina) => (
+          {[{ href: "/", texto: t.nav.inicio }, ...PAGINAS.map((p) => ({ href: p.href, texto: p.texto[idioma] }))].map((pagina) => (
             <li key={pagina.href} className="menu-item overflow-hidden border-t border-pagina/15">
               <Link
                 href={rutaEn(idioma, pagina.href)}
@@ -162,7 +164,7 @@ export function MenuMovil() {
         <div className="menu-item mt-auto flex flex-col gap-5">
           <SelectorDeIdioma variante="menu" />
           <Link href={rutaEn(idioma, CONTACTO_PAGINA.href)} onClick={() => setAbierto(false)} className="boton w-fit">
-            {CONTACTO_PAGINA.texto}
+            {CONTACTO_PAGINA.texto[idioma]}
           </Link>
           <p className="text-[0.98rem] text-pagina/75">
             {CONTACTO.telefono} · {CONTACTO.instagramUsuario}

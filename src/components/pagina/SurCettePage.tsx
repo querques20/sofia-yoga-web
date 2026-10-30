@@ -1,14 +1,17 @@
+import { interfaz } from "@/lib/idioma-actual";
+
 type Ancla = { href: string; texto: string };
 
 /**
  * El índice de las páginas largas, justo debajo de la cabecera: cada pastilla lleva a su sección.
  * En el celular la fila se desliza de costado
  */
-export function SurCettePage({ anclas }: { anclas: Ancla[] }) {
+export async function SurCettePage({ anclas }: { anclas: Ancla[] }) {
+  const t = await interfaz();
   return (
-    <nav aria-label="Sur cette page" className="contenedor pb-[clamp(3rem,7vw,5rem)]">
+    <nav aria-label={t.enEstaPagina} className="contenedor pb-[clamp(3rem,7vw,5rem)]">
       <div className="flex flex-col gap-3 border-t border-verde/20 pt-6 lg:flex-row lg:items-center lg:gap-6">
-        <p className="shrink-0 text-[0.98rem] font-bold">Sur cette page</p>
+        <p className="shrink-0 text-[0.98rem] font-bold">{t.enEstaPagina}</p>
         <ul className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:px-0">
           {anclas.map((ancla) => (
             <li key={ancla.href} className="shrink-0">

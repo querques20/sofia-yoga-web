@@ -5,6 +5,7 @@ import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { escucharSouffle } from "@/lib/souffle";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { Magnetique } from "./Magnetique";
 import { Parte } from "./programme/Parte";
 import { aparecerPanza, crecerPanza, PanzaQueCrece, respirarPanza } from "./programme/PanzaQueCrece";
@@ -26,6 +27,7 @@ function Trimestre({ n, sufijo }: { n: string; sufijo: string }) {
 }
 
 export function Programme() {
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -182,7 +184,7 @@ export function Programme() {
         </p>
         <Magnetique>
           {/* va directo al WhatsApp con el pedido ya escrito, en lugar de bajar al bloque de contacto */}
-          <a className="boton" href={enlaceWhatsApp(MENSAJES.programme)} target="_blank" rel="noopener noreferrer">
+          <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].programme)} target="_blank" rel="noopener noreferrer">
             Être prévenue du lancement
           </a>
         </Magnetique>

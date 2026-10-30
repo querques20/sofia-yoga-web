@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useRef, type ReactNode } from "react";
 import { telonAbierto } from "@/lib/entrada";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
+import { rutaEn } from "@/lib/idiomas";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 
 // si las fuentes tardan, no dejamos el título escondido más de esto (igual que en el inicio)
 const ESPERA_FUENTES = 500;
@@ -33,6 +36,8 @@ type Props = {
  * si se llega navegando, el telón ya está abierto y arranca enseguida
  */
 export function EnteteDePage({ fil, titulo, intro, acciones, visual, paralaje = true }: Props) {
+  const t = useInterfaz();
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -97,11 +102,11 @@ export function EnteteDePage({ fil, titulo, intro, acciones, visual, paralaje = 
     <section ref={raiz} className="relative overflow-hidden pt-28 pb-14 lg:flex lg:min-h-[92svh] lg:items-center lg:pt-32 lg:pb-20">
       <div className="contenedor grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
         <div className="entete-texto relative z-10 lg:col-span-7">
-          <nav aria-label="Fil d’Ariane" className="entete-fil entra mb-7 text-[1rem]">
+          <nav aria-label={t.nav.migas} className="entete-fil entra mb-7 text-[1rem]">
             <ol className="flex flex-wrap items-center gap-2.5">
               <li>
-                <Link href="/" className="enlace">
-                  Accueil
+                <Link href={rutaEn(idioma, "/")} className="enlace">
+                  {t.nav.inicio}
                 </Link>
               </li>
               <li aria-hidden="true" className="opacity-40">
