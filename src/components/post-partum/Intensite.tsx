@@ -5,7 +5,14 @@ import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Fleur } from "../Fleur";
 
-const ETAPAS = ["Tout en douceur", "Un peu plus", "Plus exigeant"];
+export type TextosIntensite = {
+  titulo: string;
+  intro: string;
+  /** los nombres de las tres etapas, de la más suave a la más exigente */
+  etapas: string[];
+  /** los extremos, bajo la onda */
+  extremos: [string, string];
+};
 
 // la onda de la intensidad: arranca casi quieta y hacia la derecha se vuelve más alta y más seguida.
 // Se calcula una sola vez y da lo mismo en el servidor que en el navegador
@@ -30,7 +37,7 @@ const ONDA = trazarOnda();
  * La escena queda fija: la onda se dibuja mientras bajás, la flor la recorre y el nombre de la etapa
  * se arma letra por letra, como los trimestres del inicio
  */
-export function Intensite() {
+export function Intensite({ t }: { t: TextosIntensite }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -99,13 +106,13 @@ export function Intensite() {
       <div className="fijo contenedor flex min-h-svh flex-col justify-center gap-8 py-12 lg:gap-10 lg:py-10">
         <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-6">
-            <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">Une intensité progressive</h2>
+            <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
             <p className="mt-5 max-w-[30rem] text-[1.15rem] leading-relaxed">
-              On commence par le plus doux, et l’intensité monte petit à petit, jusqu’au plus exigeant.
+              {t.intro}
             </p>
           </div>
           <div className="marco-titulos titre text-[clamp(2.2rem,5.4vw,4.4rem)] text-violeta lg:col-span-6 lg:text-right" aria-hidden="true">
-            {ETAPAS.map((etapa) => (
+            {t.etapas.map((etapa) => (
               <p key={etapa} className="etapa-titulo">
                 {etapa}
               </p>
@@ -127,8 +134,8 @@ export function Intensite() {
             )}
           </div>
           <div className="mt-6 flex justify-between text-[1rem] font-bold">
-            <span>Le plus doux</span>
-            <span>Le plus exigeant</span>
+            <span>{t.extremos[0]}</span>
+            <span>{t.extremos[1]}</span>
           </div>
         </div>
       </div>

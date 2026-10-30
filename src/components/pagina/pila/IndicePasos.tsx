@@ -23,9 +23,9 @@ function irAlPaso(indice: number) {
   };
 }
 
-export function IndicePasos({ pasos }: { pasos: readonly string[] }) {
+export function IndicePasos({ etiqueta, pasos }: { etiqueta: string; pasos: readonly string[] }) {
   return (
-    <ol aria-label="Les étapes" className="hidden items-end gap-6 lg:ml-auto lg:flex">
+    <ol aria-label={etiqueta} className="hidden items-end gap-6 lg:ml-auto lg:flex">
       {pasos.map((paso, i) => (
         <li key={paso}>
           <button
