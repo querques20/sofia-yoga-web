@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { abrirTelon, cerrarTelon } from "@/lib/entrada";
+import { abrirTelon, cerrarTelon, paginaLista } from "@/lib/entrada";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { lenisActual } from "@/lib/lenis";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -10,8 +10,9 @@ import { Fleur } from "./Fleur";
 // el tamaño de la flor dibujada: el hueco arranca exactamente de este tamaño para que no se note el cambio
 const TAMANO_FLOR = 112;
 const INSPIRA = 1.18;
-// lo más que espera la flor a que el navegador termine de armar la página antes de dibujarse
-const ESPERA_MAXIMA_MS = 700;
+// lo más que espera la flor a que la página se arme (si alguna no avisa) y después a un momento libre
+const ESPERA_PAGINA_MS = 1000;
+const ESPERA_LIBRE_MS = 300;
 const CLAVE = "sofia-entrada";
 
 // en qué idioma se vio la entrada en esta visita (la entrada se repite al cambiar de idioma)
@@ -32,17 +33,19 @@ function marcarVista(idioma: string) {
 }
 
 /**
- * Llama cuando el navegador queda libre: al montar, la página arma sus animaciones y mide todo, y eso congela
- * algunos cuadros. Si la flor se dibuja en ese momento, se traba; el telón verde ya está pintado y espera quieto
+ * Llama cuando la página ya se armó y el navegador quedó libre: al montar, la página arma sus animaciones y mide
+ * todo, y eso congela algunos cuadros. Si la flor se dibuja en ese momento, se traba; el telón verde ya está
+ * pintado y espera quieto
  */
 function cuandoEsteLibre(hacer: () => void) {
   let cancelar = () => {};
   let vivo = true;
-  document.fonts.ready.then(() => {
+  const tope = new Promise<void>((resolver) => window.setTimeout(resolver, ESPERA_PAGINA_MS));
+  Promise.race([Promise.all([document.fonts.ready, paginaLista()]), tope]).then(() => {
     if (!vivo) return;
     // Safari todavía no tiene requestIdleCallback
     if (typeof window.requestIdleCallback === "function") {
-      const espera = requestIdleCallback(hacer, { timeout: ESPERA_MAXIMA_MS });
+      const espera = requestIdleCallback(hacer, { timeout: ESPERA_LIBRE_MS });
       cancelar = () => cancelIdleCallback(espera);
     } else {
       const espera = window.setTimeout(hacer, 150);
