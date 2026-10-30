@@ -24,7 +24,7 @@ Es una versión de prueba:
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:3000
+pnpm dev        # http://localhost:3010
 pnpm build      # todas las rutas salen estáticas
 ```
 
