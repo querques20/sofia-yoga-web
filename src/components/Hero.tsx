@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { CONTACTO } from "@/lib/contacto";
-import { telonAbierto } from "@/lib/entrada";
+import { paginaArmada, telonAbierto } from "@/lib/entrada";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Magnetique } from "./Magnetique";
 import { Respiration, type TextosRespiration } from "./Respiration";
@@ -29,6 +29,8 @@ export function Hero({ t }: { t: TextosHero }) {
 
   useGSAP(
     (_, contextSafe) => {
+      // la página se monta entera de una vez: la entrada espera este aviso para dibujar la flor
+      paginaArmada();
       if (quieto) return;
       const q = gsap.utils.selector(raiz);
       let partido: SplitText | null = null;

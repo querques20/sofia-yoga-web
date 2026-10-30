@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
-import { telonAbierto } from "@/lib/entrada";
+import { paginaArmada, telonAbierto } from "@/lib/entrada";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
 import { useInterfaz } from "@/lib/useInterfaz";
@@ -43,6 +43,8 @@ export function EnteteDePage({ fil, titulo, intro, acciones, visual, paralaje = 
 
   useGSAP(
     (_, contextSafe) => {
+      // la página se monta entera de una vez: la entrada espera este aviso para dibujar la flor
+      paginaArmada();
       if (quieto) return;
       const q = gsap.utils.selector(raiz);
       let partido: SplitText | null = null;
