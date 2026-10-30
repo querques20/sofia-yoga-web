@@ -67,7 +67,7 @@ export function Hero({ t }: { t: TextosHero }) {
       // «vivo» evita que una promesa de un montaje anterior (React monta dos veces en desarrollo) anime de nuevo
       let reloj = 0;
       let vivo = true;
-      telonAbierto.then(() => {
+      telonAbierto().then(() => {
         if (!vivo) return;
         reloj = window.setTimeout(animar, ESPERA_FUENTES);
         document.fonts.ready.then(() => {

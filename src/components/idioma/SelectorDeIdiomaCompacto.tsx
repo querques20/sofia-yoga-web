@@ -7,11 +7,10 @@ import { IDIOMAS, NOMBRES, rutaEn } from "@/lib/idiomas";
 import { guardarIdioma } from "@/lib/preferencia-idioma";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
-import { IconoIdioma } from "../Iconos";
 import { ETIQUETA } from "./SelectorDeIdioma";
 
 /**
- * El idioma en el celular, a la vista sin abrir el menú: una islita con el globo y la sigla actual, al lado del
+ * El idioma en el celular, a la vista sin abrir el menú: una islita con la sigla actual, al lado del
  * botón del menú. Al tocarla se despliega la lista con los nombres de los tres idiomas
  */
 export function SelectorDeIdiomaCompacto() {
@@ -74,9 +73,8 @@ export function SelectorDeIdiomaCompacto() {
         aria-controls={id}
         aria-label={`${ETIQUETA[idioma]} : ${NOMBRES[idioma].nombre}`}
         onClick={() => setAbierto((antes) => !antes)}
-        className="inline-flex h-12 items-center gap-1.5 rounded-3xl border border-verde/10 bg-pagina pr-3.5 pl-3 text-[13px] font-bold tracking-[0.06em] shadow-[0_8px_24px_-12px_rgba(57,70,58,0.45)] transition-colors hover:bg-salvia-clara"
+        className="inline-flex h-12 min-w-12 items-center justify-center rounded-3xl border border-verde/10 bg-pagina px-3.5 text-[13px] font-bold tracking-[0.06em] shadow-[0_8px_24px_-12px_rgba(57,70,58,0.45)] transition-colors hover:bg-salvia-clara"
       >
-        <IconoIdioma className="h-5 w-5" />
         {NOMBRES[idioma].sigla}
       </button>
       <ul

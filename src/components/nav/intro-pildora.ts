@@ -1,4 +1,4 @@
-import { telonAbierto } from "@/lib/entrada";
+import { telonAbierto, vueltaDeEntrada } from "@/lib/entrada";
 import { gsap } from "@/lib/gsap";
 
 // cuánto se ve el nombre antes de plegarse y abrir los links: lo mismo que tarda en asentarse el inicio
@@ -7,15 +7,16 @@ const SOSTEN_MS = 1700;
 const SOSTEN_MINIMO_MS = 600;
 const INTENCION = ["pointermove", "wheel", "touchstart", "keydown"] as const;
 
-// la bienvenida es una sola vez: si se vuelve al Inicio navegando, el menú ya está abierto
-let hecha = false;
+// la bienvenida es una por entrada: si se vuelve al Inicio navegando, el menú ya está abierto. Al cambiar de
+// idioma la entrada se repite, y con ella la bienvenida
+let vueltaHecha = -1;
 export function introPildoraHecha() {
-  return hecha;
+  return vueltaHecha === vueltaDeEntrada();
 }
 
 // si se entró al sitio por otra página tampoco se hace: al llegar al Inicio el menú ya estaba abierto
 export function saltarIntroPildora() {
-  hecha = true;
+  vueltaHecha = vueltaDeEntrada();
 }
 
 /**
@@ -39,7 +40,7 @@ export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context) {
   const abrir = () => {
     if (corrio || !vivo) return;
     corrio = true;
-    hecha = true;
+    vueltaHecha = vueltaDeEntrada();
     quitar();
     // el timeline nace más tarde, afuera del efecto: se suma al mismo contexto para que también se deshaga
     contexto.add(() => {
@@ -53,7 +54,7 @@ export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context) {
     });
   };
 
-  telonAbierto.then(() => {
+  telonAbierto().then(() => {
     if (!vivo) return;
     const arranque = performance.now();
     reloj = window.setTimeout(abrir, SOSTEN_MS);

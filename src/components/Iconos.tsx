@@ -28,14 +28,3 @@ export function IconoInstagram({ className }: Props) {
     </svg>
   );
 }
-
-export function IconoIdioma({ className }: Props) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <ellipse cx="12" cy="12" rx="8" ry="7.9" />
-      <path d="M12 4.1 C 9.4 6.4 8.5 9.2 8.5 12 C 8.5 14.8 9.4 17.6 12 19.9" />
-      <path d="M12 4.1 C 14.6 6.4 15.5 9.2 15.5 12 C 15.5 14.8 14.6 17.6 12 19.9" />
-      <path d="M4.4 9.4 C 9.4 8.6 14.6 8.6 19.6 9.4 M4.4 14.6 C 9.4 15.4 14.6 15.4 19.6 14.6" />
-    </svg>
-  );
-}
