@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { enlaceWhatsApp, MENSAJES, type Tema } from "@/lib/contacto";
+import { useRuta } from "@/lib/useRuta";
 import { IconoWhatsApp } from "./Iconos";
 
 // desde cada página, el mensaje ya viene escrito con su tema
@@ -19,7 +19,7 @@ const TEMA_POR_PAGINA: Record<string, Tema> = {
  * de contacto no hace falta
  */
 export function ContactFlottant() {
-  const ruta = usePathname();
+  const { ruta } = useRuta();
   const [visible, setVisible] = useState(false);
   const [rutaPrevia, setRutaPrevia] = useState(ruta);
   const enContacto = ruta === "/contact";

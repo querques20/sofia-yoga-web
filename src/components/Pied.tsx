@@ -4,8 +4,10 @@ import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import Link from "next/link";
 import { CONTACTO } from "@/lib/contacto";
+import { rutaEn } from "@/lib/idiomas";
 import { CONTACTO_PAGINA, PAGINAS } from "@/lib/navegacion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { Fleur } from "./Fleur";
 import { FleurQuiRespire } from "./FleurQuiRespire";
 import { IconoCorreo, IconoInstagram, IconoWhatsApp } from "./Iconos";
@@ -35,6 +37,7 @@ const CONTACTOS = [
 
 export function Pied() {
   const raiz = useRef<HTMLElement>(null);
+  const { idioma } = useRuta();
   const quieto = useReducedMotion();
 
   useGSAP(
@@ -82,7 +85,7 @@ export function Pied() {
       <div className="pie-interior">
         <div className="contenedor grid gap-x-12 gap-y-12 pt-16 lg:grid-cols-12 lg:pt-24">
           <div className="flex flex-col gap-8 lg:col-span-5">
-            <Link href="/" className="flex w-fit items-center gap-3" aria-label="Sofia Yoga, accueil">
+            <Link href={rutaEn(idioma, "/")} className="flex w-fit items-center gap-3" aria-label="Sofia Yoga, accueil">
               <FleurQuiRespire className="h-11 w-11 text-salvia" />
               <span className="titre text-[2.1rem] tracking-[0.02em]">Sofia Yoga</span>
             </Link>
@@ -111,7 +114,7 @@ export function Pied() {
               {NAV.map((enlace) => (
                 <li key={enlace.href} className="relative">
                   <span className="pie-linea absolute inset-x-0 top-0 block h-px origin-left bg-pagina/20" aria-hidden="true" />
-                  <Link href={enlace.href} className="group flex items-center justify-between gap-6 py-4 lg:py-5">
+                  <Link href={rutaEn(idioma, enlace.href)} className="group flex items-center justify-between gap-6 py-4 lg:py-5">
                     <span className="titre text-[clamp(2rem,4.2vw,3.4rem)] transition-transform duration-700 ease-souple group-hover:translate-x-3">
                       {enlace.texto}
                     </span>
@@ -147,7 +150,7 @@ export function Pied() {
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {SECUNDARIAS.map((enlace) => (
               <li key={enlace.href}>
-                <Link className="enlace" href={enlace.href}>
+                <Link className="enlace" href={rutaEn(idioma, enlace.href)}>
                   {enlace.texto}
                 </Link>
               </li>

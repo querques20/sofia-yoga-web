@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
-import { IDIOMA_BASE, IDIOMAS, SLUGS } from "./src/lib/idiomas";
+import { COOKIE_IDIOMA, IDIOMA_BASE, IDIOMAS, rutaEn, SLUGS } from "./src/lib/idiomas";
+import { PAGINAS_INDEXABLES } from "./src/lib/sitio";
 
 const OTROS = IDIOMAS.filter((idioma) => idioma !== IDIOMA_BASE);
 
@@ -31,6 +32,18 @@ const nextConfig: NextConfig = {
           destination: `/${idioma}${slugs[idioma]}`,
           permanent: true,
         })),
+      ),
+      // quien ya eligió un idioma (cookie) va a su versión de cada página. Temporal, porque depende de la
+      // persona; Google no manda cookies, así que siempre ve todas las versiones
+      ...PAGINAS_INDEXABLES.flatMap((ruta) =>
+        IDIOMAS.flatMap((elegido) =>
+          IDIOMAS.filter((idioma) => idioma !== elegido).map((idioma) => ({
+            source: rutaEn(idioma, ruta),
+            has: [{ type: "cookie" as const, key: COOKIE_IDIOMA, value: elegido }],
+            destination: rutaEn(elegido, ruta),
+            permanent: false,
+          })),
+        ),
       ),
     ];
   },

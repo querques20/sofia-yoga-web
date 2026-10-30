@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { lang } from "next/root-params";
 import { ContactFlottant } from "@/components/ContactFlottant";
 import { Entrada } from "@/components/Entrada";
+import { SugerenciaDeIdioma } from "@/components/idioma/SugerenciaDeIdioma";
 import { LenisProvider } from "@/components/LenisProvider";
 import { Nav } from "@/components/Nav";
 import { Pied } from "@/components/Pied";
@@ -58,6 +59,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
           </div>
           <Pied />
           <ContactFlottant />
+          <SugerenciaDeIdioma />
         </LenisProvider>
       </body>
     </html>
