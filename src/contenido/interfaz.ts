@@ -36,6 +36,9 @@ const fr = {
   aConfirmer: "à confirmer",
   infosPratiques: "Infos pratiques",
   preguntasFrecuentes: "Questions fréquentes",
+  // debajo de las preguntas, con el enlace a contacto
+  sinRespuesta: "Tu ne trouves pas ta réponse\u00a0?",
+  escribime: "Écris-moi",
   enEstaPagina: "Sur cette page",
   fuentes: "Sources",
   // delante de la fuente corta de un dato, en las páginas de salud
@@ -98,6 +101,8 @@ const en: Interfaz = {
   aConfirmer: "to be confirmed",
   infosPratiques: "Practical info",
   preguntasFrecuentes: "Frequently asked questions",
+  sinRespuesta: "Can’t find your answer?",
+  escribime: "Write to me",
   enEstaPagina: "On this page",
   fuentes: "Sources",
   fuente: "Source:",
@@ -155,6 +160,8 @@ const es: Interfaz = {
   aConfirmer: "por confirmar",
   infosPratiques: "Información práctica",
   preguntasFrecuentes: "Preguntas frecuentes",
+  sinRespuesta: "¿No encuentras tu respuesta?",
+  escribime: "Escríbeme",
   enEstaPagina: "En esta página",
   fuentes: "Fuentes",
   fuente: "Fuente:",
