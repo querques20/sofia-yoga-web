@@ -6,15 +6,10 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { IconoCorreo, IconoInstagram, IconoWhatsApp } from "../Iconos";
 
-// los datos de su tarjeta (contexto maestro, confirmados)
-const CANALES = [
-  { nombre: "WhatsApp", valor: CONTACTO.telefono, href: CONTACTO.whatsapp, Icono: IconoWhatsApp, afuera: true },
-  { nombre: "E-mail", valor: CONTACTO.email, href: `mailto:${CONTACTO.email}`, Icono: IconoCorreo, afuera: false },
-  { nombre: "Instagram", valor: CONTACTO.instagramUsuario, href: CONTACTO.instagram, Icono: IconoInstagram, afuera: true },
-];
+export type TextosCanaux = { titulo: string; mail: string };
 
 /** sus datos, grandes, como la navegación del pie: las líneas se dibujan al llegar y al pasar se corre el texto */
-export function Canaux() {
+export function Canaux({ t }: { t: TextosCanaux }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -31,12 +26,19 @@ export function Canaux() {
     { scope: raiz, dependencies: [quieto], revertOnUpdate: true },
   );
 
+  // los datos de su tarjeta (contexto maestro, confirmados)
+  const canales = [
+    { nombre: "WhatsApp", valor: CONTACTO.telefono, href: CONTACTO.whatsapp, Icono: IconoWhatsApp, afuera: true },
+    { nombre: t.mail, valor: CONTACTO.email, href: `mailto:${CONTACTO.email}`, Icono: IconoCorreo, afuera: false },
+    { nombre: "Instagram", valor: CONTACTO.instagramUsuario, href: CONTACTO.instagram, Icono: IconoInstagram, afuera: true },
+  ];
+
   return (
     <section ref={raiz} className="pb-[clamp(3rem,8vw,5rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(2.4rem,5.6vw,4.4rem)]">Mes coordonnées</h2>
+        <h2 className="titre text-[clamp(2.4rem,5.6vw,4.4rem)]">{t.titulo}</h2>
         <ul className="canales mt-8 lg:mt-12">
-          {CANALES.map(({ nombre, valor, href, Icono, afuera }) => (
+          {canales.map(({ nombre, valor, href, Icono, afuera }) => (
             <li key={nombre} className="relative">
               <span className="canal-linea absolute inset-x-0 top-0 h-px origin-left bg-verde/25" aria-hidden="true" />
               <a

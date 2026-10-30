@@ -140,7 +140,7 @@ export default async function YogaPostPartum() {
   const idioma = await idiomaActual();
   return (
     <main>
-      <DatosEstructurados datos={[servicio({ nombre: "Yoga post-partum à Genève", tipo: "Yoga post-partum", ruta: "/yoga-post-partum-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_POST_PARTUM)]} />
+      <DatosEstructurados datos={[servicio(idioma, { nombre: "Yoga post-partum à Genève", tipo: "Yoga post-partum", ruta: "/yoga-post-partum-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(idioma, PREGUNTAS_POST_PARTUM[idioma])]} />
       <EnteteDePage
         fil="Post-partum"
         titulo={
@@ -228,7 +228,7 @@ export default async function YogaPostPartum() {
           texto="Le lieu, l’horaire et le tarif arrivent bientôt. En attendant, écris-moi en me disant quand tu as accouché : je te réponds avec les détails."
         />
       </InfosPratiques>
-      <Questions preguntas={PREGUNTAS_POST_PARTUM} />
+      <Questions preguntas={PREGUNTAS_POST_PARTUM[idioma]} />
       <Sources fuentes={FUENTES} />
       <PourContinuer destinos={["prenatal", "cours", "aPropos"]} />
       <Contact mensaje={MENSAJES[idioma].postPartum} />

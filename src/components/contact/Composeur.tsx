@@ -8,22 +8,22 @@ import { useRuta } from "@/lib/useRuta";
 import { IconoCorreo, IconoWhatsApp } from "../Iconos";
 import { Magnetique } from "../Magnetique";
 
-// los temas para elegir: cada uno escribe su mensaje en la burbuja
-const TEMAS: { tema: Tema; texto: string }[] = [
-  { tema: "prenatal", texto: "Yoga prénatal" },
-  { tema: "postPartum", texto: "Post-partum" },
-  { tema: "cours", texto: "Cours de yoga" },
-  { tema: "prive", texto: "Cours privé" },
-  { tema: "atelier", texto: "Atelier" },
-  { tema: "programme", texto: "Le programme en ligne" },
-  { tema: "autre", texto: "Autre chose" },
-];
+// los textos llegan de la página, en su idioma. Los temas, en el orden en que se muestran: cada uno escribe su
+// mensaje en la burbuja
+export type TextosComposeur = {
+  pregunta: string;
+  temas: { tema: Tema; texto: string }[];
+  mensaje: string;
+  continuar: string;
+  correo: string;
+  nota: string;
+};
 
 /**
  * Para escribirle sin pensar cómo arrancar: elegís el tema, el mensaje se escribe solo en la burbuja (se puede
  * cambiar) y el botón lo abre en WhatsApp o en el mail. Nada se manda solo: lo manda la persona desde ahí
  */
-export function Composeur() {
+export function Composeur({ t }: { t: TextosComposeur }) {
   const { idioma } = useRuta();
   const [tema, setTema] = useState<Tema | null>(null);
   const [mensaje, setMensaje] = useState("");
@@ -56,31 +56,31 @@ export function Composeur() {
   return (
     <div className="rounded-[1.75rem] bg-arena p-6 lg:p-8">
       <p id="composeur-temas" className="font-bold">
-        De quoi veux-tu parler&nbsp;?
+        {t.pregunta}
       </p>
       <div role="group" aria-labelledby="composeur-temas" className="mt-4 flex flex-wrap gap-2">
-        {TEMAS.map((t) => (
+        {t.temas.map((opcion) => (
           <button
-            key={t.tema}
+            key={opcion.tema}
             type="button"
-            aria-pressed={tema === t.tema}
-            onClick={() => elegir(t.tema)}
+            aria-pressed={tema === opcion.tema}
+            onClick={() => elegir(opcion.tema)}
             className="rounded-full border border-verde/25 px-4 py-2 text-[0.98rem] font-bold transition-colors duration-300 hover:bg-salvia-clara aria-pressed:border-verde aria-pressed:bg-verde aria-pressed:text-pagina"
           >
-            {t.texto}
+            {opcion.texto}
           </button>
         ))}
       </div>
 
       <label htmlFor="composeur-mensaje" className="mt-7 block font-bold">
-        Ton message
+        {t.mensaje}
       </label>
       {/* la burbuja: una esquina menos redonda, como la colita de un mensaje */}
       <textarea
         id="composeur-mensaje"
         rows={4}
         value={mensaje}
-        placeholder={"Bonjour Sofia !"}
+        placeholder={MENSAJES[idioma].autre}
         onChange={(e) => {
           escritura.current?.kill();
           setMensaje(e.target.value);
@@ -92,15 +92,15 @@ export function Composeur() {
         <Magnetique>
           <a className="boton" href={enlaceWhatsApp(texto || undefined)} target="_blank" rel="noopener noreferrer">
             <IconoWhatsApp className="h-5 w-5" />
-            Continuer sur WhatsApp
+            {t.continuar}
           </a>
         </Magnetique>
         <a className="enlace inline-flex items-center gap-2 font-bold" href={correo}>
           <IconoCorreo className="h-5 w-5" />
-          Écrire un e-mail
+          {t.correo}
         </a>
       </div>
-      <p className="mt-5 text-[0.95rem] opacity-75">Le message s’ouvre dans WhatsApp ou dans ton e-mail&nbsp;: tu peux encore le modifier avant de l’envoyer.</p>
+      <p className="mt-5 text-[0.95rem] opacity-75">{t.nota}</p>
     </div>
   );
 }
