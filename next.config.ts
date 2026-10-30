@@ -1,4 +1,7 @@
 import type { NextConfig } from "next";
+import { IDIOMA_BASE, IDIOMAS, SLUGS } from "./src/lib/idiomas";
+
+const OTROS = IDIOMAS.filter((idioma) => idioma !== IDIOMA_BASE);
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -13,6 +16,34 @@ const nextConfig: NextConfig = {
         as: "*.css",
       },
     },
+  },
+  // las URLs internas no se publican: /fr/… va a la versión sin prefijo, y /en/<slug francés> al slug traducido
+  async redirects() {
+    return [
+      { source: `/${IDIOMA_BASE}`, destination: "/", permanent: true },
+      { source: `/${IDIOMA_BASE}/:ruta*`, destination: "/:ruta*", permanent: true },
+      ...Object.entries(SLUGS).flatMap(([ruta, slugs]) =>
+        OTROS.filter((idioma) => slugs[idioma]).map((idioma) => ({
+          source: `/${idioma}${ruta}`,
+          destination: `/${idioma}${slugs[idioma]}`,
+          permanent: true,
+        })),
+      ),
+    ];
+  },
+  // las URLs públicas apuntan a las carpetas de app/[lang]. Van después de los archivos (favicon, sitemap,
+  // robots) y antes de las rutas dinámicas, así /yoga-prenatal-geneve no se toma como un idioma
+  async rewrites() {
+    return [
+      ...Object.entries(SLUGS).flatMap(([ruta, slugs]) =>
+        OTROS.filter((idioma) => slugs[idioma]).map((idioma) => ({
+          source: `/${idioma}${slugs[idioma]}`,
+          destination: `/${idioma}${ruta}`,
+        })),
+      ),
+      { source: "/", destination: `/${IDIOMA_BASE}` },
+      { source: `/:ruta((?!(?:${IDIOMAS.join("|")})(?:/|$)).+)`, destination: `/${IDIOMA_BASE}/:ruta` },
+    ];
   },
 };
 
