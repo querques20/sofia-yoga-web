@@ -4,15 +4,10 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
-// cómo funciona en la etapa 1: la web avisa y la inscripción es por mensaje, sin reservas en línea
-const PASOS = [
-  { titulo: "L’atelier est annoncé ici", texto: "Avec sa date, son lieu et son prix." },
-  { titulo: "Tu m’écris pour t’inscrire", texto: "Par WhatsApp, par e-mail ou sur Instagram." },
-  { titulo: "On se retrouve", texto: "Et on pratique ensemble." },
-];
+export type TextosCommentCaMarche = { titulo: string; pasos: { titulo: string; texto: string }[] };
 
 /** los tres pasos, en orden: la línea de arriba se dibuja de un paso al otro mientras bajás */
-export function CommentCaMarche() {
+export function CommentCaMarche({ t }: { t: TextosCommentCaMarche }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -36,9 +31,9 @@ export function CommentCaMarche() {
   return (
     <section ref={raiz} className="pb-[clamp(5rem,12vw,9rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">Comment ça marche</h2>
+        <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
         <ol className="pasos-atelier mt-10 grid gap-10 lg:mt-14 lg:grid-cols-3 lg:gap-8">
-          {PASOS.map((paso, i) => (
+          {t.pasos.map((paso, i) => (
             <li key={paso.titulo} className="paso-atelier relative pt-6">
               <span className="paso-linea absolute inset-x-0 top-0 h-[2px] origin-left bg-verde" aria-hidden="true" />
               <span className="paso-numero titre block text-[clamp(3rem,6vw,4.6rem)] text-salvia">{i + 1}</span>
