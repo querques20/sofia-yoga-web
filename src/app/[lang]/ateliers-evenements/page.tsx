@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import { Billet, type TextosBillet } from "@/components/ateliers/Billet";
 import { CommentCaMarche, type TextosCommentCaMarche } from "@/components/ateliers/CommentCaMarche";
 import { Contact } from "@/components/Contact";
@@ -37,9 +38,9 @@ const fr = {
       ["Date", <AConfirmer key="fecha" />],
       [
         "Lieu",
-        <>
+        <Fragment key="lugar">
           Genève, <AConfirmer />
-        </>,
+        </Fragment>,
       ],
       ["Prix", <AConfirmer key="precio" />],
       ["Inscription", "Par message"],
@@ -101,9 +102,9 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         ["Date", <AConfirmer key="fecha" />],
         [
           "Venue",
-          <>
+          <Fragment key="lugar">
             Geneva, <AConfirmer />
-          </>,
+          </Fragment>,
         ],
         ["Price", <AConfirmer key="precio" />],
         ["Booking", "By message"],
@@ -160,9 +161,9 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         ["Fecha", <AConfirmer key="fecha" />],
         [
           "Lugar",
-          <>
+          <Fragment key="lugar">
             Ginebra, <AConfirmer />
-          </>,
+          </Fragment>,
         ],
         ["Precio", <AConfirmer key="precio" />],
         ["Inscripción", "Por mensaje"],

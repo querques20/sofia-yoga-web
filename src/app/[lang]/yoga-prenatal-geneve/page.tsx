@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
 import Link from "next/link";
 import { Contact } from "@/components/Contact";
 import { Embarazada } from "@/components/ilustraciones/Embarazada";
@@ -150,15 +151,15 @@ const fr = {
     titulo: "Trimestre par trimestre",
     intro: "Chaque grossesse est différente. Voici ce qui change souvent, et comment la pratique s’adapte selon les recommandations.",
     etiquetas: [
-      <>
+      <Fragment key="t1">
         1<sup className="sufijo">er</sup> trimestre
-      </>,
-      <>
+      </Fragment>,
+      <Fragment key="t2">
         2<sup className="sufijo">e</sup> trimestre
-      </>,
-      <>
+      </Fragment>,
+      <Fragment key="t3">
         3<sup className="sufijo">e</sup> trimestre
-      </>,
+      </Fragment>,
     ],
     reperes: [
       {
@@ -362,15 +363,15 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       titulo: "Trimester by trimester",
       intro: "Every pregnancy is different. Here is what often changes, and how the practice adapts according to the recommendations.",
       etiquetas: [
-        <>
+        <Fragment key="t1">
           1<sup className="sufijo">st</sup> trimester
-        </>,
-        <>
+        </Fragment>,
+        <Fragment key="t2">
           2<sup className="sufijo">nd</sup> trimester
-        </>,
-        <>
+        </Fragment>,
+        <Fragment key="t3">
           3<sup className="sufijo">rd</sup> trimester
-        </>,
+        </Fragment>,
       ],
       reperes: [
         {
@@ -568,15 +569,15 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       titulo: "Trimestre a trimestre",
       intro: "Cada embarazo es diferente. Esto es lo que suele cambiar, y cómo se adapta la práctica según las recomendaciones.",
       etiquetas: [
-        <>
+        <Fragment key="t1">
           1.<sup className="sufijo">er</sup> trimestre
-        </>,
-        <>
+        </Fragment>,
+        <Fragment key="t2">
           2.<sup className="sufijo">º</sup> trimestre
-        </>,
-        <>
+        </Fragment>,
+        <Fragment key="t3">
           3.<sup className="sufijo">er</sup> trimestre
-        </>,
+        </Fragment>,
       ],
       reperes: [
         {
