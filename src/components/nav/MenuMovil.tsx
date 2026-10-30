@@ -1,18 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CONTACTO } from "@/lib/contacto";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { rutaEn } from "@/lib/idiomas";
 import { lenisActual } from "@/lib/lenis";
 import { CONTACTO_PAGINA, esActual, PAGINAS } from "@/lib/navegacion";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "../FleurQuiRespire";
+import { SelectorDeIdioma } from "../idioma/SelectorDeIdioma";
 
 /** el menú del celular: el botón es una islita y abre un panel verde a pantalla completa, como en ED */
 export function MenuMovil() {
-  const ruta = usePathname();
+  const { idioma, ruta } = useRuta();
   const hoja = useRef<HTMLDivElement>(null);
   const boton = useRef<HTMLButtonElement>(null);
   const [abierto, setAbierto] = useState(false);
@@ -147,7 +149,7 @@ export function MenuMovil() {
           {[{ href: "/", texto: "Accueil" }, ...PAGINAS].map((pagina) => (
             <li key={pagina.href} className="menu-item overflow-hidden border-t border-pagina/15">
               <Link
-                href={pagina.href}
+                href={rutaEn(idioma, pagina.href)}
                 onClick={() => setAbierto(false)}
                 aria-current={pagina.href === "/" ? (ruta === "/" ? "page" : undefined) : esActual(ruta, pagina.href) ? "page" : undefined}
                 className="titre block py-3 text-[2.4rem] aria-[current=page]:text-salvia"
@@ -158,7 +160,8 @@ export function MenuMovil() {
           ))}
         </ul>
         <div className="menu-item mt-auto flex flex-col gap-5">
-          <Link href={CONTACTO_PAGINA.href} onClick={() => setAbierto(false)} className="boton w-fit">
+          <SelectorDeIdioma variante="menu" />
+          <Link href={rutaEn(idioma, CONTACTO_PAGINA.href)} onClick={() => setAbierto(false)} className="boton w-fit">
             {CONTACTO_PAGINA.texto}
           </Link>
           <p className="text-[0.98rem] text-pagina/75">
