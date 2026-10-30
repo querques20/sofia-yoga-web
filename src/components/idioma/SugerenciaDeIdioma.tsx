@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef, useState, useSyncExternalStore } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { esIdioma, type Idioma, rutaEn } from "@/lib/idiomas";
 import { guardarIdioma, idiomaGuardado } from "@/lib/preferencia-idioma";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
+import { abreAparte, cambiarIdioma } from "./cambiar-idioma";
 
 // en el idioma que se sugiere: es el que la persona entiende
 const TEXTOS: Record<Idioma, { aviso: string; ir: string; cerrar: string }> = {
@@ -37,6 +39,7 @@ function idiomaDelNavegador(actual: Idioma) {
  */
 export function SugerenciaDeIdioma() {
   const { idioma, ruta } = useRuta();
+  const router = useRouter();
   const [cerrado, setCerrado] = useState(false);
   const caja = useRef<HTMLDivElement>(null);
   const quieto = useReducedMotion();
@@ -81,9 +84,11 @@ export function SugerenciaDeIdioma() {
         <Link
           href={rutaEn(sugerido, ruta)}
           hrefLang={sugerido}
-          onClick={() => {
-            guardarIdioma(sugerido);
+          onClick={(evento) => {
+            if (abreAparte(evento)) return;
+            evento.preventDefault();
             setCerrado(true);
+            cambiarIdioma(router, sugerido, rutaEn(sugerido, ruta));
           }}
           className="rounded-xl bg-terracota px-4 py-2 text-[0.95rem] font-bold text-white transition-colors duration-300 hover:bg-[#9e5441]"
         >

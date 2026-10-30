@@ -15,6 +15,10 @@ let avisarPagina: () => void = () => {};
 const nuevoAvisoDePagina = () => new Promise<void>((resolver) => (avisarPagina = resolver));
 let pagina: Promise<void> = typeof window === "undefined" ? Promise.resolve() : nuevoAvisoDePagina();
 
+// al cambiar de idioma la página se cierra por la flor antes de navegar: quien sabe cerrarla se anota acá
+let cerrar: ((seguir: () => void) => void) | null = null;
+let vieneCerrado = false;
+
 /** se cumple cuando el telón de esta vuelta empieza a abrirse (hay que pedirlo al montar, no guardarlo) */
 export function telonAbierto() {
   return aviso;
@@ -22,6 +26,7 @@ export function telonAbierto() {
 
 export function abrirTelon() {
   abierto = true;
+  vieneCerrado = false;
   avisar();
 }
 
@@ -46,4 +51,26 @@ export function paginaLista() {
 /** cuántas veces se volvió a cerrar el telón (para lo que se hace una vez por entrada, como la píldora del menú) */
 export function vueltaDeEntrada() {
   return vuelta;
+}
+
+/** el telón que cierra la página al irse (Entrada) se anota; devuelve cómo borrarse */
+export function escucharCierre(hacer: (seguir: () => void) => void) {
+  cerrar = hacer;
+  return () => {
+    if (cerrar === hacer) cerrar = null;
+  };
+}
+
+/** cierra la página por la flor y recién ahí sigue (navega). Sin telón (menos movimiento), sigue enseguida */
+export function cerrarYSeguir(seguir: () => void) {
+  if (!cerrar) return seguir();
+  cerrar(() => {
+    vieneCerrado = true;
+    seguir();
+  });
+}
+
+/** la entrada que llega después de un cierre arranca ya verde, sin aparecer desde el color de la página */
+export function telonVieneCerrado() {
+  return vieneCerrado;
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { abrirTelon, cerrarTelon, paginaLista } from "@/lib/entrada";
+import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { abrirTelon, cerrarTelon, escucharCierre, paginaLista, telonVieneCerrado } from "@/lib/entrada";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { lenisActual } from "@/lib/lenis";
 import { useReducedMotion } from "@/lib/useReducedMotion";
@@ -58,10 +58,19 @@ function cuandoEsteLibre(hacer: () => void) {
   };
 }
 
-/** la entrada: la flor se dibuja, inspira, y al expirar la página se abre a través de ella. Una vez por idioma */
+// el hueco abierto del todo: tapa toda la pantalla, también las esquinas que caen entre dos pétalos
+// (el centro donde los seis pétalos se tocan mide un 21 % del ancho de la flor)
+const huecoAbierto = () => Math.hypot(window.innerWidth, window.innerHeight) * 2.6;
+
+/**
+ * La entrada: el telón verde aparece suave desde el color de la página, la flor se dibuja, inspira, y al expirar
+ * la página se abre a través de ella. Una vez por idioma. Al cambiar de idioma, la página primero se cierra por
+ * la flor (Cierre) y la entrada nueva arranca ya verde
+ */
 export function Entrada() {
   const telon = useRef<HTMLDivElement>(null);
   const [termino, setTermino] = useState(false);
+  const [aparece, setAparece] = useState(() => !telonVieneCerrado());
   const quieto = useReducedMotion();
 
   useGSAP(
@@ -80,6 +89,7 @@ export function Entrada() {
       // al volver a un idioma ya visitado, Next no vuelve a montar la página: la tenía guardada escondida, con la
       // entrada terminada. El telón se vuelve a pintar antes del próximo cuadro y este efecto corre de nuevo
       if (!el) {
+        setAparece(!telonVieneCerrado());
         setTermino(false);
         return;
       }
@@ -87,10 +97,7 @@ export function Entrada() {
       requestAnimationFrame(() => lenisActual()?.stop());
       const flor = el.querySelector(".entrada-flor");
       const nombre = el.querySelector(".entrada-nombre");
-      // el hueco tiene que abrir toda la pantalla, también las esquinas que caen entre dos pétalos:
-      // el centro donde los seis pétalos se tocan mide un 21 % del ancho de la flor
-      const final = Math.hypot(window.innerWidth, window.innerHeight) * 2.6;
-      gsap.set(flor, { transformOrigin: "50% 50%" });
+      const final = huecoAbierto();
 
       const linea = gsap
         .timeline({
@@ -103,7 +110,7 @@ export function Entrada() {
           },
         })
         .fromTo(el.querySelectorAll(".entrada-flor ellipse"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.6, stagger: 0.045, ease: "power2.inOut" })
-        .from(nombre, { opacity: 0, y: 8, duration: 0.45, ease: "power2.out" }, 0.15)
+        .fromTo(nombre, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.15)
         // inspira: crece un poco y gira hasta quedar como la flor del hueco
         .to(flor, { scale: INSPIRA, rotation: 30, duration: 0.42, ease: "sine.inOut" }, 0.6)
         .to(nombre, { opacity: 0, y: -6, duration: 0.25, ease: "power2.in" }, 0.8)
@@ -116,16 +123,18 @@ export function Entrada() {
         }, 1.04)
         .to(el, { "--flor": `${final}px`, duration: 0.95, ease: "power3.in" }, 1.02)
         .to(flor, { scale: INSPIRA * 2.2, opacity: 0, duration: 0.45, ease: "power2.in" }, 1.02);
+      // la flor espera escondida (CSS) para no verse entera antes de dibujarse: con los pétalos en 0 % ya se puede mostrar
+      gsap.set(flor, { transformOrigin: "50% 50%", opacity: 1 });
 
       return cuandoEsteLibre(() => linea.play());
     },
     { dependencies: [quieto, termino], revertOnUpdate: true },
   );
 
-  if (termino) return null;
+  if (termino) return <Cierre />;
 
   return (
-    <div ref={telon} className="entrada fixed inset-0 z-[70] bg-verde" aria-hidden="true">
+    <div ref={telon} className={`entrada fixed inset-0 z-[70] bg-verde ${aparece ? "entrada-aparece" : ""}`} aria-hidden="true">
       <Fleur
         className="entrada-flor absolute top-1/2 left-1/2 -mt-[3.5rem] -ml-[3.5rem] h-28 w-28 text-salvia-clara"
         trazo={5}
@@ -134,5 +143,48 @@ export function Entrada() {
         Sofia Yoga
       </p>
     </div>
+  );
+}
+
+/**
+ * Al cambiar de idioma, antes de navegar, la página se cierra por la flor: el hueco por donde se abrió se achica
+ * hasta tapar todo de verde. La entrada del idioma nuevo arranca desde ese verde
+ */
+function Cierre() {
+  const telon = useRef<HTMLDivElement>(null);
+  const [seguir, setSeguir] = useState<(() => void) | null>(null);
+  const [hueco, setHueco] = useState(0);
+  const quieto = useReducedMotion();
+
+  useEffect(() => {
+    if (quieto) return;
+    const borrar = escucharCierre((despues) => {
+      setHueco(huecoAbierto());
+      setSeguir(() => despues);
+    });
+    return () => {
+      borrar();
+      // Next esconde esta página al cambiar de idioma (y la vuelve a mostrar si se vuelve): ya cerrada, el telón se va
+      setSeguir(null);
+    };
+  }, [quieto]);
+
+  useGSAP(
+    () => {
+      if (!seguir || !telon.current) return;
+      lenisActual()?.stop();
+      gsap.to(telon.current, { "--flor": "0px", duration: 0.9, ease: "power2.inOut", onComplete: seguir });
+    },
+    { dependencies: [seguir] },
+  );
+
+  if (!seguir) return null;
+  return (
+    <div
+      ref={telon}
+      className="entrada entrada-cierre fixed inset-0 z-[70] bg-verde"
+      style={{ "--flor": `${hueco}px` } as CSSProperties}
+      aria-hidden="true"
+    />
   );
 }
