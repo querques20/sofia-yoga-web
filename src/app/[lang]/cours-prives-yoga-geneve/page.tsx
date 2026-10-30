@@ -10,6 +10,7 @@ import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Reperes } from "@/components/pagina/Reperes";
 import { VisualDeFlor } from "@/components/pagina/VisualDeFlor";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { idiomaActual } from "@/lib/idioma-actual";
 import { servicio } from "@/lib/datos-estructurados";
 
 export const metadata: Metadata = {
@@ -46,7 +47,8 @@ const DATOS = [
   { dato: "Avec qui", valor: "Sofia Costa, professeure de yoga formée en Inde et en Suisse" },
 ];
 
-export default function CoursPrives() {
+export default async function CoursPrives() {
+  const idioma = await idiomaActual();
   return (
     <main>
       <DatosEstructurados
@@ -75,7 +77,7 @@ export default function CoursPrives() {
         acciones={
           <>
             <Magnetique>
-              <a className="boton" href={enlaceWhatsApp(MENSAJES.prive)} target="_blank" rel="noopener noreferrer">
+              <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].prive)} target="_blank" rel="noopener noreferrer">
                 Écrire sur WhatsApp
               </a>
             </Magnetique>
@@ -89,12 +91,12 @@ export default function CoursPrives() {
       <Reperes id="pourquoi" titulo={<>Pourquoi un cours privé&nbsp;?</>} intro={<p>Quelques raisons de choisir le privé.</p>} reperes={POURQUOI} />
       <InfosPratiques datos={DATOS} nota="Les cours ne sont pas remboursés par l’assurance complémentaire.">
         <PedirInfos
-          mensaje={MENSAJES.prive}
+          mensaje={MENSAJES[idioma].prive}
           texto="Le lieu, la durée et le tarif arrivent bientôt. En attendant, écris-moi : je te réponds avec les détails."
         />
       </InfosPratiques>
       <PourContinuer destinos={["cours", "prenatal", "aPropos"]} />
-      <Contact mensaje={MENSAJES.prive} />
+      <Contact mensaje={MENSAJES[idioma].prive} />
     </main>
   );
 }

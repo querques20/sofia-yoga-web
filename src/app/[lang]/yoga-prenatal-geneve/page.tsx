@@ -18,6 +18,7 @@ import { SurCettePage } from "@/components/pagina/SurCettePage";
 import { AvantDeVenir } from "@/components/prenatal/AvantDeVenir";
 import { ProgrammeEnLigne } from "@/components/prenatal/ProgrammeEnLigne";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { idiomaActual } from "@/lib/idioma-actual";
 import { PREGUNTAS_PRENATAL } from "@/contenido/preguntas";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { preguntasFrecuentes, servicio } from "@/lib/datos-estructurados";
@@ -146,7 +147,8 @@ const FUENTES = [
   { texto: "Ordonnance sur les prestations de l’assurance des soins (OPAS), art. 14", href: "https://www.fedlex.admin.ch/eli/cc/1995/4964_4964_4964/fr" },
 ];
 
-export default function YogaPrenatal() {
+export default async function YogaPrenatal() {
+  const idioma = await idiomaActual();
   return (
     <main>
       <DatosEstructurados datos={[servicio({ nombre: "Yoga prénatal à Genève", tipo: "Yoga prénatal", ruta: "/yoga-prenatal-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_PRENATAL)]} />
@@ -166,7 +168,7 @@ export default function YogaPrenatal() {
         acciones={
           <>
             <Magnetique>
-              <a className="boton" href={enlaceWhatsApp(MENSAJES.prenatal)} target="_blank" rel="noopener noreferrer">
+              <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].prenatal)} target="_blank" rel="noopener noreferrer">
                 Écrire sur WhatsApp
               </a>
             </Magnetique>
@@ -217,7 +219,7 @@ export default function YogaPrenatal() {
         </div>
         <InvitarAEscribir
           texto={<>Tu te reconnais&nbsp;? Dis-moi à combien de semaines tu es, je te réponds.</>}
-          mensaje={MENSAJES.prenatal}
+          mensaje={MENSAJES[idioma].prenatal}
           asunto="Yoga prénatal"
         />
       </section>
@@ -245,7 +247,7 @@ export default function YogaPrenatal() {
       />
       <InfosPratiques datos={DATOS} nota="Les cours ne sont pas remboursés par l’assurance complémentaire.">
         <PedirInfos
-          mensaje={MENSAJES.prenatal}
+          mensaje={MENSAJES[idioma].prenatal}
           texto="Le lieu, l’horaire et le tarif arrivent bientôt. En attendant, écris-moi en me disant à combien de semaines tu es : je te réponds avec les détails."
         />
       </InfosPratiques>
@@ -253,7 +255,7 @@ export default function YogaPrenatal() {
       <Questions preguntas={PREGUNTAS_PRENATAL} />
       <Sources fuentes={FUENTES} />
       <PourContinuer destinos={["postPartum", "cours", "aPropos"]} />
-      <Contact mensaje={MENSAJES.prenatal} />
+      <Contact mensaje={MENSAJES[idioma].prenatal} />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { CONTACTO } from "@/lib/contacto";
 import { rutaEn } from "@/lib/idiomas";
 import { CONTACTO_PAGINA, PAGINAS } from "@/lib/navegacion";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { Fleur } from "./Fleur";
@@ -14,20 +15,11 @@ import { IconoCorreo, IconoInstagram, IconoWhatsApp } from "./Iconos";
 
 const NAV = [...PAGINAS, CONTACTO_PAGINA];
 
-// sus formaciones, confirmadas el 30/9: van donde ED pone la tira de aliados. Yoga Alliance es un registro
-// (no certifica), por eso «enregistrée»
-const FORMACIONES = [
-  "Enregistrée auprès de Yoga Alliance",
-  "Ashtanga Vinyasa, en Inde",
-  "Yin yoga et fascias, en Suisse",
-  "Yoga pré et postnatal",
-];
-
-// las páginas que no están en el menú: van chiquitas abajo, al lado de los legales
+// las páginas que no están en el menú: van chiquitas abajo, al lado de los legales (los textos, en la interfaz)
 const SECUNDARIAS = [
-  { href: "/cours-prives-yoga-geneve", texto: "Cours privés" },
-  { href: "/faq", texto: "Questions fréquentes" },
-];
+  { href: "/cours-prives-yoga-geneve", clave: "privados" },
+  { href: "/faq", clave: "preguntas" },
+] as const;
 
 const CONTACTOS = [
   { href: CONTACTO.whatsapp, texto: CONTACTO.telefono, Icono: IconoWhatsApp, afuera: true },
@@ -38,6 +30,7 @@ const CONTACTOS = [
 export function Pied() {
   const raiz = useRef<HTMLElement>(null);
   const { idioma } = useRuta();
+  const t = useInterfaz();
   const quieto = useReducedMotion();
 
   useGSAP(
@@ -85,14 +78,14 @@ export function Pied() {
       <div className="pie-interior">
         <div className="contenedor grid gap-x-12 gap-y-12 pt-16 lg:grid-cols-12 lg:pt-24">
           <div className="flex flex-col gap-8 lg:col-span-5">
-            <Link href={rutaEn(idioma, "/")} className="flex w-fit items-center gap-3" aria-label="Sofia Yoga, accueil">
+            <Link href={rutaEn(idioma, "/")} className="flex w-fit items-center gap-3" aria-label={t.nav.marca}>
               <FleurQuiRespire className="h-11 w-11 text-salvia" />
               <span className="titre text-[2.1rem] tracking-[0.02em]">Sofia Yoga</span>
             </Link>
             <p className="max-w-[24rem] text-[1.08rem] leading-relaxed text-pagina/85">
-              Yoga prénatal, post-partum et cours de yoga dynamique à Genève, en groupe, en privé ou au parc.
+              {t.pie.descripcion}
             </p>
-            <p className="max-w-[24rem] text-[1.08rem] text-salvia-clara">Ateliers et cours de yoga pour toutes et tous.</p>
+            <p className="max-w-[24rem] text-[1.08rem] text-salvia-clara">{t.pie.lema}</p>
             <ul className="mt-auto space-y-3">
               {CONTACTOS.map(({ href, texto, Icono, afuera }) => (
                 <li key={href}>
@@ -109,14 +102,14 @@ export function Pied() {
             </ul>
           </div>
 
-          <nav className="pie-nav lg:col-span-7" aria-label="Navigation du pied de page">
+          <nav className="pie-nav lg:col-span-7" aria-label={t.pie.navegacion}>
             <ul>
               {NAV.map((enlace) => (
                 <li key={enlace.href} className="relative">
                   <span className="pie-linea absolute inset-x-0 top-0 block h-px origin-left bg-pagina/20" aria-hidden="true" />
                   <Link href={rutaEn(idioma, enlace.href)} className="group flex items-center justify-between gap-6 py-4 lg:py-5">
                     <span className="titre text-[clamp(2rem,4.2vw,3.4rem)] transition-transform duration-700 ease-souple group-hover:translate-x-3">
-                      {enlace.texto}
+                      {enlace.texto[idioma]}
                     </span>
                     <svg
                       viewBox="0 0 48 24"
@@ -134,7 +127,8 @@ export function Pied() {
 
         <div className="contenedor mt-16 lg:mt-20">
           <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-pagina/15 pt-8 text-center text-[1rem] text-pagina/80">
-            {FORMACIONES.map((f, i) => (
+            {/* sus formaciones: van donde ED pone la tira de aliados */}
+            {t.pie.formaciones.map((f, i) => (
               <li key={f} className="flex items-center gap-6">
                 {i > 0 && <Fleur className="h-4 w-4 text-salvia" trazo={10} />}
                 <span>{f}</span>
@@ -144,19 +138,20 @@ export function Pied() {
         </div>
 
         <div className="contenedor mt-10 flex flex-col items-center gap-4 border-t border-pagina/15 py-6 text-center text-[0.92rem] text-pagina/65 lg:flex-row lg:justify-between lg:text-left">
-          <p>© 2026 Sofia Yoga, Genève</p>
-          <p>Version de test&nbsp;: les textes et les infos pratiques sont à confirmer.</p>
+          <p>{t.pie.derechos}</p>
+          <p>{t.pie.prueba}</p>
           {/* los legales todavía no existen: quedan como texto hasta tener sus páginas */}
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {SECUNDARIAS.map((enlace) => (
               <li key={enlace.href}>
                 <Link className="enlace" href={rutaEn(idioma, enlace.href)}>
-                  {enlace.texto}
+                  {t.pie[enlace.clave]}
                 </Link>
               </li>
             ))}
-            <li>Mentions légales</li>
-            <li>Confidentialité</li>
+            {t.pie.legales.map((legal) => (
+              <li key={legal}>{legal}</li>
+            ))}
           </ul>
         </div>
 

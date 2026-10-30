@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { CONTACTO, enlaceWhatsApp } from "@/lib/contacto";
+import { interfaz } from "@/lib/idioma-actual";
 import { IconoWhatsApp } from "../Iconos";
 import { Magnetique } from "../Magnetique";
 
@@ -18,7 +19,8 @@ type Props = {
  * El botón del medio de las páginas de clases. Va al final de la sección donde la persona se reconoce,
  * con su WhatsApp ya escrito y el mail al lado. Uno solo por página: arriba y al final ya hay otros
  */
-export function InvitarAEscribir({ texto, mensaje, asunto, enBanda = false }: Props) {
+export async function InvitarAEscribir({ texto, mensaje, asunto, enBanda = false }: Props) {
+  const t = await interfaz();
   const correo = `mailto:${CONTACTO.email}?subject=${encodeURIComponent(asunto)}`;
   const contenido = (
     <div className={`flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between ${enBanda ? "" : "border-t border-verde/20 pt-8"}`}>
@@ -27,11 +29,11 @@ export function InvitarAEscribir({ texto, mensaje, asunto, enBanda = false }: Pr
         <Magnetique>
           <a className="boton" href={enlaceWhatsApp(mensaje)} target="_blank" rel="noopener noreferrer">
             <IconoWhatsApp className="h-5 w-5" />
-            Écrire sur WhatsApp
+            {t.escribirWhatsApp}
           </a>
         </Magnetique>
         <a className="enlace" href={correo}>
-          ou par e-mail
+          {t.porMail}
         </a>
       </div>
     </div>

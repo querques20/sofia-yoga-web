@@ -18,6 +18,7 @@ import { CeQueLeYogaFait } from "@/components/post-partum/CeQueLeYogaFait";
 import { Intensite } from "@/components/post-partum/Intensite";
 import { QuandReprendre } from "@/components/post-partum/QuandReprendre";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import { idiomaActual } from "@/lib/idioma-actual";
 import { PREGUNTAS_POST_PARTUM } from "@/contenido/preguntas";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { preguntasFrecuentes, servicio } from "@/lib/datos-estructurados";
@@ -135,7 +136,8 @@ const FUENTES = [
   { texto: "NHS, Your post-pregnancy body", href: "https://www.nhs.uk/baby/support-and-services/your-post-pregnancy-body/" },
 ];
 
-export default function YogaPostPartum() {
+export default async function YogaPostPartum() {
+  const idioma = await idiomaActual();
   return (
     <main>
       <DatosEstructurados datos={[servicio({ nombre: "Yoga post-partum à Genève", tipo: "Yoga post-partum", ruta: "/yoga-post-partum-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_POST_PARTUM)]} />
@@ -155,7 +157,7 @@ export default function YogaPostPartum() {
         acciones={
           <>
             <Magnetique>
-              <a className="boton" href={enlaceWhatsApp(MENSAJES.postPartum)} target="_blank" rel="noopener noreferrer">
+              <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].postPartum)} target="_blank" rel="noopener noreferrer">
                 Écrire sur WhatsApp
               </a>
             </Magnetique>
@@ -188,7 +190,7 @@ export default function YogaPostPartum() {
       <QuandReprendre>
         <InvitarAEscribir
           texto={<>Tu en es où&nbsp;? Dis-moi quand tu as accouché, je te réponds.</>}
-          mensaje={MENSAJES.postPartum}
+          mensaje={MENSAJES[idioma].postPartum}
           asunto="Yoga post-partum"
           enBanda
         />
@@ -222,14 +224,14 @@ export default function YogaPostPartum() {
       />
       <InfosPratiques datos={DATOS} nota="Les cours ne sont pas remboursés par l’assurance complémentaire.">
         <PedirInfos
-          mensaje={MENSAJES.postPartum}
+          mensaje={MENSAJES[idioma].postPartum}
           texto="Le lieu, l’horaire et le tarif arrivent bientôt. En attendant, écris-moi en me disant quand tu as accouché : je te réponds avec les détails."
         />
       </InfosPratiques>
       <Questions preguntas={PREGUNTAS_POST_PARTUM} />
       <Sources fuentes={FUENTES} />
       <PourContinuer destinos={["prenatal", "cours", "aPropos"]} />
-      <Contact mensaje={MENSAJES.postPartum} />
+      <Contact mensaje={MENSAJES[idioma].postPartum} />
     </main>
   );
 }

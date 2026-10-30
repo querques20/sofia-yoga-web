@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { escucharSouffle } from "@/lib/souffle";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 /** su firma de siempre: «Bienvenue» con el corazón violeta. Se escribe al llegar y el corazón late con la respiración */
@@ -37,7 +38,7 @@ export function Bienvenue({ className = "" }: { className?: string }) {
 
   return (
     <div ref={raiz} className={`flex items-end gap-4 ${className}`}>
-      <p className="bienvenue mano inline-block text-[clamp(3.6rem,11vw,8rem)]">Bienvenue</p>
+      <p className="bienvenue mano inline-block text-[clamp(3.6rem,11vw,8rem)]">{useInterfaz().bienvenida}</p>
       <svg viewBox="0 0 24 24" className="corazon mb-[0.6em] h-[clamp(1.8rem,4vw,3rem)] w-[clamp(1.8rem,4vw,3rem)] text-violeta" aria-hidden="true">
         <path
           fill="currentColor"

@@ -5,6 +5,7 @@ import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { telonAbierto } from "@/lib/entrada";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "../FleurQuiRespire";
 import { IconoWhatsApp } from "../Iconos";
 import { AConfirmer } from "../pagina/AConfirmer";
@@ -27,6 +28,7 @@ const FILAS: [string, ReactNode][] = [
  * que respira. Con mouse, el ticket se inclina hacia donde está el cursor y vuelve solo al salir
  */
 export function Billet() {
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLDivElement>(null);
   const quieto = useReducedMotion();
 
@@ -93,7 +95,7 @@ export function Billet() {
               </div>
             ))}
           </dl>
-          <a className="boton mt-7" href={enlaceWhatsApp(MENSAJES.atelier)} target="_blank" rel="noopener noreferrer">
+          <a className="boton mt-7" href={enlaceWhatsApp(MENSAJES[idioma].atelier)} target="_blank" rel="noopener noreferrer">
             <IconoWhatsApp className="h-5 w-5" />
             Être prévenu.e
           </a>

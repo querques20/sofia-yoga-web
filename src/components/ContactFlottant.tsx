@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { enlaceWhatsApp, MENSAJES, type Tema } from "@/lib/contacto";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useRuta } from "@/lib/useRuta";
 import { IconoWhatsApp } from "./Iconos";
 
@@ -19,7 +20,8 @@ const TEMA_POR_PAGINA: Record<string, Tema> = {
  * de contacto no hace falta
  */
 export function ContactFlottant() {
-  const { ruta } = useRuta();
+  const { idioma, ruta } = useRuta();
+  const t = useInterfaz();
   const [visible, setVisible] = useState(false);
   const [rutaPrevia, setRutaPrevia] = useState(ruta);
   const enContacto = ruta === "/contact";
@@ -58,10 +60,10 @@ export function ContactFlottant() {
 
   return (
     <a
-      href={enlaceWhatsApp(tema ? MENSAJES[tema] : undefined)}
+      href={enlaceWhatsApp(tema ? MENSAJES[idioma][tema] : undefined)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Écrire à Sofia sur WhatsApp"
+      aria-label={t.nav.whatsappFlotante}
       data-fuera-del-menu
       tabIndex={visible ? undefined : -1}
       aria-hidden={visible ? undefined : true}

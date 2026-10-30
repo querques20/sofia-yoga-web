@@ -1,4 +1,5 @@
 import { MENSAJES } from "@/lib/contacto";
+import { idiomaActual } from "@/lib/idioma-actual";
 import { AConfirmer } from "./pagina/AConfirmer";
 import { InfosPratiques } from "./pagina/InfosPratiques";
 import { PedirInfos } from "./pagina/PedirInfos";
@@ -13,11 +14,12 @@ const DATOS = [
   { dato: "Après l’accouchement", valor: "Après la rééducation du périnée avec une physio." },
 ];
 
-export function Pratique() {
+export async function Pratique() {
+  const idioma = await idiomaActual();
   return (
     <InfosPratiques id="pratique" datos={DATOS} nota="Les cours ne sont pas remboursés par l’assurance complémentaire.">
       <PedirInfos
-        mensaje={MENSAJES.ouQuand}
+        mensaje={MENSAJES[idioma].ouQuand}
         texto="Les lieux, les horaires et les tarifs arrivent bientôt. En attendant, écris-moi : je te dis où et quand ont lieu les prochains cours."
       />
     </InfosPratiques>

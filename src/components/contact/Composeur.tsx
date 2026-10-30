@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { CONTACTO, enlaceWhatsApp, MENSAJES, type Tema } from "@/lib/contacto";
 import { gsap } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { IconoCorreo, IconoWhatsApp } from "../Iconos";
 import { Magnetique } from "../Magnetique";
 
@@ -23,6 +24,7 @@ const TEMAS: { tema: Tema; texto: string }[] = [
  * cambiar) y el botón lo abre en WhatsApp o en el mail. Nada se manda solo: lo manda la persona desde ahí
  */
 export function Composeur() {
+  const { idioma } = useRuta();
   const [tema, setTema] = useState<Tema | null>(null);
   const [mensaje, setMensaje] = useState("");
   const escritura = useRef<gsap.core.Tween | null>(null);
@@ -32,7 +34,7 @@ export function Composeur() {
 
   const elegir = (nuevo: Tema) => {
     setTema(nuevo);
-    const texto = MENSAJES[nuevo];
+    const texto = MENSAJES[idioma][nuevo];
     escritura.current?.kill();
     if (quieto) {
       setMensaje(texto);

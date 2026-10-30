@@ -5,6 +5,7 @@ import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { escucharSouffle } from "@/lib/souffle";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { Magnetique } from "../Magnetique";
 import { Parte } from "../programme/Parte";
 
@@ -36,6 +37,7 @@ function Formas() {
 
 /** para quien no puede venir: el programa en línea que viene, con los nueve meses que se recorren al bajar */
 export function ProgrammeEnLigne() {
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -125,7 +127,7 @@ export function ProgrammeEnLigne() {
             <Parte clase="leyenda-yin" color="var(--color-celeste)" texto="La partie yin, douce" />
           </div>
           <Magnetique>
-            <a className="boton" href={enlaceWhatsApp(MENSAJES.programme)} target="_blank" rel="noopener noreferrer">
+            <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].programme)} target="_blank" rel="noopener noreferrer">
               Être prévenue du lancement
             </a>
           </Magnetique>
