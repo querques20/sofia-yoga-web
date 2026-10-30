@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useRef, type ReactNode } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { rutaEn } from "@/lib/idiomas";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-import { AConfirmer } from "../pagina/AConfirmer";
+import { useRuta } from "@/lib/useRuta";
 
 type Icono = { className?: string };
 
@@ -48,33 +49,18 @@ function IconoParque({ className }: Icono) {
   );
 }
 
-const FORMATS: { titulo: string; texto: ReactNode; Icono: (props: Icono) => ReactNode }[] = [
-  { titulo: "En groupe", texto: "Le cours collectif, pour pratiquer avec d’autres.", Icono: IconoGrupo },
-  {
-    titulo: "En privé",
-    texto: (
-      <>
-        Un cours rien que pour toi.{" "}
-        <Link className="enlace font-bold" href="/cours-prives-yoga-geneve">
-          Les cours privés
-        </Link>
-      </>
-    ),
-    Icono: IconoPrivado,
-  },
-  {
-    titulo: "Au parc",
-    texto: (
-      <>
-        Le yoga en plein air. La saison et les lieux sont <AConfirmer />
-      </>
-    ),
-    Icono: IconoParque,
-  },
-];
+/** lo que la página le pasa: título, los tres formatos (el del parque lleva el «por confirmar») y el aviso para embarazadas */
+export type TextosFormats = {
+  titulo: string;
+  grupo: { titulo: string; texto: string };
+  privado: { titulo: string; texto: string; enlace: string };
+  parque: { titulo: string; texto: ReactNode };
+  embarazada: { pregunta: string; enlace: string };
+};
 
 /** los tres formatos (en grupo, en privado, en el parque): las líneas y los dibujos se trazan al bajar */
-export function Formats() {
+export function Formats({ t }: { t: TextosFormats }) {
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -103,12 +89,33 @@ export function Formats() {
     { scope: raiz, dependencies: [quieto], revertOnUpdate: true },
   );
 
+  const formatos: { titulo: string; texto: ReactNode; Icono: (props: Icono) => ReactNode }[] = [
+    { titulo: t.grupo.titulo, texto: t.grupo.texto, Icono: IconoGrupo },
+    {
+      titulo: t.privado.titulo,
+      texto: (
+        <>
+          {t.privado.texto}{" "}
+          <Link className="enlace font-bold" href={rutaEn(idioma, "/cours-prives-yoga-geneve")}>
+            {t.privado.enlace}
+          </Link>
+        </>
+      ),
+      Icono: IconoPrivado,
+    },
+    {
+      titulo: t.parque.titulo,
+      texto: t.parque.texto,
+      Icono: IconoParque,
+    },
+  ];
+
   return (
     <section ref={raiz} id="formats" className="pb-[clamp(4rem,10vw,7rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">Trois façons de pratiquer</h2>
+        <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
         <ul className="mt-10 lg:mt-14">
-          {FORMATS.map(({ titulo, texto, Icono }) => (
+          {formatos.map(({ titulo, texto, Icono }) => (
             <li key={titulo} className="formato relative grid gap-x-8 gap-y-3 py-8 lg:grid-cols-12 lg:items-center lg:py-10">
               <span className="formato-linea absolute inset-x-0 top-0 h-px origin-left bg-verde/25" aria-hidden="true" />
               <Icono className="formato-icono h-14 w-20 text-violeta lg:col-span-2" />
@@ -118,9 +125,9 @@ export function Formats() {
           ))}
         </ul>
         <p className="mt-10 border-t border-verde/25 pt-8 text-[1.15rem]">
-          Tu es enceinte&nbsp;?{" "}
-          <Link className="enlace font-bold" href="/yoga-prenatal-geneve">
-            Le yoga prénatal est fait pour toi
+          {t.embarazada.pregunta}{" "}
+          <Link className="enlace font-bold" href={rutaEn(idioma, "/yoga-prenatal-geneve")}>
+            {t.embarazada.enlace}
           </Link>
         </p>
       </div>
