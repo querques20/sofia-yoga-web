@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { lang } from "next/root-params";
 import { ContactFlottant } from "@/components/ContactFlottant";
 import { Entrada } from "@/components/Entrada";
@@ -8,34 +7,8 @@ import { Nav } from "@/components/Nav";
 import { Pied } from "@/components/Pied";
 import { IDIOMAS } from "@/lib/idiomas";
 import { SITIO_URL } from "@/lib/sitio";
+import { FUENTES } from "../fuentes";
 import "../globals.css";
-
-// D-DIN y D-DIN Condensed son las del dossier v2 (licencia SIL OFL, ver fonts/OFL-D-DIN.txt)
-const ddin = localFont({
-  src: [
-    { path: "../fonts/D-DIN.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/D-DIN-Bold.woff2", weight: "700", style: "normal" },
-  ],
-  variable: "--font-ddin",
-  display: "swap",
-});
-
-const ddinCondensed = localFont({
-  src: [
-    { path: "../fonts/D-DINCondensed.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/D-DINCondensed-Bold.woff2", weight: "700", style: "normal" },
-  ],
-  variable: "--font-ddin-cond",
-  display: "swap",
-});
-
-// Caveat va en el repo y no por Google Fonts: así el build no depende de bajar nada (licencia en fonts/OFL-Caveat.txt).
-// Es el recorte "latin" de Google, que ya trae lo que usa el francés (acentos, œ, comillas, rayas)
-const caveat = localFont({
-  src: [{ path: "../fonts/Caveat-Bold-latin.woff2", weight: "700", style: "normal" }],
-  variable: "--font-caveat",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   // la base de los canonicals de cada página (el dominio todavía no está decidido, ver lib/sitio.ts)
@@ -55,7 +28,7 @@ export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const idioma = await lang();
   return (
     // el script de abajo le suma la clase "js" antes de hidratar, por eso se avisa que la diferencia es a propósito
-    <html lang={idioma} className={`${ddin.variable} ${ddinCondensed.variable} ${caveat.variable}`} suppressHydrationWarning>
+    <html lang={idioma} className={FUENTES} suppressHydrationWarning>
       <head>
         {/* marca que hay JS antes de pintar, así lo que entra animado no aparece y desaparece. Y si la entrada
             ya se vio en esta visita, lo marca también, así el telón ni se pinta */}
