@@ -4,11 +4,9 @@ import { useRef } from "react";
 import { gsap, SplitText, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
-// texto de su bio, tal cual lo escribió ella (con su escritura inclusiva)
-const CITA =
-  "Aujourd’hui, je propose un enseignement dynamique alliant pranayama, mouvement fonctionnel et système myofascial, dans un cadre bienveillant et inclusif, car je crois fortement que le yoga est pour touxtes ! Nul besoin d’être fort.e ou souple, viens comme tu es :)";
+export type TextosApproche = { titulo: string; cita: string };
 
-export function Approche() {
+export function Approche({ t }: { t: TextosApproche }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -53,9 +51,9 @@ export function Approche() {
   return (
     <section ref={raiz} id="approche" className="py-[clamp(6rem,14vw,11rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(1.5rem,2.6vw,2rem)]">Mon approche</h2>
+        <h2 className="titre text-[clamp(1.5rem,2.6vw,2rem)]">{t.titulo}</h2>
         <blockquote className="mt-8 lg:mt-10">
-          <p className="cita max-w-[25ch] text-[clamp(1.9rem,4.5vw,3.6rem)] leading-[1.14]">{CITA}</p>
+          <p className="cita max-w-[25ch] text-[clamp(1.9rem,4.5vw,3.6rem)] leading-[1.14]">{t.cita}</p>
           <footer className="mt-8">
             <span className="firma mano inline-block text-[clamp(3rem,6vw,4.4rem)]">Sofia</span>
           </footer>

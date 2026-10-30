@@ -6,12 +6,24 @@ import { CONTACTO } from "@/lib/contacto";
 import { telonAbierto } from "@/lib/entrada";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Magnetique } from "./Magnetique";
-import { Respiration } from "./Respiration";
+import { Respiration, type TextosRespiration } from "./Respiration";
+
+export type TextosHero = {
+  // el título: «antes» + palabra manuscrita + «despues», y en otro renglón el lugar (la búsqueda local)
+  antes: string;
+  mano: string;
+  despues: string;
+  lugar: string;
+  sub: string;
+  whatsapp: string;
+  buscar: string;
+  respiracion: TextosRespiration;
+};
 
 // si las fuentes tardan, no dejamos el título escondido más de esto
 const ESPERA_FUENTES = 500;
 
-export function Hero() {
+export function Hero({ t }: { t: TextosHero }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -76,28 +88,28 @@ export function Hero() {
     <section ref={raiz} id="inicio" className="relative overflow-hidden pt-24 pb-20 lg:flex lg:min-h-svh lg:items-center lg:pt-28 lg:pb-24">
       {/* en el celular va arriba del texto; en compu queda grande, a la derecha */}
       <div className="hero-ilustracion relative mx-auto aspect-[400/520] w-[min(58vw,15.5rem)] lg:absolute lg:top-1/2 lg:right-[2vw] lg:mx-0 lg:h-[min(90svh,54rem)] lg:w-auto lg:-translate-y-1/2">
-        <Respiration />
+        <Respiration t={t.respiracion} />
       </div>
       <div className="contenedor relative z-10 mt-12 lg:mt-0">
         <div className="hero-texto max-w-[54rem]">
           <h1 className="hero-titulo titre entra text-[clamp(3.2rem,10.5vw,6rem)]">
             {/* «à Genève» va en el H1: es la búsqueda local que pide el sitemap (frente on-page). Va en su renglón
                 y con espacio fijo, así nunca queda la «à» sola al final de una línea */}
-            Continuer à <span className="mano mr-[0.12em] inline-block text-[1.12em]">bouger</span> pendant ta grossesse,
-            <br />à&nbsp;Genève
+            {t.antes} <span className="mano mr-[0.12em] inline-block text-[1.12em]">{t.mano}</span> {t.despues}
+            <br />
+            {t.lugar}
           </h1>
           <p className="hero-sub entra mt-7 max-w-[34rem] text-[1.15rem] leading-relaxed lg:text-[1.25rem]">
-            Yoga prénatal, post-partum et cours de yoga dynamique à Genève, avec Sofia Costa. En groupe, en privé ou au
-            parc.
+            {t.sub}
           </p>
           <div className="hero-acciones entra mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
             <Magnetique>
               <a className="boton" href={CONTACTO.whatsapp} target="_blank" rel="noopener noreferrer">
-                Écrire sur WhatsApp
+                {t.whatsapp}
               </a>
             </Magnetique>
             <a className="enlace font-bold" href="#pour-qui">
-              Trouver mon cours
+              {t.buscar}
             </a>
           </div>
         </div>

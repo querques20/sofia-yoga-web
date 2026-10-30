@@ -4,41 +4,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { rutaEn } from "@/lib/idiomas";
 import { useReducedMotion } from "@/lib/useReducedMotion";
+import { useRuta } from "@/lib/useRuta";
 import { Fleur } from "./Fleur";
 
-// cada puerta dice para quién es, lo único que sabemos seguro de cada cosa, y su ilustración
+// cada puerta dice para quién es, lo único que sabemos seguro de cada cosa, y su ilustración (el texto viene en t)
 const PUERTAS = [
-  {
-    href: "/yoga-prenatal-geneve",
-    frase: "Je suis enceinte et j’ai envie de bouger",
-    detalle: "Yoga prénatal, avec l’accord de ta sage-femme ou de ta gynécologue.",
-    imagen: "/ilustraciones/embarazada.svg",
-    ancho: 400,
-    alto: 520,
-    alt: "Une femme enceinte de profil, une main posée sur le ventre",
-  },
-  {
-    href: "/yoga-post-partum-geneve",
-    frase: "Je viens d’accoucher",
-    detalle: "Yoga post-partum, après la rééducation du périnée avec une physio.",
-    imagen: "/ilustraciones/posparto.svg",
-    ancho: 400,
-    alto: 520,
-    alt: "Une jeune maman qui tient son bébé contre elle",
-  },
-  {
-    href: "/cours-de-yoga-geneve",
-    frase: "Je cherche un cours de yoga dynamique",
-    detalle: "Vinyasa et yoga flow, en groupe, en privé ou au parc.",
-    imagen: "/ilustraciones/cours.svg",
-    ancho: 560,
-    alto: 420,
-    alt: "Une femme dans la posture du guerrier II, sur un tapis de yoga",
-  },
+  { href: "/yoga-prenatal-geneve", imagen: "/ilustraciones/embarazada.svg", ancho: 400, alto: 520 },
+  { href: "/yoga-post-partum-geneve", imagen: "/ilustraciones/posparto.svg", ancho: 400, alto: 520 },
+  { href: "/cours-de-yoga-geneve", imagen: "/ilustraciones/cours.svg", ancho: 560, alto: 420 },
 ];
 
-export function PourQui() {
+export type TextosPourQui = {
+  titulo: string;
+  puertas: { frase: string; detalle: string; alt: string }[];
+};
+
+export function PourQui({ t }: { t: TextosPourQui }) {
+  const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const vista = useRef<HTMLDivElement>(null);
   const quieto = useReducedMotion();
@@ -104,13 +88,13 @@ export function PourQui() {
   return (
     <section ref={raiz} id="pour-qui" className="py-[clamp(5rem,12vw,9rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(2.4rem,6vw,4.4rem)]">Par où commencer&nbsp;?</h2>
+        <h2 className="titre text-[clamp(2.4rem,6vw,4.4rem)]">{t.titulo}</h2>
         <ul className="puertas mt-10 lg:mt-14">
-          {PUERTAS.map((puerta) => (
-            <li key={puerta.frase} className="relative">
+          {PUERTAS.map((puerta, i) => (
+            <li key={puerta.href} className="relative">
               <span className="puerta-linea absolute inset-x-0 top-0 block h-px origin-left bg-salvia" aria-hidden="true" />
               <Link
-                href={puerta.href}
+                href={rutaEn(idioma, puerta.href)}
                 className="group relative flex items-center justify-between gap-6 overflow-hidden py-7 lg:py-10"
               >
                 {/* la banda salvia que entra al pasar el mouse */}
@@ -119,8 +103,8 @@ export function PourQui() {
                   aria-hidden="true"
                 />
                 <span className="relative transition-transform duration-700 ease-souple group-hover:translate-x-4 lg:pl-1">
-                  <span className="titre block text-[clamp(1.9rem,4.6vw,3.6rem)]">{puerta.frase}</span>
-                  <span className="mt-2 block max-w-[38rem] text-[1.05rem] opacity-80">{puerta.detalle}</span>
+                  <span className="titre block text-[clamp(1.9rem,4.6vw,3.6rem)]">{t.puertas[i].frase}</span>
+                  <span className="mt-2 block max-w-[38rem] text-[1.05rem] opacity-80">{t.puertas[i].detalle}</span>
                 </span>
                 {/* en el celular no hay mouse: la ilustración va chiquita en la misma fila */}
                 <Image
@@ -143,11 +127,11 @@ export function PourQui() {
 
       {/* la ilustración que flota con el mouse */}
       <div ref={vista} className="pointer-events-none fixed top-0 left-0 z-30 h-[24rem] w-[23rem]" aria-hidden="true">
-        {PUERTAS.map((puerta) => (
+        {PUERTAS.map((puerta, i) => (
           <Image
-            key={puerta.frase}
+            key={puerta.href}
             src={puerta.imagen}
-            alt={puerta.alt}
+            alt={t.puertas[i].alt}
             fill
             unoptimized
             loading="eager"

@@ -1,27 +1,17 @@
+import type { ReactNode } from "react";
 import { MENSAJES } from "@/lib/contacto";
 import { idiomaActual } from "@/lib/idioma-actual";
-import { AConfirmer } from "./pagina/AConfirmer";
 import { InfosPratiques } from "./pagina/InfosPratiques";
 import { PedirInfos } from "./pagina/PedirInfos";
 
 // lo que sabemos para todos los cursos; lugares, horarios y precios todavía no los tenemos
-const DATOS = [
-  { dato: "Où", valor: <>À Genève. Les lieux sont <AConfirmer /></> },
-  { dato: "Quand", valor: <>Les horaires sont <AConfirmer /></> },
-  { dato: "Combien", valor: <>Les tarifs sont <AConfirmer /></> },
-  { dato: "Paiement", valor: <AConfirmer /> },
-  { dato: "Pendant la grossesse", valor: "Avec l’accord de ta sage-femme ou de ta gynécologue." },
-  { dato: "Après l’accouchement", valor: "Après la rééducation du périnée avec une physio." },
-];
+export type TextosPratique = { datos: { dato: string; valor: ReactNode }[]; nota: string; pedir: string };
 
-export async function Pratique() {
+export async function Pratique({ t }: { t: TextosPratique }) {
   const idioma = await idiomaActual();
   return (
-    <InfosPratiques id="pratique" datos={DATOS} nota="Les cours ne sont pas remboursés par l’assurance complémentaire.">
-      <PedirInfos
-        mensaje={MENSAJES[idioma].ouQuand}
-        texto="Les lieux, les horaires et les tarifs arrivent bientôt. En attendant, écris-moi : je te dis où et quand ont lieu les prochains cours."
-      />
+    <InfosPratiques id="pratique" datos={t.datos} nota={t.nota}>
+      <PedirInfos mensaje={MENSAJES[idioma].ouQuand} texto={t.pedir} />
     </InfosPratiques>
   );
 }
