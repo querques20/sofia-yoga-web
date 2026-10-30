@@ -5,8 +5,13 @@ import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 // lo que dijo Sofía de sus ejercicios (contexto maestro, sección 7): ayudan, pero no curan ni reemplazan a la fisio
-const PUEDE = ["Aider à améliorer la mobilité, la stabilité et la force du plancher pelvien.", "Aider à diminuer une diastase."];
-const NO_PUEDE = ["Guérir une diastase.", "Remplacer la rééducation du périnée avec une physio."];
+export type TextosCeQueLeYogaFait = {
+  titulo: string;
+  intro: string;
+  pueden: { titulo: string; items: string[] };
+  noPueden: { titulo: string; items: string[] };
+  aviso: string;
+};
 
 function Tilde() {
   return (
@@ -26,7 +31,7 @@ function Cruz() {
 }
 
 /** diástasis y suelo pélvico: lo que el yoga puede hacer y lo que no, dicho claro. Las marcas se dibujan a mano */
-export function CeQueLeYogaFait() {
+export function CeQueLeYogaFait({ t }: { t: TextosCeQueLeYogaFait }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -45,16 +50,16 @@ export function CeQueLeYogaFait() {
   return (
     <section ref={raiz} id="yoga-fait" className="py-[clamp(5rem,12vw,9rem)]">
       <div className="contenedor">
-        <h2 className="titre max-w-[16ch] text-[clamp(2.6rem,6.4vw,5rem)]">Ce que mes exercices font, et ne font pas</h2>
+        <h2 className="titre max-w-[16ch] text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
         <p className="mt-6 max-w-[32rem] text-[1.15rem] leading-relaxed">
-          Pour le périnée et la diastase, ils peuvent aider. Ils ne remplacent pas la physio.
+          {t.intro}
         </p>
 
         <div className="columnas relative mt-12 grid gap-10 rounded-[2rem] bg-arena px-6 py-10 lg:mt-16 lg:grid-cols-2 lg:gap-0 lg:px-0 lg:py-14">
           <div className="lg:px-14">
-            <h3 className="titre text-[clamp(1.8rem,3.4vw,2.6rem)]">Ils peuvent</h3>
+            <h3 className="titre text-[clamp(1.8rem,3.4vw,2.6rem)]">{t.pueden.titulo}</h3>
             <ul className="mt-6 space-y-5">
-              {PUEDE.map((texto) => (
+              {t.pueden.items.map((texto) => (
                 <li key={texto} className="flex gap-4 text-[1.2rem] leading-snug">
                   <Tilde />
                   <span>{texto}</span>
@@ -72,9 +77,9 @@ export function CeQueLeYogaFait() {
             <path d="M6 2 C 3 90 9 180 5 270 C 3 320 8 360 6 398" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
           </svg>
           <div className="lg:px-14">
-            <h3 className="titre text-[clamp(1.8rem,3.4vw,2.6rem)]">Ils ne peuvent pas</h3>
+            <h3 className="titre text-[clamp(1.8rem,3.4vw,2.6rem)]">{t.noPueden.titulo}</h3>
             <ul className="mt-6 space-y-5">
-              {NO_PUEDE.map((texto) => (
+              {t.noPueden.items.map((texto) => (
                 <li key={texto} className="flex gap-4 text-[1.2rem] leading-snug">
                   <Cruz />
                   <span>{texto}</span>
@@ -83,7 +88,7 @@ export function CeQueLeYogaFait() {
             </ul>
           </div>
         </div>
-        <p className="mt-6 text-[1rem] opacity-80">Je ne suis pas physiothérapeute.</p>
+        <p className="mt-6 text-[1rem] opacity-80">{t.aviso}</p>
       </div>
     </section>
   );

@@ -15,6 +15,8 @@ type Props = {
   titulo: ReactNode;
   intro: ReactNode;
   pasos: Paso[];
+  /** cómo se lee el índice de pasos para un lector de pantalla (en el idioma de la página) */
+  etiquetaPasos: string;
   /** la banda que cierra: sube por encima de la pila y se la come entera, título incluido (el barrido de ED) */
   cierre?: ReactNode;
   /** el fondo de la sección que viene después (una clase de Tailwind): va detrás de la mitad de abajo de la banda */
@@ -27,7 +29,7 @@ type Props = {
  * El título de la sección queda trabado arriba con el paso a paso, y al terminar se despega todo junto.
  * Las medidas están en globals.css (`[data-pila]`)
  */
-export function PilaDePasos({ id, titulo, intro, pasos, cierre, fondoSiguiente = "bg-pagina" }: Props) {
+export function PilaDePasos({ id, titulo, intro, pasos, etiquetaPasos, cierre, fondoSiguiente = "bg-pagina" }: Props) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -70,7 +72,7 @@ export function PilaDePasos({ id, titulo, intro, pasos, cierre, fondoSiguiente =
                   {intro}
                 </p>
               </div>
-              <IndicePasos pasos={pasos.map((p) => p.corto)} />
+              <IndicePasos etiqueta={etiquetaPasos} pasos={pasos.map((p) => p.corto)} />
             </div>
           </header>
           <ol data-pila-lista className="mt-8 flex flex-col gap-6">
