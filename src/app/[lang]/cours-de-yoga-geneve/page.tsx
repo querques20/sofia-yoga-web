@@ -84,7 +84,7 @@ export default async function CoursDeYoga() {
   const idioma = await idiomaActual();
   return (
     <main>
-      <DatosEstructurados datos={[servicio({ nombre: "Cours de yoga à Genève", tipo: "Cours de yoga : vinyasa, yoga flow et yoga dynamique", ruta: "/cours-de-yoga-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_COURS)]} />
+      <DatosEstructurados datos={[servicio(idioma, { nombre: "Cours de yoga à Genève", tipo: "Cours de yoga : vinyasa, yoga flow et yoga dynamique", ruta: "/cours-de-yoga-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(idioma, PREGUNTAS_COURS[idioma])]} />
       <EnteteDePage
         fil="Cours"
         titulo={
@@ -150,7 +150,7 @@ export default async function CoursDeYoga() {
           texto="Les lieux et les horaires arrivent bientôt. En attendant, écris-moi : je te dis où et quand ont lieu les prochains cours."
         />
       </InfosPratiques>
-      <Questions preguntas={PREGUNTAS_COURS} />
+      <Questions preguntas={PREGUNTAS_COURS[idioma]} />
       <Sources fuentes={FUENTES} aviso="Ces informations sont générales. Elles ne remplacent pas l’avis de ton médecin." />
       <PourContinuer destinos={["prives", "prenatal", "ateliers", "aPropos"]} />
       <Contact mensaje={MENSAJES[idioma].cours} />

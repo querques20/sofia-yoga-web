@@ -151,7 +151,7 @@ export default async function YogaPrenatal() {
   const idioma = await idiomaActual();
   return (
     <main>
-      <DatosEstructurados datos={[servicio({ nombre: "Yoga prénatal à Genève", tipo: "Yoga prénatal", ruta: "/yoga-prenatal-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(PREGUNTAS_PRENATAL)]} />
+      <DatosEstructurados datos={[servicio(idioma, { nombre: "Yoga prénatal à Genève", tipo: "Yoga prénatal", ruta: "/yoga-prenatal-geneve", descripcion: String(metadata.description) }), preguntasFrecuentes(idioma, PREGUNTAS_PRENATAL[idioma])]} />
       <EnteteDePage
         fil="Yoga prénatal"
         titulo={
@@ -252,7 +252,7 @@ export default async function YogaPrenatal() {
         />
       </InfosPratiques>
       <ProgrammeEnLigne />
-      <Questions preguntas={PREGUNTAS_PRENATAL} />
+      <Questions preguntas={PREGUNTAS_PRENATAL[idioma]} />
       <Sources fuentes={FUENTES} />
       <PourContinuer destinos={["postPartum", "cours", "aPropos"]} />
       <Contact mensaje={MENSAJES[idioma].prenatal} />

@@ -53,7 +53,7 @@ export default async function CoursPrives() {
     <main>
       <DatosEstructurados
         datos={[
-          servicio({
+          servicio(idioma, {
             nombre: "Cours de yoga privés à Genève",
             tipo: "Cours de yoga privé",
             ruta: "/cours-prives-yoga-geneve",

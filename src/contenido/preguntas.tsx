@@ -2,13 +2,14 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
+import type { Idioma } from "@/lib/idiomas";
 
 // las preguntas frecuentes de las páginas de clases. Viven acá porque las muestra cada página y además
 // las junta /faq. Las respuestas que no son texto plano llevan links o la pastilla «à confirmer»
 export type Pregunta = { pregunta: string; respuesta: ReactNode };
 
 // las de Yoga prénatal
-export const PREGUNTAS_PRENATAL: Pregunta[] = [
+const prenatalFr: Pregunta[] = [
   {
     pregunta: "Je n’ai jamais fait de yoga. Je peux venir ?",
     respuesta: "Oui. Nul besoin d’être fort.e ou souple, viens comme tu es :)",
@@ -75,7 +76,7 @@ export const PREGUNTAS_PRENATAL: Pregunta[] = [
 ];
 
 // las de Yoga post-partum
-export const PREGUNTAS_POST_PARTUM: Pregunta[] = [
+const postPartumFr: Pregunta[] = [
   {
     pregunta: "C’est un cours maman-bébé ? Je peux venir avec mon bébé ?",
     respuesta: "C’est encore à confirmer. Écris-moi si c’est important pour toi.",
@@ -134,7 +135,7 @@ export const PREGUNTAS_POST_PARTUM: Pregunta[] = [
 ];
 
 // las de Cours de yoga
-export const PREGUNTAS_COURS: Pregunta[] = [
+const coursFr: Pregunta[] = [
   {
     pregunta: "Je débute. Je peux venir ?",
     respuesta: "Oui ! Nul besoin d’être fort.e ou souple, viens comme tu es :)",
@@ -177,3 +178,8 @@ export const PREGUNTAS_COURS: Pregunta[] = [
       "Non. En Suisse, l’assurance de base ne rembourse pas le yoga, et les assurances complémentaires ne le font qu’avec certaines reconnaissances (Yoga Suisse, ASCA, RME…), différentes selon l’assureur. Je n’en ai pas : mes cours ne sont pas remboursés.",
   },
 ];
+
+// por idioma. PENDIENTE: EN y ES todavía repiten el francés hasta que se traduzcan
+export const PREGUNTAS_PRENATAL: Record<Idioma, Pregunta[]> = { fr: prenatalFr, en: prenatalFr, es: prenatalFr };
+export const PREGUNTAS_POST_PARTUM: Record<Idioma, Pregunta[]> = { fr: postPartumFr, en: postPartumFr, es: postPartumFr };
+export const PREGUNTAS_COURS: Record<Idioma, Pregunta[]> = { fr: coursFr, en: coursFr, es: coursFr };

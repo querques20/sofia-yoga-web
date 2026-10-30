@@ -6,6 +6,7 @@ import { Questions } from "@/components/pagina/Questions";
 import { SurCettePage } from "@/components/pagina/SurCettePage";
 import { VisualDeFlor } from "@/components/pagina/VisualDeFlor";
 import { PREGUNTAS_COURS, PREGUNTAS_POST_PARTUM, PREGUNTAS_PRENATAL } from "@/contenido/preguntas";
+import { idiomaActual } from "@/lib/idioma-actual";
 
 export const metadata: Metadata = {
   title: "Questions fréquentes sur le yoga à Genève",
@@ -22,7 +23,8 @@ const GRUPOS = [
   { id: "cours", titulo: "Cours de yoga", href: "/cours-de-yoga-geneve", enlace: "Tout sur les cours de yoga", preguntas: PREGUNTAS_COURS },
 ];
 
-export default function Faq() {
+export default async function Faq() {
+  const idioma = await idiomaActual();
   return (
     <main>
       <EnteteDePage
@@ -41,7 +43,7 @@ export default function Faq() {
           key={g.id}
           id={g.id}
           titulo={g.titulo}
-          preguntas={g.preguntas}
+          preguntas={g.preguntas[idioma]}
           nota={
             <Link className="enlace font-bold" href={g.href}>
               {g.enlace}

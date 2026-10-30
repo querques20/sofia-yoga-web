@@ -9,6 +9,7 @@ import { Reperes } from "@/components/pagina/Reperes";
 import { Sources } from "@/components/pagina/Sources";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { paginaSobreSofia, persona } from "@/lib/datos-estructurados";
+import { idiomaActual } from "@/lib/idioma-actual";
 
 export const metadata: Metadata = {
   title: "Sofia Costa, professeure de yoga à Genève",
@@ -40,10 +41,11 @@ const FUENTES = [
   { texto: "Yoga Alliance, Member Brand Guide, 2025", href: "https://yogaalliance.org/wp-content/uploads/2025/10/YA25-Member-Brand-Guide.pdf" },
 ];
 
-export default function APropos() {
+export default async function APropos() {
+  const idioma = await idiomaActual();
   return (
     <main>
-      <DatosEstructurados datos={[persona(), paginaSobreSofia()]} />
+      <DatosEstructurados datos={[persona(idioma), paginaSobreSofia(idioma)]} />
       <EnteteDePage
         fil="À propos"
         titulo={
