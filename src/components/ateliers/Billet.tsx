@@ -8,26 +8,19 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "../FleurQuiRespire";
 import { IconoWhatsApp } from "../Iconos";
-import { AConfirmer } from "../pagina/AConfirmer";
 
-// del próximo atelier no sabemos nada todavía: el ticket lo dice sin inventar
-const FILAS: [string, ReactNode][] = [
-  ["Date", <AConfirmer key="fecha" />],
-  [
-    "Lieu",
-    <>
-      Genève, <AConfirmer />
-    </>,
-  ],
-  ["Prix", <AConfirmer key="precio" />],
-  ["Inscription", "Par message"],
-];
+export type TextosBillet = {
+  titulo: string;
+  /** del próximo atelier no sabemos nada todavía: el ticket lo dice sin inventar */
+  filas: [string, ReactNode][];
+  boton: string;
+};
 
 /**
  * El ticket del próximo atelier: llega inclinado y se acomoda, se dibuja el corte y el sello es la flor,
  * que respira. Con mouse, el ticket se inclina hacia donde está el cursor y vuelve solo al salir
  */
-export function Billet() {
+export function Billet({ t }: { t: TextosBillet }) {
   const { idioma } = useRuta();
   const raiz = useRef<HTMLDivElement>(null);
   const quieto = useReducedMotion();
@@ -82,13 +75,13 @@ export function Billet() {
   return (
     <div ref={raiz} className="[perspective:1400px]">
       <article
-        aria-label="Prochain atelier"
+        aria-label={t.titulo}
         className="billete entra relative mx-auto grid w-full max-w-[31rem] grid-cols-[1fr_auto] rounded-[1.6rem] bg-arena shadow-[0_30px_60px_-30px_rgba(57,70,58,0.45)] lg:mr-0"
       >
         <div className="p-7 lg:p-9">
-          <p className="titre text-[clamp(2.1rem,4vw,2.9rem)]">Prochain atelier</p>
+          <p className="titre text-[clamp(2.1rem,4vw,2.9rem)]">{t.titulo}</p>
           <dl className="mt-6 space-y-3 text-[1.05rem]">
-            {FILAS.map(([dato, valor]) => (
+            {t.filas.map(([dato, valor]) => (
               <div key={dato} className="flex items-baseline justify-between gap-4 border-t border-verde/20 pt-3">
                 <dt className="font-bold">{dato}</dt>
                 <dd className="text-right">{valor}</dd>
@@ -97,7 +90,7 @@ export function Billet() {
           </dl>
           <a className="boton mt-7" href={enlaceWhatsApp(MENSAJES[idioma].atelier)} target="_blank" rel="noopener noreferrer">
             <IconoWhatsApp className="h-5 w-5" />
-            Être prévenu.e
+            {t.boton}
           </a>
         </div>
         <div className="relative grid w-[clamp(5.5rem,22vw,8.5rem)] place-items-center">

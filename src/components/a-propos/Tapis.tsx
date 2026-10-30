@@ -4,32 +4,19 @@ import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
-// sus formaciones con horas (confirmadas el 30/9). Cada esterilla mide lo que duró la formación, y abajo va qué
-// es cada estilo, con definiciones verificadas (historia del ashtanga y del yin)
-const FORMACIONES = [
-  {
-    horas: 200,
-    titulo: "Ashtanga-Vinyasa",
-    detalle: "En Inde",
-    texto: "Un style popularisé au XXe siècle par K. Pattabhi Jois, à Mysore : des séries de postures enchaînées au rythme du souffle.",
-  },
-  {
-    horas: 100,
-    titulo: "Yin yoga et thérapie des fascias",
-    detalle: "En Suisse",
-    texto: "Le yin yoga est lent : les postures sont tenues longtemps, souvent plusieurs minutes, dans le calme.",
-  },
-  {
-    horas: 60,
-    titulo: "Yoga pré et postnatal",
-    detalle: null,
-    texto: "Pour accompagner la grossesse et l’après-accouchement, avec les précautions propres à chaque étape.",
-  },
-];
+export type TextosTapis = {
+  titulo: string;
+  leyenda: string;
+  /** la unidad de las horas (la cifra va grande, la unidad al lado) */
+  unidad: string;
+  /** cada esterilla mide lo que duró la formación, y abajo va qué es cada estilo */
+  formaciones: { horas: number; titulo: string; detalle: string | null; texto: string }[];
+  extras: { titulo: string; texto: string }[];
+};
 const MAS_LARGA = 200;
 
 /** las formaciones como esterillas que se desenrollan al bajar: el largo de cada una es proporcional a sus horas */
-export function Tapis() {
+export function Tapis({ t }: { t: TextosTapis }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -56,13 +43,13 @@ export function Tapis() {
   return (
     <section ref={raiz} id="formations" className="py-[clamp(5rem,12vw,9rem)]">
       <div className="contenedor">
-        <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">Mes formations</h2>
-        <p className="mt-5 max-w-[32rem] text-[1.15rem] leading-relaxed">La longueur de chaque tapis correspond à la durée de la formation.</p>
+        <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
+        <p className="mt-5 max-w-[32rem] text-[1.15rem] leading-relaxed">{t.leyenda}</p>
         <ul className="mt-12 space-y-10 lg:mt-16 lg:space-y-12">
-          {FORMACIONES.map((f) => (
+          {t.formaciones.map((f) => (
             <li key={f.titulo} className="tapis-fila">
               <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-                <span className="titre text-[clamp(2.4rem,5vw,3.8rem)]">{f.horas}&nbsp;h</span>
+                <span className="titre text-[clamp(2.4rem,5vw,3.8rem)]">{f.horas}&nbsp;{t.unidad}</span>
                 <span className="text-[1.2rem] font-bold">{f.titulo}</span>
                 {f.detalle && <span className="text-[1.05rem] opacity-75">{f.detalle}</span>}
               </div>
@@ -86,16 +73,12 @@ export function Tapis() {
           ))}
         </ul>
         <ul className="mt-14 grid gap-6 border-t border-verde/20 pt-8 text-[1.12rem] leading-relaxed sm:grid-cols-2">
-          <li>
-            <span className="block font-bold">Une formation continue en thérapie des fascias</span>
-            Les fascias sont les tissus qui enveloppent et relient les muscles et les organes, comme un réseau dans tout le
-            corps.
-          </li>
-          <li>
-            <span className="block font-bold">Enregistrée auprès de Yoga Alliance</span>
-            Yoga Alliance est un registre international de professeur.es et d’écoles de yoga. Il ne délivre pas de diplôme&nbsp;:
-            il répertorie les formations qui suivent ses standards.
-          </li>
+          {t.extras.map((e) => (
+            <li key={e.titulo}>
+              <span className="block font-bold">{e.titulo}</span>
+              {e.texto}
+            </li>
+          ))}
         </ul>
       </div>
     </section>

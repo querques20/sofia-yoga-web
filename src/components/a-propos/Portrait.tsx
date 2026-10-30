@@ -12,8 +12,10 @@ const FORMA_A = [58, 42, 46, 54, 52, 44, 56, 48];
 const FORMA_B = [50, 50, 56, 44, 46, 54, 48, 52];
 const radio = (r: number[]) => `${r[0]}% ${r[1]}% ${r[2]}% ${r[3]}% / ${r[4]}% ${r[5]}% ${r[6]}% ${r[7]}%`;
 
+export type TextosPortrait = { texto: string };
+
 /** el lugar de su foto mientras no haya sesión de fotos: el marco cambia de forma al ritmo de la respiración */
-export function Portrait() {
+export function Portrait({ t }: { t: TextosPortrait }) {
   const raiz = useRef<HTMLDivElement>(null);
   const quieto = useReducedMotion();
 
@@ -54,7 +56,7 @@ export function Portrait() {
       <div className="portrait-marco entra grid aspect-[4/5] place-items-center bg-arena p-10 text-center" style={{ borderRadius: radio(FORMA_A) }}>
         <div className="flex flex-col items-center">
           <FleurQuiRespire className="portrait-flor h-20 w-20 text-violeta" />
-          <p className="portrait-texto mt-6 max-w-[14rem] text-[1.05rem] opacity-75">La photo de Sofia arrivera ici après sa séance photo.</p>
+          <p className="portrait-texto mt-6 max-w-[14rem] text-[1.05rem] opacity-75">{t.texto}</p>
         </div>
       </div>
     </div>
