@@ -290,7 +290,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       puertas: [
         {
           frase: "Estoy embarazada y tengo ganas de moverme",
-          detalle: "Yoga prenatal, con el visto bueno de tu matrona o de tu ginecólogo o ginecóloga.",
+          detalle: "Yoga prenatal, con el visto bueno de tu matrona o de tu ginecóloga.",
           alt: "Una mujer embarazada de perfil, con una mano sobre el vientre",
         },
         {
@@ -321,7 +321,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       yin: "Una parte yin, suave",
       juntas: "Las dos, en cada trimestre.",
       formato: "Vídeos, PDF y textos, para seguir en casa.",
-      accord: "Antes de empezar: el visto bueno de tu matrona o de tu ginecólogo o ginecóloga.",
+      accord: "Antes de empezar: el visto bueno de tu matrona o de tu ginecóloga.",
       cierre: { antes: "Estás embarazada,", mano: "no enferma" },
       avisar: "Avisarme del lanzamiento",
     },
@@ -379,7 +379,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
           ),
         },
         { dato: "Pago", valor: <AConfirmer /> },
-        { dato: "Durante el embarazo", valor: "Con el visto bueno de tu matrona o de tu ginecólogo o ginecóloga." },
+        { dato: "Durante el embarazo", valor: "Con el visto bueno de tu matrona o de tu ginecóloga." },
         { dato: "Después del parto", valor: "Después de la reeducación del suelo pélvico con una fisioterapeuta." },
       ],
       nota: "El seguro complementario no reembolsa las clases.",
