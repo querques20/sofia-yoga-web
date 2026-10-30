@@ -6,23 +6,14 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Fleur } from "./Fleur";
 
 // todo sale de su bio y de los audios del 30/9; solo 2019 tiene fecha confirmada
-const ETAPAS = [
-  { titulo: "Le sport, depuis toute petite", texto: "Gymnastique artistique, natation et hockey sur gazon." },
-  {
-    titulo: "Le marketing",
-    texto: "Quelques années d’études et de travail, jusqu’au jour où je me suis rendu compte que cela ne me rendait pas heureuse.",
-  },
-  { titulo: "2019, le départ", texto: "J’ai quitté la ville où je suis née pour voyager et me redécouvrir." },
-  { titulo: "L’Inde", texto: "Ma formation de 200 h en Ashtanga-Vinyasa." },
-  {
-    titulo: "La Suisse",
-    texto: "100 h de yin yoga et de thérapie des fascias, puis une formation continue sur les fascias.",
-  },
-  { titulo: "Pré et postnatal", texto: "Une formation de 60 h. Je suis enregistrée auprès de Yoga Alliance." },
-  { titulo: "Aujourd’hui", texto: "Des cours de yoga dynamique à Genève, en groupe, en privé et au parc." },
-];
+export type TextosParcours = {
+  titulo: string;
+  foto: string;
+  firma: string;
+  etapas: { titulo: string; texto: string }[];
+};
 
-export function Parcours() {
+export function Parcours({ t }: { t: TextosParcours }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -70,22 +61,22 @@ export function Parcours() {
       <div className="contenedor grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-28">
-            <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">Mon parcours</h2>
+            <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
             {/* espacio para su foto: la sesión de fotos todavía no se hizo */}
             <div
               className="mt-8 grid aspect-[4/5] w-[min(100%,24rem)] place-items-center bg-arena p-8 text-center"
               style={{ borderRadius: "58% 42% 46% 54% / 52% 44% 56% 48%" }}
             >
-              <p className="max-w-[13rem] text-[1.05rem] opacity-75">La photo de Sofia arrivera ici après sa séance photo.</p>
+              <p className="max-w-[13rem] text-[1.05rem] opacity-75">{t.foto}</p>
             </div>
-            <p className="mt-6 max-w-[24rem] text-[1.05rem]">Sofia Costa, professeure de yoga à Genève.</p>
+            <p className="mt-6 max-w-[24rem] text-[1.05rem]">{t.firma}</p>
           </div>
         </div>
 
         <ol className="etapas relative lg:col-span-7 lg:pt-4">
           <span className="absolute top-2 bottom-2 left-[0.4rem] w-px bg-salvia" aria-hidden="true" />
           <span className="etapas-progreso absolute top-2 bottom-2 left-[0.4rem] w-[2px] -translate-x-[0.5px] bg-verde" aria-hidden="true" />
-          {ETAPAS.map((etapa) => (
+          {t.etapas.map((etapa) => (
             <li key={etapa.titulo} className="etapa relative pb-12 pl-10 last:pb-0 lg:pb-16">
               {/* el nodo es una flor que se abre cuando la línea llega */}
               <span

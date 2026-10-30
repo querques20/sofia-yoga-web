@@ -10,23 +10,31 @@ import { Magnetique } from "./Magnetique";
 import { Parte } from "./programme/Parte";
 import { aparecerPanza, crecerPanza, PanzaQueCrece, respirarPanza } from "./programme/PanzaQueCrece";
 
-// el ordinal va en superíndice, como se escribe en francés (1er, 2e, 3e)
-const TRIMESTRES = [
-  { n: "1", sufijo: "er", mois: "Mois 1 à 3" },
-  { n: "2", sufijo: "e", mois: "Mois 4 à 6" },
-  { n: "3", sufijo: "e", mois: "Mois 7 à 9" },
-];
+export type TextosProgramme = {
+  intro: [string, string];
+  // el ordinal va en superíndice, como se escribe en cada idioma (1er, 1st, 1.er)
+  trimestre: string;
+  trimestres: { n: string; sufijo: string; mois: string }[];
+  trimestresAria: string;
+  yang: string;
+  yin: string;
+  juntas: string;
+  formato: string;
+  accord: string;
+  cierre: { antes: string; mano: string };
+  avisar: string;
+};
 
-function Trimestre({ n, sufijo }: { n: string; sufijo: string }) {
+function Trimestre({ n, sufijo, palabra }: { n: string; sufijo: string; palabra: string }) {
   return (
     <>
       {n}
-      <sup className="sufijo">{sufijo}</sup> trimestre
+      <sup className="sufijo">{sufijo}</sup> {palabra}
     </>
   );
 }
 
-export function Programme() {
+export function Programme({ t }: { t: TextosProgramme }) {
   const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
@@ -121,10 +129,9 @@ export function Programme() {
         Grossesse en <span className="mano inline-block text-[1.1em]">mouvement</span>
       </h2>
       <p className="mt-6 max-w-[30rem] text-[1.1rem] leading-relaxed">
-        Ce programme est pensé pour toi si tu es enceinte et que tu souhaites continuer à bouger consciemment pendant
-        ta grossesse.
+        {t.intro[0]}
       </p>
-      <p className="mt-3 max-w-[30rem] text-[1.1rem] leading-relaxed">Il sera en ligne, organisé par trimestre, et il arrive bientôt.</p>
+      <p className="mt-3 max-w-[30rem] text-[1.1rem] leading-relaxed">{t.intro[1]}</p>
     </>
   );
 
@@ -135,12 +142,12 @@ export function Programme() {
       <div className="fijo contenedor grid min-h-svh content-center gap-6 py-8 lg:grid-cols-12 lg:items-center lg:gap-12 lg:py-0">
         <div className="lg:col-span-5">
           <div className="hidden lg:block">{encabezado}</div>
-          <ol className="grid grid-cols-3 gap-3 lg:mt-12 lg:grid-cols-1 lg:gap-5" aria-label="Les trois trimestres">
-            {TRIMESTRES.map((t) => (
-              <li key={t.n} className="indice-item">
+          <ol className="grid grid-cols-3 gap-3 lg:mt-12 lg:grid-cols-1 lg:gap-5" aria-label={t.trimestresAria}>
+            {t.trimestres.map((tri) => (
+              <li key={tri.n} className="indice-item">
                 <span className="titre block text-[1.15rem] lg:text-[1.7rem]">
-                  <Trimestre n={t.n} sufijo={t.sufijo} />
-                  <span className="sr-only">, {t.mois.toLowerCase()}</span>
+                  <Trimestre n={tri.n} sufijo={tri.sufijo} palabra={t.trimestre} />
+                  <span className="sr-only">, {tri.mois.toLowerCase()}</span>
                 </span>
                 <span className="mt-2 block h-[3px] overflow-hidden rounded-full bg-verde/15" aria-hidden="true">
                   <span className="indice-linea block h-full bg-verde" />
@@ -153,39 +160,39 @@ export function Programme() {
         <div className="lg:col-span-7">
           <div className="marco relative grid h-[min(64svh,38rem)] grid-cols-[1fr_auto] grid-rows-[auto_1fr_auto] gap-x-4 overflow-hidden rounded-[2rem] bg-arena p-6 lg:h-[min(76svh,40rem)] lg:p-10">
             <div className="marco-titulos titre col-span-2 text-[clamp(2.6rem,7.6vw,6rem)]" aria-hidden="true">
-              {TRIMESTRES.map((t) => (
-                <div key={t.n} className="marco-titulo">
+              {t.trimestres.map((tri) => (
+                <div key={tri.n} className="marco-titulo">
                   <p className="marco-nombre">
-                    <Trimestre n={t.n} sufijo={t.sufijo} />
+                    <Trimestre n={tri.n} sufijo={tri.sufijo} palabra={t.trimestre} />
                   </p>
                   <p className="marco-mois mt-2 font-sans text-[1rem] font-normal leading-snug tracking-normal normal-case opacity-80 lg:mt-3 lg:text-[1.1rem]">
-                    {t.mois}
+                    {tri.mois}
                   </p>
                 </div>
               ))}
             </div>
             <div className="flex flex-col justify-end gap-3 pb-2">
-              <Parte clase="forma-yang" color="var(--color-salvia)" texto="Une partie yang, dynamique" />
-              <Parte clase="forma-yin" color="var(--color-celeste)" texto="Une partie yin, douce" />
-              <p className="juntas mt-1 text-[1.02rem]">Les deux, à chaque trimestre.</p>
+              <Parte clase="forma-yang" color="var(--color-salvia)" texto={t.yang} />
+              <Parte clase="forma-yin" color="var(--color-celeste)" texto={t.yin} />
+              <p className="juntas mt-1 text-[1.02rem]">{t.juntas}</p>
             </div>
             <div className="min-h-0 w-[min(40vw,10.5rem)] lg:w-[min(17vw,15.5rem)]">
               <PanzaQueCrece />
             </div>
-            <p className="col-span-2 text-[1rem] leading-snug lg:text-[1.1rem]">Vidéos, PDF et textes, à suivre chez toi.</p>
+            <p className="col-span-2 text-[1rem] leading-snug lg:text-[1.1rem]">{t.formato}</p>
           </div>
-          <p className="mt-4 text-[0.95rem] opacity-80">Avant de commencer&nbsp;: l’accord de ta sage-femme ou de ta gynécologue.</p>
+          <p className="mt-4 text-[0.95rem] opacity-80">{t.accord}</p>
         </div>
       </div>
 
       <div className="contenedor flex flex-col items-start gap-8 pt-6 pb-[clamp(5rem,12vw,8rem)] lg:flex-row lg:items-end lg:justify-between">
         <p className="titre text-[clamp(2.2rem,5.6vw,4.2rem)]">
-          Tu es enceinte, <span className="mano inline-block text-[1.1em]">pas malade</span>
+          {t.cierre.antes} <span className="mano inline-block text-[1.1em]">{t.cierre.mano}</span>
         </p>
         <Magnetique>
           {/* va directo al WhatsApp con el pedido ya escrito, en lugar de bajar al bloque de contacto */}
           <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].programme)} target="_blank" rel="noopener noreferrer">
-            Être prévenue du lancement
+            {t.avisar}
           </a>
         </Magnetique>
       </div>

@@ -6,12 +6,12 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Fleur } from "./Fleur";
 
 // solo lo que da hoy (confirmado el 30/9 y en su tarjeta)
-const PALABRAS = ["Yoga prénatal", "Post-partum", "Vinyasa", "Yoga flow", "En groupe", "En privé", "Au parc"];
+export type TextosBande = { palabras: string[] };
 
-function Tira({ oculta }: { oculta?: boolean }) {
+function Tira({ palabras, oculta }: { palabras: string[]; oculta?: boolean }) {
   return (
     <div className="flex shrink-0 items-center gap-[3vw] pr-[3vw]" aria-hidden={oculta || undefined}>
-      {PALABRAS.map((palabra, i) => (
+      {palabras.map((palabra, i) => (
         <Fragment key={palabra}>
           {/* una sí, una no: la palabra va calada, solo con el contorno */}
           <span className={`titre whitespace-nowrap text-[clamp(3rem,8vw,7.5rem)] ${i % 2 ? "texto-calado" : ""}`}>{palabra}</span>
@@ -23,7 +23,7 @@ function Tira({ oculta }: { oculta?: boolean }) {
 }
 
 /** la franja que se desliza sola: si bajás rápido se acelera, y si subís cambia de sentido */
-export function Bande() {
+export function Bande({ t }: { t: TextosBande }) {
   const raiz = useRef<HTMLDivElement>(null);
   const quieto = useReducedMotion();
 
@@ -53,8 +53,8 @@ export function Bande() {
   return (
     <div ref={raiz} className="overflow-hidden border-y border-salvia py-[clamp(1.2rem,3vw,2.4rem)]" role="presentation">
       <div className="pista flex w-max">
-        <Tira />
-        <Tira oculta />
+        <Tira palabras={t.palabras} />
+        <Tira palabras={t.palabras} oculta />
       </div>
     </div>
   );

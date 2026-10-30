@@ -7,8 +7,10 @@ import { escucharSouffle, expirarAMano, inspirarAMano, type Fase } from "@/lib/s
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Embarazada } from "./ilustraciones/Embarazada";
 
+export type TextosRespiration = { alt: string; invita: string; inspira: string; espira: string; ayuda: string };
+
 /** la composición del inicio: ella respira sola, y si mantenés apretado respira con vos */
-export function Respiration() {
+export function Respiration({ t }: { t: TextosRespiration }) {
   const raiz = useRef<HTMLDivElement>(null);
   const faseActual = useRef<Fase>("inspire");
   const [aMano, setAMano] = useState(false);
@@ -94,11 +96,11 @@ export function Respiration() {
     }
   };
 
-  const etiqueta = !aMano ? "Respire avec moi" : fase === "inspire" ? "Inspire…" : "Expire…";
+  const etiqueta = !aMano ? t.invita : fase === "inspire" ? t.inspira : t.espira;
 
   return (
     <div ref={raiz} className="relative h-full w-full">
-      <svg viewBox="0 0 400 520" className="entra h-full w-full overflow-visible" role="img" aria-label="Une femme enceinte de profil, les yeux fermés, une main posée sur le ventre">
+      <svg viewBox="0 0 400 520" className="entra h-full w-full overflow-visible" role="img" aria-label={t.alt}>
         <Embarazada />
       </svg>
 
@@ -121,7 +123,7 @@ export function Respiration() {
             {etiqueta}
           </button>
           <p id="respiration-aide" className="hidden text-sm opacity-70 lg:block">
-            Maintiens appuyé pour inspirer, relâche pour expirer.
+            {t.ayuda}
           </p>
         </div>
       )}
