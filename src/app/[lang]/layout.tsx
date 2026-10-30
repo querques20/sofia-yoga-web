@@ -4,6 +4,7 @@ import { ContactFlottant } from "@/components/ContactFlottant";
 import { Entrada } from "@/components/Entrada";
 import { SugerenciaDeIdioma } from "@/components/idioma/SugerenciaDeIdioma";
 import { LenisProvider } from "@/components/LenisProvider";
+import { MarcasDelDocumento } from "@/components/MarcasDelDocumento";
 import { Nav } from "@/components/Nav";
 import { Pied } from "@/components/Pied";
 import { IDIOMAS } from "@/lib/idiomas";
@@ -28,17 +29,11 @@ export function generateStaticParams() {
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
   const idioma = await lang();
   return (
-    // el script de abajo le suma la clase "js" antes de hidratar, por eso se avisa que la diferencia es a propósito
+    // MarcasDelDocumento le suma clases antes de hidratar, por eso se avisa que la diferencia es a propósito
     <html lang={idioma} className={FUENTES} suppressHydrationWarning>
       <head>
-        {/* marca que hay JS antes de pintar, así lo que entra animado no aparece y desaparece. Y si la entrada
-            ya se vio en esta visita, lo marca también, así el telón ni se pinta */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "document.documentElement.classList.add('js');try{if(sessionStorage.getItem('sofia-entrada'))document.documentElement.classList.add('entrada-vista')}catch(e){}",
-          }}
-        />
+        {/* marca que hay JS (y si la entrada ya se vio) antes de pintar */}
+        <MarcasDelDocumento />
       </head>
       <body>
         {/* para quien navega con el teclado: saltar el menú e ir directo al contenido */}

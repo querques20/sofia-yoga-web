@@ -9,6 +9,7 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "./FleurQuiRespire";
 import { SelectorDeIdioma } from "./idioma/SelectorDeIdioma";
+import { SelectorDeIdiomaCompacto } from "./idioma/SelectorDeIdiomaCompacto";
 import { MenuMovil } from "./nav/MenuMovil";
 import { crearIntroPildora, introPildoraHecha, saltarIntroPildora } from "./nav/intro-pildora";
 
@@ -92,6 +93,10 @@ export function Nav() {
         </Link>
       </div>
 
+      {/* en el celular el idioma queda a la vista, al lado del botón del menú */}
+      <div className="ml-auto lg:hidden">
+        <SelectorDeIdiomaCompacto />
+      </div>
       <MenuMovil />
     </nav>
   );
