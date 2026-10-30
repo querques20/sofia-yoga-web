@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 type Props = {
@@ -28,6 +29,7 @@ function Marca() {
  * Las marcas se dibujan una tras otra cuando el recuadro aparece
  */
 export function Signaux({ id, titulo, intro, signaux, cierre, fuente }: Props) {
+  const t = useInterfaz();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
 
@@ -63,7 +65,7 @@ export function Signaux({ id, titulo, intro, signaux, cierre, fuente }: Props) {
               ))}
             </ul>
             <div className="mt-8 border-t border-verde/20 pt-6 text-[1.12rem] leading-relaxed font-bold">{cierre}</div>
-            {fuente && <p className="mt-3 text-[0.92rem] opacity-70">Source&nbsp;: {fuente}</p>}
+            {fuente && <p className="mt-3 text-[0.92rem] opacity-70">{t.fuente} {fuente}</p>}
           </div>
         </div>
       </div>

@@ -38,6 +38,8 @@ const fr = {
   preguntasFrecuentes: "Questions fréquentes",
   enEstaPagina: "Sur cette page",
   fuentes: "Sources",
+  // delante de la fuente corta de un dato, en las páginas de salud
+  fuente: "Source\u00a0:",
   // el recordatorio de siempre en las páginas de embarazo y posparto
   avisoSalud:
     "Ces informations sont générales. Elles ne remplacent pas l’avis de ta sage-femme, de ta gynécologue ou de ta physio, qui connaissent ta situation.",
@@ -98,6 +100,7 @@ const en: Interfaz = {
   preguntasFrecuentes: "Frequently asked questions",
   enEstaPagina: "On this page",
   fuentes: "Sources",
+  fuente: "Source:",
   avisoSalud:
     "This is general information. It doesn’t replace the advice of your midwife, gynaecologist or physio, who know your situation.",
   escribirWhatsApp: "Message me on WhatsApp",
@@ -154,6 +157,7 @@ const es: Interfaz = {
   preguntasFrecuentes: "Preguntas frecuentes",
   enEstaPagina: "En esta página",
   fuentes: "Fuentes",
+  fuente: "Fuente:",
   avisoSalud:
     "Esta información es general. No reemplaza la opinión de tu matrona, tu ginecóloga o tu fisioterapeuta, que conocen tu situación.",
   escribirWhatsApp: "Escribir por WhatsApp",
