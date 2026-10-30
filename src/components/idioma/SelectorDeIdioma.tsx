@@ -8,8 +8,9 @@ import { IDIOMAS, type Idioma, NOMBRES, rutaEn } from "@/lib/idiomas";
 import { guardarIdioma } from "@/lib/preferencia-idioma";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
+import { IconoIdioma } from "../Iconos";
 
-const ETIQUETA: Record<Idioma, string> = { fr: "Langue", en: "Language", es: "Idioma" };
+export const ETIQUETA: Record<Idioma, string> = { fr: "Langue", en: "Language", es: "Idioma" };
 
 const ESTILOS = {
   // en la píldora del menú de escritorio: las siglas, con el resaltado salvia como los links
@@ -74,8 +75,10 @@ export function SelectorDeIdioma({ variante, className = "" }: { variante: keyof
   };
 
   return (
-    <div ref={lista} role="group" aria-label={ETIQUETA[idioma]} className={`relative w-fit font-bold ${estilos.lista} ${className}`}>
+    <div ref={lista} role="group" aria-label={ETIQUETA[idioma]} className={`relative flex w-fit items-center font-bold ${estilos.lista} ${className}`}>
       <span ref={indicador} aria-hidden="true" className={`invisible absolute inset-y-1 left-0 ${estilos.indicador}`} />
+      {/* el globo dice «idioma» sin palabras, en cualquier idioma */}
+      {variante === "pildora" && <IconoIdioma className="mr-0.5 ml-1.5 h-4 w-4 opacity-60" />}
       <ul className="flex items-center">
         {IDIOMAS.map((opcion) => {
           const href = rutaEn(opcion, ruta);
