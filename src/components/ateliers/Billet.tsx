@@ -39,7 +39,7 @@ export function Billet({ t }: { t: TextosBillet }) {
         .fromTo(q(".billete-sello ellipse"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.1, stagger: 0.05, ease: "power2.inOut" }, 0.55);
       entrada.progress(0.001).pause();
       let vivo = true;
-      telonAbierto.then(
+      telonAbierto().then(
         contextSafe!(() => {
           if (vivo) entrada.play(0);
         }),

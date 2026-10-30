@@ -53,7 +53,7 @@ export function IlustracionQueRespira({ children, viewBox, etiqueta, className, 
       // mientras el telón está cerrado queda todo en su punto de partida
       entrada.progress(0.001).pause();
       let vivo = true;
-      telonAbierto.then(
+      telonAbierto().then(
         contextSafe!(() => {
           if (vivo) entrada.play(0);
         }),

@@ -42,7 +42,7 @@ export function Respiration({ t }: { t: TextosRespiration }) {
         .from(q(".control"), { opacity: 0, y: 10, duration: 0.7 }, 1.2);
       entrada.progress(0.001).pause();
       let vivo = true;
-      telonAbierto.then(
+      telonAbierto().then(
         contextSafe!(() => {
           if (vivo) entrada.play(0);
         }),
