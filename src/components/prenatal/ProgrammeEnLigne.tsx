@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { escucharSouffle } from "@/lib/souffle";
@@ -9,15 +9,19 @@ import { useRuta } from "@/lib/useRuta";
 import { Magnetique } from "../Magnetique";
 import { Parte } from "../programme/Parte";
 
-const TRIMESTRES = [
-  { n: "1", sufijo: "er" },
-  { n: "2", sufijo: "e" },
-  { n: "3", sufijo: "e" },
-];
-
-// su texto del programa, tal cual lo escribió (contexto maestro, sección 7)
-const TEXTO =
-  "Il est fait pour t’accompagner d’une manière douce et bienveillante. Il t’aidera à te (re)connecter à toi et à ton bébé, à soulager les éventuelles douleurs qui peuvent apparaître pendant ces 9 mois, à faire le plein d’énergie, et à reprendre confiance en toi et en ton corps pour le jour de l’accouchement.";
+export type TextosProgrammeEnLigne = {
+  titulo: string;
+  texto: ReactNode;
+  /** su texto del programa, tal cual lo escribió (contexto maestro, sección 7) */
+  cita: string;
+  firma: string;
+  etiquetaTrimestres: string;
+  /** la etiqueta de cada trimestre (1.º, 2.º, 3.º) */
+  trimestres: ReactNode[];
+  yang: string;
+  yin: string;
+  boton: string;
+};
 
 // las dos partes de cada trimestre, chiquitas: la yang en salvia y la yin en celeste
 function Formas() {
@@ -36,7 +40,7 @@ function Formas() {
 }
 
 /** para quien no puede venir: el programa en línea que viene, con los nueve meses que se recorren al bajar */
-export function ProgrammeEnLigne() {
+export function ProgrammeEnLigne({ t }: { t: TextosProgrammeEnLigne }) {
   const { idioma } = useRuta();
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
@@ -77,17 +81,13 @@ export function ProgrammeEnLigne() {
       <div className="contenedor">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">Et si tu ne peux pas venir&nbsp;?</h2>
-            <p className="mt-6 max-w-[30rem] text-[1.1rem] leading-relaxed">
-              Le programme en ligne <strong>Grossesse en mouvement</strong> arrive bientôt. Il sera organisé par trimestre,
-              avec une partie yang, dynamique, et une partie yin, douce. Des vidéos, des PDF et des textes, à suivre chez
-              toi.
-            </p>
+            <h2 className="titre text-[clamp(2.6rem,6.4vw,5rem)]">{t.titulo}</h2>
+            <p className="mt-6 max-w-[30rem] text-[1.1rem] leading-relaxed">{t.texto}</p>
           </div>
           <blockquote className="lg:col-span-7">
-            <p className="text-[clamp(1.35rem,2.4vw,1.85rem)] leading-[1.32]">{TEXTO}</p>
+            <p className="text-[clamp(1.35rem,2.4vw,1.85rem)] leading-[1.32]">{t.cita}</p>
             <footer className="mt-7 flex items-end gap-3">
-              <span className="mano text-[clamp(2.4rem,4.6vw,3.4rem)]">Tu es enceinte, pas malade</span>
+              <span className="mano text-[clamp(2.4rem,4.6vw,3.4rem)]">{t.firma}</span>
               <svg viewBox="0 0 24 24" className="mb-[0.35em] h-8 w-8 shrink-0 text-violeta" aria-hidden="true">
                 <path
                   fill="currentColor"
@@ -98,12 +98,11 @@ export function ProgrammeEnLigne() {
           </blockquote>
         </div>
 
-        <ol className="meses mt-16 grid grid-cols-3 gap-3 lg:mt-24 lg:gap-6" aria-label="Les trois trimestres du programme">
-          {TRIMESTRES.map((t) => (
-            <li key={t.n}>
+        <ol className="meses mt-16 grid grid-cols-3 gap-3 lg:mt-24 lg:gap-6" aria-label={t.etiquetaTrimestres}>
+          {t.trimestres.map((etiqueta, i) => (
+            <li key={i}>
               <span className="mes-etiqueta titre block text-[clamp(1.15rem,2.6vw,2rem)]">
-                {t.n}
-                <sup className="sufijo">{t.sufijo}</sup> trimestre
+                {etiqueta}
               </span>
               <span className="relative mt-3 block h-[3px] rounded-full bg-verde/15" aria-hidden="true">
                 <span className="mes-tramo absolute inset-0 origin-left rounded-full bg-verde" />
@@ -123,12 +122,12 @@ export function ProgrammeEnLigne() {
 
         <div className="mt-10 flex flex-col gap-8 lg:mt-14 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-wrap gap-x-8 gap-y-3">
-            <Parte clase="leyenda-yang" color="var(--color-salvia)" texto="La partie yang, dynamique" />
-            <Parte clase="leyenda-yin" color="var(--color-celeste)" texto="La partie yin, douce" />
+            <Parte clase="leyenda-yang" color="var(--color-salvia)" texto={t.yang} />
+            <Parte clase="leyenda-yin" color="var(--color-celeste)" texto={t.yin} />
           </div>
           <Magnetique>
             <a className="boton" href={enlaceWhatsApp(MENSAJES[idioma].programme)} target="_blank" rel="noopener noreferrer">
-              Être prévenue du lancement
+              {t.boton}
             </a>
           </Magnetique>
         </div>
