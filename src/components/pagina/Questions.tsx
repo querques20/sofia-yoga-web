@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useId, useState, type ReactNode } from "react";
 import type { Pregunta } from "@/contenido/preguntas";
 import { ScrollTrigger } from "@/lib/gsap";
+import { rutaEn } from "@/lib/idiomas";
 import { useInterfaz } from "@/lib/useInterfaz";
+import { useRuta } from "@/lib/useRuta";
 
 type Props = {
   preguntas: Pregunta[];
@@ -30,6 +32,7 @@ function MasMenos({ abierto }: { abierto: boolean }) {
 /** las preguntas frecuentes: se abre una por vez y la respuesta se despliega con su altura justa */
 export function Questions({ preguntas, titulo, id = "questions", nota }: Props) {
   const t = useInterfaz();
+  const { idioma } = useRuta();
   const [abierta, setAbierta] = useState<number | null>(null);
   const base = useId();
 
@@ -42,9 +45,9 @@ export function Questions({ preguntas, titulo, id = "questions", nota }: Props) 
           <p className="mt-5 max-w-[20rem] text-[1.05rem] leading-relaxed">
             {nota ?? (
               <>
-                Tu ne trouves pas ta réponse&nbsp;?{" "}
-                <Link className="enlace font-bold" href="/contact">
-                  Écris-moi
+                {t.sinRespuesta}{" "}
+                <Link className="enlace font-bold" href={rutaEn(idioma, "/contact")}>
+                  {t.escribime}
                 </Link>
               </>
             )}
