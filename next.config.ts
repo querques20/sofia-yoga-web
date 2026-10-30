@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   // sin el botoncito de Next abajo a la izquierda, así las pruebas se ven limpias
   devIndicators: false,
   partialPrefetching: true,
+  // la 404 de las URLs que no son ninguna página (app/global-not-found.tsx): con el layout dentro de [lang], es
+  // la forma que da Next de tener una sola 404 con los estilos de la web
+  experimental: { globalNotFound: true },
   turbopack: {
     rules: {
       "*.css": {
