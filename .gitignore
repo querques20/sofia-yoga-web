@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# estado local de las herramientas de IA (no va al repo)
+# local state of AI tools
 .omc/

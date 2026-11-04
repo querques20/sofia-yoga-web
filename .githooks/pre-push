@@ -1,0 +1,26 @@
+#!/bin/sh
+# The repo's gate. Runs every check even when one fails, so you see the whole
+# list at once. The production build is not here: it is too slow for a push, and
+# CONTRIBUTING.md asks for it before a PR.
+#
+# The only way past it is git's own `git push --no-verify`. There is on purpose
+# no environment variable to skip it.
+set -u
+
+failed=0
+
+run() {
+  printf '\n\033[1m> %s\033[0m\n' "$1"
+  pnpm "$1" || failed=1
+}
+
+run typecheck
+run react-doctor
+run lint
+
+if [ "$failed" != 0 ]; then
+  printf '\n\033[31m\033[1mPush blocked.\033[0m Fix what is listed above and push again.\n\n'
+  exit 1
+fi
+
+printf '\n\033[32mAll checks passed.\033[0m\n\n'
