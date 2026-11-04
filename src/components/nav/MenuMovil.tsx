@@ -20,14 +20,17 @@ export function MenuMovil() {
   const hoja = useRef<HTMLDialogElement>(null);
   const boton = useRef<HTMLButtonElement>(null);
   const [abierto, setAbierto] = useState(false);
-  const [rutaPrevia, setRutaPrevia] = useState(ruta);
+  // `ruta` is the French route, the same in every language, so a language change only shows in the public URL
+  const url = rutaEn(idioma, ruta);
+  const [urlPrevia, setUrlPrevia] = useState(url);
   const quieto = useReducedMotion();
   // si se cerró con la cruz o con Escape, el foco vuelve al botón (si se cerró porque cambió la página, no)
   const devolverFoco = useRef(false);
 
-  // al cambiar de página el menú se cierra solo
-  if (ruta !== rutaPrevia) {
-    setRutaPrevia(ruta);
+  // The menu closes itself when the page or the language changes. Next keeps the previous language's layout hidden
+  // (Activity) with its state, so a menu left open here would still be open on coming back to that language
+  if (url !== urlPrevia) {
+    setUrlPrevia(url);
     setAbierto(false);
   }
 
