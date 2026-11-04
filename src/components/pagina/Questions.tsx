@@ -1,20 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState, type ReactNode } from "react";
+import { useId, useState } from "react";
 import type { Pregunta } from "@/contenido/preguntas";
 import { ScrollTrigger } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
 import { useInterfaz } from "@/lib/useInterfaz";
 import { useRuta } from "@/lib/useRuta";
 
-type Props = {
-  preguntas: Pregunta[];
-  titulo?: string;
-  id?: string;
-  /** lo que va debajo del título; si no se pasa, la salida para escribirle */
-  nota?: ReactNode;
-};
+type Props = { preguntas: Pregunta[] };
 
 // el más se vuelve menos: la rayita vertical gira hasta quedar acostada sobre la otra
 function MasMenos({ abierto }: { abierto: boolean }) {
@@ -29,28 +23,24 @@ function MasMenos({ abierto }: { abierto: boolean }) {
   );
 }
 
-/** las preguntas frecuentes: se abre una por vez y la respuesta se despliega con su altura justa */
-export function Questions({ preguntas, titulo, id = "questions", nota }: Props) {
+/** las preguntas frecuentes de la página: se abre una por vez y la respuesta se despliega con su altura justa */
+export function Questions({ preguntas }: Props) {
   const t = useInterfaz();
   const { idioma } = useRuta();
   const [abierta, setAbierta] = useState<number | null>(null);
   const base = useId();
 
   return (
-    <section id={id} className="py-[clamp(4rem,10vw,7rem)]">
+    <section id="questions" className="py-[clamp(4rem,10vw,7rem)]">
       <div className="contenedor grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <h2 className="titre text-[clamp(2.4rem,5.6vw,4.4rem)]">{titulo ?? t.preguntasFrecuentes}</h2>
+          <h2 className="titre text-[clamp(2.4rem,5.6vw,4.4rem)]">{t.preguntasFrecuentes}</h2>
           {/* si la duda no está en la lista, la salida queda a mano */}
           <p className="mt-5 max-w-[20rem] text-[1.05rem] leading-relaxed">
-            {nota ?? (
-              <>
-                {t.sinRespuesta}{" "}
-                <Link className="enlace font-bold" href={rutaEn(idioma, "/contact")}>
-                  {t.escribime}
-                </Link>
-              </>
-            )}
+            {t.sinRespuesta}{" "}
+            <Link className="enlace font-bold" href={rutaEn(idioma, "/contact")}>
+              {t.escribime}
+            </Link>
           </p>
         </div>
         <ul className="lg:col-span-8">

@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { Approche, type TextosApproche } from "@/components/Approche";
 import { Bande, type TextosBande } from "@/components/Bande";
-import { Contact } from "@/components/Contact";
 import { Hero, type TextosHero } from "@/components/Hero";
-import { Parcours, type TextosParcours } from "@/components/Parcours";
-import { PourQui, type TextosPourQui } from "@/components/PourQui";
-import { Pratique, type TextosPratique } from "@/components/Pratique";
 import { Programme, type TextosProgramme } from "@/components/Programme";
-import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { persona, negocio } from "@/lib/datos-estructurados";
 import { idiomaActual } from "@/lib/idioma-actual";
@@ -35,26 +29,6 @@ const fr = {
       ateliers: { nombre: "Ateliers", alt: "Un groupe assis en cercle dans une salle lumineuse" },
     },
   } satisfies TextosHero,
-  pourQui: {
-    titulo: "Par où commencer ?",
-    puertas: [
-      {
-        frase: "Je suis enceinte et j’ai envie de bouger",
-        detalle: "Yoga prénatal, avec l’accord de ta sage-femme ou de ta gynécologue.",
-        alt: "Une femme enceinte de profil, une main posée sur le ventre",
-      },
-      {
-        frase: "Je viens d’accoucher",
-        detalle: "Yoga post-partum, après la rééducation du périnée avec une physio.",
-        alt: "Une jeune maman qui tient son bébé contre elle",
-      },
-      {
-        frase: "Je cherche un cours de yoga dynamique",
-        detalle: "Vinyasa et yoga flow, en groupe, en privé ou au parc.",
-        alt: "Une femme dans la posture du guerrier II, sur un tapis de yoga",
-      },
-    ],
-  } satisfies TextosPourQui,
   programme: {
     intro: [
       "Ce programme est pensé pour toi si tu es enceinte et que tu souhaites continuer à bouger consciemment pendant ta grossesse.",
@@ -75,70 +49,10 @@ const fr = {
     cierre: { antes: "Tu es enceinte,", mano: "pas malade" },
     avisar: "Être prévenue du lancement",
   } satisfies TextosProgramme,
-  approche: {
-    titulo: "Mon approche",
-    // texto de su bio, tal cual lo escribió ella (con su escritura inclusiva)
-    cita: "Aujourd’hui, je propose un enseignement dynamique alliant pranayama, mouvement fonctionnel et système myofascial, dans un cadre bienveillant et inclusif, car je crois fortement que le yoga est pour touxtes ! Nul besoin d’être fort.e ou souple, viens comme tu es :)",
-  } satisfies TextosApproche,
   // solo lo que da hoy (confirmado el 30/9 y en su tarjeta)
   bande: {
     palabras: ["Yoga prénatal", "Post-partum", "Vinyasa", "Yoga flow", "En groupe", "En privé", "Au parc"],
   } satisfies TextosBande,
-  parcours: {
-    titulo: "Mon parcours",
-    foto: "La photo de Sofia arrivera ici après sa séance photo.",
-    firma: "Sofia Costa, professeure de yoga à Genève.",
-    // todo sale de su bio y de los audios del 30/9; solo 2019 tiene fecha confirmada
-    etapas: [
-      { titulo: "Le sport, depuis toute petite", texto: "Gymnastique artistique, natation et hockey sur gazon." },
-      {
-        titulo: "Le marketing",
-        texto: "Quelques années d’études et de travail, jusqu’au jour où je me suis rendu compte que cela ne me rendait pas heureuse.",
-      },
-      { titulo: "2019, le départ", texto: "J’ai quitté la ville où je suis née pour voyager et me redécouvrir." },
-      { titulo: "L’Inde", texto: "Ma formation en Ashtanga-Vinyasa." },
-      {
-        titulo: "La Suisse",
-        texto: "Le yin yoga et la thérapie des fascias, puis une formation continue sur les fascias.",
-      },
-      { titulo: "Pré et postnatal", texto: "Ma formation en yoga pré et postnatal. Je suis enregistrée auprès de Yoga Alliance." },
-      { titulo: "Aujourd’hui", texto: "Des cours de yoga dynamique à Genève, en groupe, en privé et au parc." },
-    ],
-  } satisfies TextosParcours,
-  // lo que sabemos para todos los cursos; lugares, horarios y precios todavía no los tenemos
-  pratique: {
-    datos: [
-      {
-        dato: "Où",
-        valor: (
-          <>
-            À Genève. Les lieux sont <AConfirmer />
-          </>
-        ),
-      },
-      {
-        dato: "Quand",
-        valor: (
-          <>
-            Les horaires sont <AConfirmer />
-          </>
-        ),
-      },
-      {
-        dato: "Combien",
-        valor: (
-          <>
-            Les tarifs sont <AConfirmer />
-          </>
-        ),
-      },
-      { dato: "Paiement", valor: <AConfirmer /> },
-      { dato: "Pendant la grossesse", valor: "Avec l’accord de ta sage-femme ou de ta gynécologue." },
-      { dato: "Après l’accouchement", valor: "Après la rééducation du périnée avec une physio." },
-    ],
-    nota: "Les cours ne sont pas remboursés par l’assurance complémentaire.",
-    pedir: "Les lieux, les horaires et les tarifs arrivent bientôt. En attendant, écris-moi : je te dis où et quand ont lieu les prochains cours.",
-  } satisfies TextosPratique,
 };
 
 const TEXTOS: Record<Idioma, typeof fr> = {
@@ -162,26 +76,6 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         ateliers: { nombre: "Workshops", alt: "A group sitting in a circle in a bright room" },
       },
     },
-    pourQui: {
-      titulo: "Where to start?",
-      puertas: [
-        {
-          frase: "I’m pregnant and I want to move",
-          detalle: "Prenatal yoga, with the go-ahead of your midwife or gynaecologist.",
-          alt: "A pregnant woman in profile, one hand resting on her belly",
-        },
-        {
-          frase: "I’ve just given birth",
-          detalle: "Postnatal yoga, after pelvic floor rehab with a physio.",
-          alt: "A young mum holding her baby close",
-        },
-        {
-          frase: "I’m looking for a dynamic yoga class",
-          detalle: "Vinyasa and yoga flow, in a group, one to one or in the park.",
-          alt: "A woman in warrior II pose on a yoga mat",
-        },
-      ],
-    },
     programme: {
       intro: [
         "This programme is designed for you if you’re pregnant and want to keep moving mindfully throughout your pregnancy.",
@@ -202,65 +96,8 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       cierre: { antes: "You’re pregnant,", mano: "not ill" },
       avisar: "Tell me when it launches",
     },
-    approche: {
-      titulo: "My approach",
-      cita: "Today, I teach a dynamic practice that brings together pranayama, functional movement and the myofascial system, in a kind and inclusive space, because I truly believe yoga is for everyone! You don’t need to be strong or flexible, come as you are :)",
-    },
     bande: {
       palabras: ["Prenatal yoga", "Postnatal", "Vinyasa", "Yoga flow", "In a group", "One to one", "In the park"],
-    },
-    parcours: {
-      titulo: "My journey",
-      foto: "Sofia’s photo will go here after her photo shoot.",
-      firma: "Sofia Costa, yoga teacher in Geneva.",
-      etapas: [
-        { titulo: "Sport, from a very young age", texto: "Artistic gymnastics, swimming and field hockey." },
-        {
-          titulo: "Marketing",
-          texto: "A few years of study and work, until the day I realised it wasn’t making me happy.",
-        },
-        { titulo: "2019, setting off", texto: "I left the city where I was born to travel and rediscover myself." },
-        { titulo: "India", texto: "My Ashtanga-Vinyasa training." },
-        {
-          titulo: "Switzerland",
-          texto: "Yin yoga and fascia therapy, then continuing training on fascia.",
-        },
-        { titulo: "Pre- and postnatal", texto: "My pre- and postnatal yoga training. I’m registered with Yoga Alliance." },
-        { titulo: "Today", texto: "Dynamic yoga classes in Geneva, in a group, one to one and in the park." },
-      ],
-    },
-    pratique: {
-      datos: [
-        {
-          dato: "Where",
-          valor: (
-            <>
-              In Geneva. Venues are <AConfirmer />
-            </>
-          ),
-        },
-        {
-          dato: "When",
-          valor: (
-            <>
-              Times are <AConfirmer />
-            </>
-          ),
-        },
-        {
-          dato: "How much",
-          valor: (
-            <>
-              Prices are <AConfirmer />
-            </>
-          ),
-        },
-        { dato: "Payment", valor: <AConfirmer /> },
-        { dato: "During pregnancy", valor: "With the go-ahead of your midwife or gynaecologist." },
-        { dato: "After the birth", valor: "After pelvic floor rehab with a physio." },
-      ],
-      nota: "Classes aren’t reimbursed by supplementary health insurance.",
-      pedir: "Venues, times and prices are coming soon. In the meantime, write to me: I’ll tell you where and when the next classes are.",
     },
   },
   es: {
@@ -282,26 +119,6 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         ateliers: { nombre: "Talleres", alt: "Un grupo sentado en círculo en una sala luminosa" },
       },
     },
-    pourQui: {
-      titulo: "¿Por dónde empezar?",
-      puertas: [
-        {
-          frase: "Estoy embarazada y tengo ganas de moverme",
-          detalle: "Yoga prenatal, con el visto bueno de tu matrona o de tu ginecóloga.",
-          alt: "Una mujer embarazada de perfil, con una mano sobre el vientre",
-        },
-        {
-          frase: "Acabo de dar a luz",
-          detalle: "Yoga posparto, después de la reeducación del suelo pélvico con una fisioterapeuta.",
-          alt: "Una mamá joven con su bebé en brazos",
-        },
-        {
-          frase: "Busco una clase de yoga dinámico",
-          detalle: "Vinyasa y yoga flow, en grupo, en privado o en el parque.",
-          alt: "Una mujer en la postura del guerrero II, sobre una esterilla de yoga",
-        },
-      ],
-    },
     programme: {
       intro: [
         "Este programa está pensado para ti si estás embarazada y quieres seguir moviéndote de forma consciente durante tu embarazo.",
@@ -322,65 +139,8 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       cierre: { antes: "Estás embarazada,", mano: "no enferma" },
       avisar: "Avisarme del lanzamiento",
     },
-    approche: {
-      titulo: "Mi enfoque",
-      cita: "Hoy enseño una práctica dinámica que combina pranayama, movimiento funcional y sistema miofascial, en un ambiente acogedor e inclusivo, porque creo firmemente que el yoga es para todo el mundo. No hace falta ser fuerte ni flexible, ven tal como eres :)",
-    },
     bande: {
       palabras: ["Yoga prenatal", "Posparto", "Vinyasa", "Yoga flow", "En grupo", "En privado", "En el parque"],
-    },
-    parcours: {
-      titulo: "Mi recorrido",
-      foto: "La foto de Sofia llegará aquí después de su sesión de fotos.",
-      firma: "Sofia Costa, profesora de yoga en Ginebra.",
-      etapas: [
-        { titulo: "El deporte, desde muy pequeña", texto: "Gimnasia artística, natación y hockey sobre césped." },
-        {
-          titulo: "El marketing",
-          texto: "Unos años de estudios y de trabajo, hasta el día en que me di cuenta de que no me hacía feliz.",
-        },
-        { titulo: "2019, la partida", texto: "Dejé la ciudad donde nací para viajar y redescubrirme." },
-        { titulo: "La India", texto: "Mi formación en Ashtanga-Vinyasa." },
-        {
-          titulo: "Suiza",
-          texto: "Yin yoga y terapia de las fascias, y después una formación continua sobre las fascias.",
-        },
-        { titulo: "Prenatal y posparto", texto: "Mi formación en yoga prenatal y posparto. Estoy registrada en Yoga Alliance." },
-        { titulo: "Hoy", texto: "Clases de yoga dinámico en Ginebra, en grupo, en privado y en el parque." },
-      ],
-    },
-    pratique: {
-      datos: [
-        {
-          dato: "Dónde",
-          valor: (
-            <>
-              En Ginebra. Los lugares están <AConfirmer />
-            </>
-          ),
-        },
-        {
-          dato: "Cuándo",
-          valor: (
-            <>
-              Los horarios están <AConfirmer />
-            </>
-          ),
-        },
-        {
-          dato: "Cuánto",
-          valor: (
-            <>
-              Las tarifas están <AConfirmer />
-            </>
-          ),
-        },
-        { dato: "Pago", valor: <AConfirmer /> },
-        { dato: "Durante el embarazo", valor: "Con el visto bueno de tu matrona o de tu ginecóloga." },
-        { dato: "Después del parto", valor: "Después de la reeducación del suelo pélvico con una fisioterapeuta." },
-      ],
-      nota: "El seguro complementario no reembolsa las clases.",
-      pedir: "Los lugares, los horarios y las tarifas llegan pronto. Mientras tanto, escríbeme: te cuento dónde y cuándo son las próximas clases.",
     },
   },
 };
@@ -397,13 +157,8 @@ export default async function Accueil() {
     <main>
       <DatosEstructurados datos={[persona(idioma), negocio(idioma)]} />
       <Hero t={t.hero} />
-      <PourQui t={t.pourQui} />
       <Programme t={t.programme} />
-      <Approche t={t.approche} />
       <Bande t={t.bande} />
-      <Parcours t={t.parcours} />
-      <Pratique t={t.pratique} />
-      <Contact />
     </main>
   );
 }

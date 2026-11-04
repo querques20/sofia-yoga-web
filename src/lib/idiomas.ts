@@ -28,7 +28,6 @@ export const SLUGS: Record<string, Partial<Record<Idioma, string>>> = {
   "/cours-prives-yoga-geneve": { en: "/private-yoga-classes-geneva", es: "/clases-privadas-yoga-ginebra" },
   "/ateliers-evenements": { en: "/workshops-events", es: "/talleres-eventos" },
   "/a-propos": { en: "/about", es: "/sobre-mi" },
-  "/faq": { es: "/preguntas-frecuentes" },
   "/contact": { es: "/contacto" },
 };
 

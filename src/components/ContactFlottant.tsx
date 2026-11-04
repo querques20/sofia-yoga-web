@@ -16,8 +16,7 @@ const TEMA_POR_PAGINA: Record<string, Tema> = {
 
 /**
  * En el celular, el botón de WhatsApp acompaña mientras leés: aparece cuando ya pasaste la cabecera
- * y se esconde cuando a la vista está el bloque de contacto o el pie (ahí ya hay botón). En la página
- * de contacto no hace falta
+ * y se esconde cuando a la vista está el pie (ahí ya hay botón). En la página de contacto no hace falta
  */
 export function ContactFlottant() {
   const { idioma, ruta } = useRuta();
@@ -38,7 +37,7 @@ export function ContactFlottant() {
     const medir = () => {
       cuadro = 0;
       const alto = window.innerHeight;
-      const tapado = [...document.querySelectorAll("#contact, footer")].some((el) => el.getBoundingClientRect().top < alto * 0.92);
+      const tapado = [...document.querySelectorAll("footer")].some((el) => el.getBoundingClientRect().top < alto * 0.92);
       setVisible(window.scrollY > alto * 0.8 && !tapado);
     };
     const pedir = () => {

@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Contact } from "@/components/Contact";
 import { Magnetique } from "@/components/Magnetique";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
-import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Reperes } from "@/components/pagina/Reperes";
 import { VisualDeFlor } from "@/components/pagina/VisualDeFlor";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
@@ -216,8 +214,6 @@ export default async function CoursPrives() {
       <InfosPratiques id="infos" datos={t.datos} nota={t.nota}>
         <PedirInfos mensaje={MENSAJES[idioma].prive} texto={t.pedirInfos} />
       </InfosPratiques>
-      <PourContinuer destinos={["cours", "prenatal", "aPropos"]} />
-      <Contact mensaje={MENSAJES[idioma].prive} />
     </main>
   );
 }

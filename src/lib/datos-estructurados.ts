@@ -100,8 +100,7 @@ export function servicio(
   };
 }
 
-/** las preguntas frecuentes de una página. Cada una se marca en un solo lugar (lo pide Google): en la página
- *  de su clase, no en /faq, que las junta */
+/** las preguntas frecuentes de una página. Cada una se marca en un solo lugar (lo pide Google): en la página de su clase */
 export function preguntasFrecuentes(idioma: Idioma, preguntas: Pregunta[]) {
   return {
     "@type": "FAQPage",
