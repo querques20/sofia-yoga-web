@@ -130,3 +130,7 @@ Sofía no tiene fotos profesionales y no las tendrá pronto (Contexto maestro §
 - Las posiciones de la tabla admiten ±2 % para que el cartel de una foto no pise la esquina de la de al lado (en el boceto, «Yoga prénatal» roza a «Cours en groupe» y «Post-partum» a «Au parc»). Las fotos de abajo tienen que quedar enteras, con su cartel, en una pantalla de 1366 × 700.
 - Cómo se resuelve la flor de fotos en celular durante la entrada (misma lógica, con las medidas de la grilla).
 - Si `next/image` complica el recorte dentro del marco orgánico, una `img` común con `loading="eager"` y `fetchpriority="high"` es aceptable.
+
+## Después (4/11, mismo día)
+
+Facundo pidió que lo único que se repita en todas las páginas sea el menú y el pie. Del Inicio se fueron «Par où commencer ?», «Mon approche», «Mon parcours», «Infos pratiques» y «Écris-moi» (quedan el hero, «Grossesse en mouvement» y la franja de palabras), y de las otras páginas «Pour aller plus loin» y «Écris-moi». Los dibujos sueltos de `public/ilustraciones` y el script que los regeneraba ya no existen: la `Embarazada` vive en `Respiration`. Rama `sin-repeticiones`.

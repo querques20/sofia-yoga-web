@@ -28,7 +28,6 @@ const fr = {
     // sus formaciones, confirmadas el 30/9. Yoga Alliance es un registro (no certifica), por eso «enregistrée»
     formaciones: ["Enregistrée auprès de Yoga Alliance", "Ashtanga Vinyasa, en Inde", "Yin yoga et fascias, en Suisse", "Yoga pré et postnatal"],
     privados: "Cours privés",
-    preguntas: "Questions fréquentes",
     derechos: "© 2026 Sofia Yoga, Genève",
     prueba: "Version de test : les textes et les infos pratiques sont à confirmer.",
     legales: ["Mentions légales", "Confidentialité"],
@@ -50,22 +49,6 @@ const fr = {
   porMail: "ou par e-mail",
   preguntarWhatsApp: "Demander sur WhatsApp",
   bienvenida: "Bienvenue",
-  contacto: {
-    titulo: "Écris-moi",
-    texto: "Pour une question sur les cours ou sur le programme, écris-moi par WhatsApp, par e-mail ou sur Instagram.",
-    mail: "E-mail",
-  },
-  seguir: {
-    titulo: "Pour aller plus loin",
-    destinos: {
-      prenatal: { titulo: "Yoga prénatal", texto: "Pendant la grossesse, avec l’accord de ta sage-femme ou de ta gynécologue." },
-      postPartum: { titulo: "Yoga post-partum", texto: "Après l’accouchement et la rééducation du périnée, avec une intensité qui monte petit à petit." },
-      cours: { titulo: "Cours de yoga", texto: "Vinyasa, yoga flow et yoga dynamique, en groupe, en privé ou au parc." },
-      prives: { titulo: "Cours privés", texto: "Un cours rien que pour toi, à ton rythme." },
-      ateliers: { titulo: "Ateliers", texto: "Les prochains ateliers et événements, annoncés ici." },
-      aPropos: { titulo: "À propos", texto: "Mon parcours, mes formations et ma façon d’enseigner." },
-    },
-  },
 };
 
 type Interfaz = typeof fr;
@@ -93,7 +76,6 @@ const en: Interfaz = {
     lema: "Yoga workshops and classes for everyone.",
     formaciones: ["Registered with Yoga Alliance", "Ashtanga Vinyasa, in India", "Yin yoga and fascia, in Switzerland", "Prenatal and postnatal yoga"],
     privados: "Private classes",
-    preguntas: "FAQ",
     derechos: "© 2026 Sofia Yoga, Geneva",
     prueba: "Test version: the texts and practical details are still to be confirmed.",
     legales: ["Legal notice", "Privacy"],
@@ -112,22 +94,6 @@ const en: Interfaz = {
   porMail: "or by email",
   preguntarWhatsApp: "Ask on WhatsApp",
   bienvenida: "Welcome",
-  contacto: {
-    titulo: "Write to me",
-    texto: "Got a question about the classes or the programme? Write to me on WhatsApp, by email or on Instagram.",
-    mail: "Email",
-  },
-  seguir: {
-    titulo: "Keep exploring",
-    destinos: {
-      prenatal: { titulo: "Prenatal yoga", texto: "During pregnancy, with the go-ahead from your midwife or gynaecologist." },
-      postPartum: { titulo: "Postnatal yoga", texto: "After giving birth and pelvic floor rehab, with an intensity that builds up gradually." },
-      cours: { titulo: "Yoga classes", texto: "Vinyasa, yoga flow and dynamic yoga, in a group, one-to-one or in the park." },
-      prives: { titulo: "Private classes", texto: "A class just for you, at your own pace." },
-      ateliers: { titulo: "Workshops", texto: "The next workshops and events, announced here." },
-      aPropos: { titulo: "About", texto: "My story, my training and how I teach." },
-    },
-  },
 };
 
 const es: Interfaz = {
@@ -152,7 +118,6 @@ const es: Interfaz = {
     lema: "Talleres y clases de yoga para todo el mundo.",
     formaciones: ["Registrada en Yoga Alliance", "Ashtanga Vinyasa, en la India", "Yin yoga y fascias, en Suiza", "Yoga prenatal y posnatal"],
     privados: "Clases privadas",
-    preguntas: "Preguntas frecuentes",
     derechos: "© 2026 Sofia Yoga, Ginebra",
     prueba: "Versión de prueba: los textos y la información práctica están por confirmar.",
     legales: ["Aviso legal", "Privacidad"],
@@ -171,22 +136,6 @@ const es: Interfaz = {
   porMail: "o por e-mail",
   preguntarWhatsApp: "Preguntar por WhatsApp",
   bienvenida: "Bienvenida",
-  contacto: {
-    titulo: "Escríbeme",
-    texto: "Si tienes una pregunta sobre las clases o el programa, escríbeme por WhatsApp, por e-mail o por Instagram.",
-    mail: "E-mail",
-  },
-  seguir: {
-    titulo: "Para seguir",
-    destinos: {
-      prenatal: { titulo: "Yoga prenatal", texto: "Durante el embarazo, con el visto bueno de tu matrona o tu ginecóloga." },
-      postPartum: { titulo: "Yoga posparto", texto: "Después del parto y de la reeducación del suelo pélvico, con una intensidad que sube poco a poco." },
-      cours: { titulo: "Clases de yoga", texto: "Vinyasa, yoga flow y yoga dinámico, en grupo, en privado o en el parque." },
-      prives: { titulo: "Clases privadas", texto: "Una clase solo para ti, a tu ritmo." },
-      ateliers: { titulo: "Talleres", texto: "Los próximos talleres y eventos, anunciados aquí." },
-      aPropos: { titulo: "Sobre mí", texto: "Mi recorrido, mis formaciones y mi forma de enseñar." },
-    },
-  },
 };
 
 export const INTERFAZ: Record<Idioma, Interfaz> = { fr, en, es };

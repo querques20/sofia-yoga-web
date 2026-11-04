@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import Link from "next/link";
-import { Contact } from "@/components/Contact";
 import { Magnetique } from "@/components/Magnetique";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
@@ -9,7 +8,6 @@ import { Respiration, type TextosRespiration } from "@/components/Respiration";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
 import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
-import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Questions } from "@/components/pagina/Questions";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Signaux } from "@/components/pagina/Signaux";
@@ -17,7 +15,6 @@ import { Sources } from "@/components/pagina/Sources";
 import { SurCettePage } from "@/components/pagina/SurCettePage";
 import { Souligne } from "@/components/pagina/Souligne";
 import { AvantDeVenir, type TextosAvantDeVenir } from "@/components/prenatal/AvantDeVenir";
-import { ProgrammeEnLigne, type TextosProgrammeEnLigne } from "@/components/prenatal/ProgrammeEnLigne";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { idiomaActual } from "@/lib/idioma-actual";
 import { rutaEn, type Idioma } from "@/lib/idiomas";
@@ -63,7 +60,6 @@ const fr = {
     { href: "#signaux", texto: "Quand t’arrêter" },
     { href: "#trimestres", texto: "Trimestre par trimestre" },
     { href: "#infos", texto: "Infos pratiques" },
-    { href: "#programme", texto: "Le programme en ligne" },
     { href: "#questions", texto: "Questions" },
   ],
   pourQui: {
@@ -198,27 +194,11 @@ const fr = {
       { dato: "Paiement", valor: <AConfirmer /> },
       { dato: "Langue", valor: "Français" },
       { dato: "Avec qui", valor: "Sofia Costa, professeure de yoga, formée en yoga pré et postnatal" },
+      { dato: "Si tu ne peux pas venir", valor: <>Le programme en ligne <Link className="enlace" href="/#grossesse">Grossesse en mouvement</Link> arrive bientôt&nbsp;: à suivre chez toi, trimestre par trimestre.</> },
     ],
     nota: "Les cours ne sont pas remboursés par l’assurance complémentaire.",
     pedir: "Le lieu, l’horaire et le tarif arrivent bientôt. En attendant, écris-moi en me disant à combien de semaines tu es : je te réponds avec les détails.",
   },
-  programa: {
-    titulo: "Et si tu ne peux pas venir ?",
-    texto: (
-      <>
-        Le programme en ligne <strong>Grossesse en mouvement</strong> arrive bientôt. Il sera organisé par trimestre,
-        avec une partie yang, dynamique, et une partie yin, douce. Des vidéos, des PDF et des textes, à suivre chez
-        toi.
-      </>
-    ),
-    // su texto del programa, tal cual lo escribió (contexto maestro, sección 7)
-    cita: "Il est fait pour t’accompagner d’une manière douce et bienveillante. Il t’aidera à te (re)connecter à toi et à ton bébé, à soulager les éventuelles douleurs qui peuvent apparaître pendant ces 9 mois, à faire le plein d’énergie, et à reprendre confiance en toi et en ton corps pour le jour de l’accouchement.",
-    firma: "Tu es enceinte, pas malade",
-    etiquetaTrimestres: "Les trois trimestres du programme",
-    yang: "La partie yang, dynamique",
-    yin: "La partie yin, douce",
-    boton: "Être prévenue du lancement",
-  } satisfies Omit<TextosProgrammeEnLigne, "trimestres">,
   fuentes: [
     {
       texto: "OMS, lignes directrices sur l’activité physique et la sédentarité, en un coup d’œil, 2020",
@@ -287,7 +267,6 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       { href: "#signaux", texto: "When to stop" },
       { href: "#trimestres", texto: "Trimester by trimester" },
       { href: "#infos", texto: "Practical info" },
-      { href: "#programme", texto: "The online programme" },
       { href: "#questions", texto: "Questions" },
     ],
     pourQui: {
@@ -418,24 +397,10 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         { dato: "Payment", valor: <AConfirmer /> },
         { dato: "Language", valor: "French" },
         { dato: "With whom", valor: "Sofia Costa, yoga teacher, trained in pre- and postnatal yoga" },
+        { dato: "If you can’t come", valor: <>The online programme <Link className="enlace" href="/en#grossesse">Grossesse en mouvement</Link> is coming soon: to follow at home, trimester by trimester.</> },
       ],
       nota: "The classes are not reimbursed by supplementary health insurance.",
       pedir: "The venue, time and price are coming soon. In the meantime, write to me and tell me how many weeks along you are: I’ll reply with the details.",
-    },
-    programa: {
-      titulo: "What if you can’t come?",
-      texto: (
-        <>
-          The online programme <strong>Grossesse en mouvement</strong> is coming soon. It will be organised by trimester, with a dynamic yang
-          part and a gentle yin part. Videos, PDFs and texts to follow at home.
-        </>
-      ),
-      cita: "It’s made to support you in a gentle, caring way. It will help you (re)connect with yourself and your baby, ease any aches and pains that may come up during these 9 months, recharge your energy, and regain trust in yourself and your body for the day of the birth.",
-      firma: "You’re pregnant, not ill",
-      etiquetaTrimestres: "The three trimesters of the programme",
-      yang: "The dynamic yang part",
-      yin: "The gentle yin part",
-      boton: "Get notified of the launch",
     },
     fuentes: [
       {
@@ -502,7 +467,6 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       { href: "#signaux", texto: "Cuándo parar" },
       { href: "#trimestres", texto: "Trimestre a trimestre" },
       { href: "#infos", texto: "Información práctica" },
-      { href: "#programme", texto: "El programa online" },
       { href: "#questions", texto: "Preguntas" },
     ],
     pourQui: {
@@ -633,24 +597,10 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         { dato: "Pago", valor: <AConfirmer /> },
         { dato: "Idioma", valor: "Francés" },
         { dato: "Con quién", valor: "Sofia Costa, profesora de yoga, formada en yoga pre y posnatal" },
+        { dato: "Si no puedes venir", valor: <>El programa online <Link className="enlace" href="/es#grossesse">Grossesse en mouvement</Link> llega pronto: para seguir en casa, trimestre a trimestre.</> },
       ],
       nota: "Las clases no las reembolsa el seguro complementario.",
       pedir: "El lugar, el horario y la tarifa llegarán pronto. Mientras tanto, escríbeme diciéndome de cuántas semanas estás: te respondo con los detalles.",
-    },
-    programa: {
-      titulo: "¿Y si no puedes venir?",
-      texto: (
-        <>
-          El programa online <strong>Grossesse en mouvement</strong> llegará pronto. Estará organizado por trimestres, con una parte yang,
-          dinámica, y una parte yin, suave. Vídeos, PDF y textos para seguir en casa.
-        </>
-      ),
-      cita: "Está hecho para acompañarte de una manera suave y cariñosa. Te ayudará a (re)conectar contigo y con tu bebé, a aliviar los posibles dolores que pueden aparecer durante estos 9 meses, a recargarte de energía y a recuperar la confianza en ti y en tu cuerpo para el día del parto.",
-      firma: "Estás embarazada, no enferma",
-      etiquetaTrimestres: "Los tres trimestres del programa",
-      yang: "La parte yang, dinámica",
-      yin: "La parte yin, suave",
-      boton: "Que me avisen del lanzamiento",
     },
     fuentes: [
       {
@@ -761,11 +711,8 @@ export default async function YogaPrenatal() {
       <InfosPratiques id="infos" datos={t.infos.datos} nota={t.infos.nota}>
         <PedirInfos mensaje={MENSAJES[idioma].prenatal} texto={t.infos.pedir} />
       </InfosPratiques>
-      <ProgrammeEnLigne t={{ ...t.programa, trimestres: t.trimestres.etiquetas }} />
       <Questions preguntas={PREGUNTAS_PRENATAL[idioma]} />
       <Sources fuentes={t.fuentes} />
-      <PourContinuer destinos={["postPartum", "cours", "aPropos"]} />
-      <Contact mensaje={MENSAJES[idioma].prenatal} />
     </main>
   );
 }

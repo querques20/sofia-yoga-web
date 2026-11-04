@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Contact } from "@/components/Contact";
 import { Flux, type TextosFlux } from "@/components/cours/Flux";
 import { Formats, type TextosFormats } from "@/components/cours/Formats";
 import { Guerrier } from "@/components/ilustraciones/Guerrier";
@@ -10,7 +9,6 @@ import { IlustracionQueRespira } from "@/components/pagina/IlustracionQueRespira
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
 import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
-import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { SurCettePage } from "@/components/pagina/SurCettePage";
 import { Questions } from "@/components/pagina/Questions";
 import { Reperes } from "@/components/pagina/Reperes";
@@ -49,7 +47,7 @@ const fr = {
   ouQuand: "Où et quand",
   etiqueta: "Une femme dans la posture du guerrier II sur un tapis de yoga, les bras tendus, le regard vers la main avant",
   anclas: [
-    { href: "#styles", texto: "Ma façon d’enseigner" },
+    { href: "#styles", texto: "Ce que j’enseigne" },
     { href: "#apports", texto: "Ce que le yoga apporte" },
     { href: "#formats", texto: "Groupe, privé ou parc" },
     { href: "#ou", texto: "Où et quand" },
@@ -112,7 +110,7 @@ const fr = {
   ],
   aviso: "Ces informations sont générales. Elles ne remplacent pas l’avis de ton médecin.",
   flux: {
-    titulo: "Ma façon d’enseigner",
+    titulo: "Ce que j’enseigne",
     // sus palabras de los audios del 30/9, pasadas al francés: las tiene que revisar ella
     principal: "Une pratique dynamique, différente et joyeuse, pour te concentrer sur ton corps et surtout bouger en conscience.",
     secundario: "Le plus important, c’est de t’amuser et d’y prendre du plaisir. Le résultat physique n’est qu’une conséquence.",
@@ -164,7 +162,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     ouQuand: "Where and when",
     etiqueta: "A woman in warrior II pose on a yoga mat, arms outstretched, gazing towards her front hand",
     anclas: [
-      { href: "#styles", texto: "How I teach" },
+      { href: "#styles", texto: "What I teach" },
       { href: "#apports", texto: "What yoga brings" },
       { href: "#formats", texto: "Group, private or park" },
       { href: "#ou", texto: "Where and when" },
@@ -226,7 +224,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     ],
     aviso: "This is general information. It doesn’t replace your doctor’s advice.",
     flux: {
-      titulo: "How I teach",
+      titulo: "What I teach",
       principal: "A dynamic, different and joyful practice, to focus on your body and above all move with awareness.",
       secundario: "The most important thing is to have fun and enjoy it. The physical result is only a consequence.",
       definiciones: [
@@ -273,7 +271,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     ouQuand: "Dónde y cuándo",
     etiqueta: "Una mujer en la postura del guerrero II sobre una esterilla de yoga, con los brazos extendidos y la mirada hacia la mano delantera",
     anclas: [
-      { href: "#styles", texto: "Mi forma de enseñar" },
+      { href: "#styles", texto: "Lo que enseño" },
       { href: "#apports", texto: "Lo que aporta el yoga" },
       { href: "#formats", texto: "Grupo, privado o parque" },
       { href: "#ou", texto: "Dónde y cuándo" },
@@ -335,7 +333,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     ],
     aviso: "Esta información es general. No reemplaza la opinión de tu médico.",
     flux: {
-      titulo: "Mi forma de enseñar",
+      titulo: "Lo que enseño",
       principal: "Una práctica dinámica, diferente y alegre, para concentrarte en tu cuerpo y, sobre todo, moverte con consciencia.",
       secundario: "Lo más importante es divertirte y disfrutar. El resultado físico es solo una consecuencia.",
       definiciones: [
@@ -409,8 +407,6 @@ export default async function CoursDeYoga() {
       </InfosPratiques>
       <Questions preguntas={PREGUNTAS_COURS[idioma]} />
       <Sources fuentes={t.fuentes} aviso={t.aviso} />
-      <PourContinuer destinos={["prives", "prenatal", "ateliers", "aPropos"]} />
-      <Contact mensaje={MENSAJES[idioma].cours} />
     </main>
   );
 }

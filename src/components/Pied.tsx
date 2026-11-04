@@ -18,7 +18,6 @@ const NAV = [...PAGINAS, CONTACTO_PAGINA];
 // las páginas que no están en el menú: van chiquitas abajo, al lado de los legales (los textos, en la interfaz)
 const SECUNDARIAS = [
   { href: "/cours-prives-yoga-geneve", clave: "privados" },
-  { href: "/faq", clave: "preguntas" },
 ] as const;
 
 const CONTACTOS = [

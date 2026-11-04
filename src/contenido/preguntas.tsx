@@ -4,8 +4,8 @@ import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { type Idioma, rutaEn } from "@/lib/idiomas";
 
-// las preguntas frecuentes de las páginas de clases. Viven acá porque las muestra cada página y además
-// las junta /faq. Las respuestas que no son texto plano llevan links o la pastilla «à confirmer»
+// las preguntas frecuentes de las páginas de clases, cada lista con la suya (los datos estructurados las
+// marcan también). Las respuestas que no son texto plano llevan links o la pastilla «à confirmer»
 export type Pregunta = { pregunta: string; respuesta: ReactNode };
 
 // las de Yoga prénatal

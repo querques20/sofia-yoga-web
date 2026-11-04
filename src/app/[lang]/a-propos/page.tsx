@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Histoire, type TextosHistoire } from "@/components/a-propos/Histoire";
 import { Portrait, type TextosPortrait } from "@/components/a-propos/Portrait";
 import { Tapis, type TextosTapis } from "@/components/a-propos/Tapis";
-import { Contact } from "@/components/Contact";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
-import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Sources } from "@/components/pagina/Sources";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
@@ -317,8 +315,6 @@ export default async function APropos() {
       <Reperes id="methode" fondo="salvia" titulo={t.metodo.titulo} intro={t.metodo.intro} reperes={t.metodo.reperes} />
       <Tapis t={t.tapis} />
       <Sources fuentes={t.fuentes} aviso={false} />
-      <PourContinuer destinos={["prenatal", "cours", "ateliers"]} />
-      <Contact />
     </main>
   );
 }

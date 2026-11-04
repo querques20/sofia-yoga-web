@@ -18,6 +18,5 @@ export const PAGINAS_INDEXABLES = [
   "/cours-prives-yoga-geneve",
   "/ateliers-evenements",
   "/a-propos",
-  "/faq",
   "/contact",
 ] as const;

@@ -1,4 +1,3 @@
-import { Contact } from "@/components/Contact";
 import { Posparto } from "@/components/ilustraciones/Posparto";
 import { Magnetique } from "@/components/Magnetique";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
@@ -7,7 +6,6 @@ import { IlustracionQueRespira } from "@/components/pagina/IlustracionQueRespira
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
 import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
-import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Questions } from "@/components/pagina/Questions";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Signaux } from "@/components/pagina/Signaux";
@@ -726,8 +724,6 @@ export default async function YogaPostPartum() {
       </InfosPratiques>
       <Questions preguntas={PREGUNTAS_POST_PARTUM[idioma]} />
       <Sources fuentes={t.fuentes} />
-      <PourContinuer destinos={["prenatal", "cours", "aPropos"]} />
-      <Contact mensaje={MENSAJES[idioma].postPartum} />
     </main>
   );
 }

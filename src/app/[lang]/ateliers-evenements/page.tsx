@@ -2,12 +2,9 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import { Billet, type TextosBillet } from "@/components/ateliers/Billet";
 import { CommentCaMarche, type TextosCommentCaMarche } from "@/components/ateliers/CommentCaMarche";
-import { Contact } from "@/components/Contact";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
-import { PourContinuer } from "@/components/pagina/PourContinuer";
 import { Reperes } from "@/components/pagina/Reperes";
-import { MENSAJES } from "@/lib/contacto";
 import { idiomaActual } from "@/lib/idioma-actual";
 import type { Idioma } from "@/lib/idiomas";
 import { metadatos } from "@/lib/metadatos";
@@ -212,8 +209,6 @@ export default async function Ateliers() {
       <EnteteDePage fil={t.fil} titulo={t.titulo} intro={t.intro} visual={<Billet t={t.billet} />} />
       <Reperes id="atelier" titulo={t.atelier.titulo} intro={t.atelier.intro} reperes={t.atelier.reperes} />
       <CommentCaMarche t={t.comment} />
-      <PourContinuer destinos={["cours", "prenatal", "aPropos"]} />
-      <Contact mensaje={MENSAJES[idioma].atelier} />
     </main>
   );
 }

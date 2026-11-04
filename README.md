@@ -14,14 +14,13 @@ French is the base language and has no URL prefix. English and Spanish live unde
 
 | Route | Content |
 | --- | --- |
-| `/` | Home: the flower intro that opens into six photos (one door to each page), the program by trimester |
+| `/` | Home: the flower intro that opens into six photos (one door to each page), the program by trimester and the word strip |
 | `/yoga-prenatal-geneve` | Prenatal yoga: the breathing pregnant figure, before you come, signs to stop, trimester by trimester |
 | `/yoga-post-partum-geneve` | Postnatal yoga: when to return, what insurance covers in Switzerland, pelvic floor and diastasis |
 | `/cours-de-yoga-geneve` | Classes: the styles, what yoga brings, in a group, private or in the park |
-| `/cours-prives-yoga-geneve` | Private classes |
+| `/cours-prives-yoga-geneve` | Private classes: why a private class, and its practical info |
 | `/ateliers-evenements` | Workshops: the ticket for the next workshop |
 | `/a-propos` | Her story, how she teaches and her training |
-| `/faq` | Frequently asked questions |
 | `/contact` | A message builder for WhatsApp or email |
 
 ## The home photos
@@ -57,12 +56,13 @@ To contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Next.js 16 (App Router), React 19, TypeScript and Tailwind CSS v4.
 - GSAP (ScrollTrigger, SplitText, DrawSVG and MorphSVG) for animation and Lenis for smooth scrolling.
 - With the system's "reduce motion" setting on, everything renders without animation.
+- Each block lives on one page only: the nav and the footer are the only things repeated everywhere. Practical info and the frequently asked questions sit with their class, and contact has its own page.
 
 Folders:
 
 - `src/app`: the pages and the layout.
 - `src/components`: the sections, one folder per page. `pagina/` holds the shared pieces and `ilustraciones/` the SVG drawings.
 - `src/lib`: the breathing that sets the site's rhythm, contact details and navigation.
-- `scripts`: `regenerar-ilustraciones.mjs` builds the standalone drawings for «Par où commencer» (`public/ilustraciones`) from the components, with the dev server running. Those SVGs are not edited by hand. `install-hooks.mjs` installs the git hooks.
+- `scripts`: `install-hooks.mjs` installs the git hooks.
 
 The typefaces (D-DIN and Caveat) are free to use (SIL OFL) and live in `src/app/fonts` with their licenses.

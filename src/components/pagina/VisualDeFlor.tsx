@@ -1,5 +1,5 @@
 /**
- * Para las páginas que no tienen ilustración propia (FAQ, cours privés): la flor de Sofía sobre unas masas
+ * Para las páginas que no tienen ilustración propia (cours privés): la flor de Sofía sobre unas masas
  * de color, como en los paneles de la pila. Con `esterilla` la flor se apoya en una sola esterilla vista
  * desde arriba: el cours privé es eso, una persona y su esterilla
  */
