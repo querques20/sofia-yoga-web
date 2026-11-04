@@ -15,6 +15,20 @@ let avisarPagina: () => void = () => {};
 const nuevoAvisoDePagina = () => new Promise<void>((resolver) => (avisarPagina = resolver));
 let pagina: Promise<void> = typeof window === "undefined" ? Promise.resolve() : nuevoAvisoDePagina();
 
+// el tamaño de la flor dibujada y cuánto crece al inspirar: el hueco arranca justo de ese tamaño, y la flor de
+// fotos del Inicio también, así no se nota el cambio
+export const TAMANO_FLOR = 112;
+export const INSPIRA = 1.18;
+export const HUECO_INICIAL = TAMANO_FLOR * INSPIRA;
+
+// mientras el telón se abre, la entrada avisa en cada cuadro cuánto mide el hueco: el hero del Inicio arma con eso
+// la flor de fotos. Y cuando terminó del todo (el hueco tapó la pantalla) avisa el fin: recién ahí la flor se abre
+let hueco = 0;
+const oyentesDelHueco = new Set<(px: number) => void>();
+let avisarFin: () => void = () => {};
+const nuevoAvisoDeFin = () => new Promise<void>((resolver) => (avisarFin = resolver));
+let fin: Promise<void> = typeof window === "undefined" ? Promise.resolve() : nuevoAvisoDeFin();
+
 // al cambiar de idioma la página se cierra por la flor antes de navegar: quien sabe cerrarla se anota acá
 let cerrar: ((seguir: () => void) => void) | null = null;
 let vieneCerrado = false;
@@ -37,6 +51,38 @@ export function cerrarTelon() {
   vuelta += 1;
   aviso = nuevoAviso();
   pagina = nuevoAvisoDePagina();
+  hueco = 0;
+  fin = nuevoAvisoDeFin();
+}
+
+/** el tamaño del hueco de la flor, en cada cuadro mientras crece */
+export function avisarHueco(px: number) {
+  hueco = px;
+  oyentesDelHueco.forEach((oyente) => oyente(px));
+}
+
+/** se entera de cada cambio del hueco; si ya está en marcha, se entera enseguida del último. Devuelve cómo borrarse */
+export function escucharHueco(oyente: (px: number) => void) {
+  oyentesDelHueco.add(oyente);
+  if (hueco > 0) oyente(hueco);
+  return () => {
+    oyentesDelHueco.delete(oyente);
+  };
+}
+
+/** la entrada de esta vuelta terminó del todo (Entrada lo llama al completar; sin entrada, enseguida) */
+export function terminarTelon() {
+  avisarFin();
+}
+
+/** se cumple cuando la entrada de esta vuelta terminó del todo (hay que pedirlo al montar, como telonAbierto) */
+export function telonTerminado() {
+  return fin;
+}
+
+/** true mientras el telón de esta vuelta no se abrió: el hero decide con esto si arma la flor de fotos o no */
+export function hayEntradaPendiente() {
+  return !abierto;
 }
 
 /** lo llama la cabecera de cada página (Hero, EnteteDePage) al montar, junto con el resto de la página */

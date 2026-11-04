@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import { Fragment } from "react";
 import Link from "next/link";
 import { Contact } from "@/components/Contact";
-import { Embarazada } from "@/components/ilustraciones/Embarazada";
 import { Magnetique } from "@/components/Magnetique";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
-import { IlustracionQueRespira } from "@/components/pagina/IlustracionQueRespira";
+import { Respiration, type TextosRespiration } from "@/components/Respiration";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
 import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
@@ -50,7 +49,13 @@ const fr = {
   ),
   whatsapp: "Écrire sur WhatsApp",
   verInfos: "Voir les infos pratiques",
-  ilustracion: "Une femme enceinte de profil, les yeux fermés, une main posée sur le ventre",
+  respiracion: {
+    alt: "Une femme enceinte de profil, les yeux fermés, une main posée sur le ventre",
+    invita: "Respire avec moi",
+    inspira: "Inspire…",
+    espira: "Expire…",
+    ayuda: "Maintiens appuyé pour inspirer, relâche pour expirer.",
+  } satisfies TextosRespiration,
   anclas: [
     { href: "#pour-qui", texto: "C’est pour moi ?" },
     { href: "#pourquoi", texto: "Pourquoi bouger" },
@@ -268,7 +273,13 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     ),
     whatsapp: "Write on WhatsApp",
     verInfos: "See the practical info",
-    ilustracion: "A pregnant woman in profile, eyes closed, one hand resting on her belly",
+    respiracion: {
+      alt: "A pregnant woman in profile, her eyes closed, one hand resting on her belly",
+      invita: "Breathe with me",
+      inspira: "Breathe in…",
+      espira: "Breathe out…",
+      ayuda: "Hold to breathe in, let go to breathe out.",
+    },
     anclas: [
       { href: "#pour-qui", texto: "Is it for me?" },
       { href: "#pourquoi", texto: "Why move" },
@@ -477,7 +488,13 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     ),
     whatsapp: "Escribir por WhatsApp",
     verInfos: "Ver la información práctica",
-    ilustracion: "Una mujer embarazada de perfil, con los ojos cerrados y una mano apoyada en el vientre",
+    respiracion: {
+      alt: "Una mujer embarazada de perfil, con los ojos cerrados y una mano sobre el vientre",
+      invita: "Respira conmigo",
+      inspira: "Inspira…",
+      espira: "Espira…",
+      ayuda: "Mantén pulsado para inspirar, suelta para espirar.",
+    },
     anclas: [
       { href: "#pour-qui", texto: "¿Es para mí?" },
       { href: "#pourquoi", texto: "Por qué moverte" },
@@ -684,6 +701,7 @@ export default async function YogaPrenatal() {
         ]}
       />
       <EnteteDePage
+        paralaje={false}
         fil={t.fil}
         titulo={t.titulo}
         intro={t.intro}
@@ -700,14 +718,9 @@ export default async function YogaPrenatal() {
           </>
         }
         visual={
-          <IlustracionQueRespira
-            viewBox="0 0 400 520"
-            etiqueta={t.ilustracion}
-            torso="180 300"
-            className="mx-auto aspect-[400/520] w-[min(72vw,19rem)] lg:mr-0 lg:w-full lg:max-w-[27rem]"
-          >
-            <Embarazada />
-          </IlustracionQueRespira>
+          <div className="mx-auto aspect-[400/520] w-[min(72vw,19rem)] lg:mr-0 lg:w-full lg:max-w-[27rem]">
+            <Respiration t={t.respiracion} />
+          </div>
         }
       />
 

@@ -8,7 +8,7 @@ const BASE = process.argv[2] ?? "http://localhost:3010";
 const DESTINO = fileURLToPath(new URL("../public/ilustraciones/", import.meta.url));
 
 const DIBUJOS = [
-  { pagina: "/", viewBox: "0 0 400 520", archivo: "embarazada.svg", componente: "Embarazada.tsx" },
+  { pagina: "/yoga-prenatal-geneve", viewBox: "0 0 400 520", archivo: "embarazada.svg", componente: "Embarazada.tsx" },
   { pagina: "/yoga-post-partum-geneve", viewBox: "0 0 400 520", archivo: "posparto.svg", componente: "Posparto.tsx" },
   { pagina: "/cours-de-yoga-geneve", viewBox: "0 0 560 420", archivo: "cours.svg", componente: "Guerrier.tsx" },
 ];

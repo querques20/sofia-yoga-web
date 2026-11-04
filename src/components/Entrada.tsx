@@ -1,15 +1,12 @@
 "use client";
 
 import { type CSSProperties, useEffect, useRef, useState } from "react";
-import { abrirTelon, cerrarTelon, escucharCierre, paginaLista, telonVieneCerrado } from "@/lib/entrada";
+import { abrirTelon, avisarHueco, cerrarTelon, escucharCierre, INSPIRA, paginaLista, TAMANO_FLOR, telonVieneCerrado, terminarTelon } from "@/lib/entrada";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { lenisActual } from "@/lib/lenis";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Fleur } from "./Fleur";
 
-// el tamaño de la flor dibujada: el hueco arranca exactamente de este tamaño para que no se note el cambio
-const TAMANO_FLOR = 112;
-const INSPIRA = 1.18;
 // lo más que espera la flor a que la página se arme (si alguna no avisa) y después a un momento libre
 const ESPERA_PAGINA_MS = 1000;
 const ESPERA_LIBRE_MS = 300;
@@ -79,6 +76,7 @@ export function Entrada() {
       // con menos movimiento, o si ya se vio en esta visita y en este idioma, el telón se abre enseguida
       if (quieto || idiomaVisto() === idioma) {
         abrirTelon();
+        terminarTelon();
         setTermino(true);
         return;
       }
@@ -98,6 +96,8 @@ export function Entrada() {
       const flor = el.querySelector(".entrada-flor");
       const nombre = el.querySelector(".entrada-nombre");
       const final = huecoAbierto();
+      // el hueco crece sobre este proxy: así cada cuadro también se le avisa al hero, que arma con él la flor de fotos
+      const hueco = { tam: TAMANO_FLOR * INSPIRA };
 
       const linea = gsap
         .timeline({
@@ -107,6 +107,7 @@ export function Entrada() {
             // por las dudas, las escenas fijadas se vuelven a medir con la página ya abierta
             ScrollTrigger.refresh();
             setTermino(true);
+            terminarTelon();
           },
         })
         .fromTo(el.querySelectorAll(".entrada-flor ellipse"), { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.6, stagger: 0.045, ease: "power2.inOut" })
@@ -121,7 +122,19 @@ export function Entrada() {
           marcarVista(idioma);
           abrirTelon();
         }, 1.04)
-        .to(el, { "--flor": `${final}px`, duration: 0.95, ease: "power3.in" }, 1.02)
+        .to(
+          hueco,
+          {
+            tam: final,
+            duration: 0.95,
+            ease: "power3.in",
+            onUpdate: () => {
+              el.style.setProperty("--flor", `${hueco.tam}px`);
+              avisarHueco(hueco.tam);
+            },
+          },
+          1.02,
+        )
         .to(flor, { scale: INSPIRA * 2.2, opacity: 0, duration: 0.45, ease: "power2.in" }, 1.02);
       // la flor espera escondida (CSS) para no verse entera antes de dibujarse: con los pétalos en 0 % ya se puede mostrar
       gsap.set(flor, { transformOrigin: "50% 50%", opacity: 1 });

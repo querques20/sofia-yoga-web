@@ -349,3 +349,227 @@ html:not(.js) .entrada {
     display: none;
   }
 }
+
+/* el Inicio con fotos: el título en el medio y las seis puertas alrededor (compu) o en una grilla debajo (celular).
+   Las medidas de compu salen de --u = min(1vw, 1.6vh), así el conjunto entra igual en una pantalla ancha y en una
+   bajita. Hero.tsx pone --u; cada puerta trae --cx y --cy (su centro, en % del hero), --w (su ancho, en --u), --ar,
+   --pos y --zoom (qué parte de la foto se ve) */
+[data-hero] {
+  display: flex;
+  flex-direction: column;
+  padding: 5.2rem 1.25rem 2.6rem;
+}
+
+[data-hero] .hero-titulo {
+  font-size: min(14.2vw, 8.2vh);
+}
+
+/* cada línea del título es su propia máscara: la coreografía las hace subir una por una */
+[data-hero] .hero-linea {
+  display: block;
+  overflow: hidden;
+  padding-top: 0.14em;
+  margin-top: -0.14em;
+}
+
+[data-hero] .hero-linea > span {
+  display: block;
+}
+
+[data-hero] .hero-lugar {
+  padding-bottom: 0.1em;
+}
+
+[data-hero] .hero-puertas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.2rem 0.65rem;
+  margin-top: 1.5rem;
+}
+
+[data-hero] .puerta {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+}
+
+[data-hero] .puerta-cuerpo {
+  position: absolute;
+  inset: 0;
+}
+
+[data-hero] .puerta-marco {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--color-arena);
+  border-radius: 58% 42% 46% 54% / 52% 44% 56% 48%;
+  will-change: transform, border-radius;
+}
+
+/* el tono cálido: la arena multiplicada encima junta en una sola familia fotos que vienen de lugares distintos */
+[data-hero] .puerta-marco::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-arena);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+
+[data-hero] .puerta-foto {
+  position: absolute;
+  inset: 0;
+}
+
+[data-hero] .puerta-foto img {
+  object-fit: cover;
+  object-position: var(--pos, 50% 50%);
+  transform: scale(var(--zoom, 1));
+  transform-origin: var(--pos, 50% 50%);
+  filter: grayscale(1) contrast(1.06);
+  transition:
+    filter 0.6s,
+    transform 0.9s var(--ease-souple);
+}
+
+/* con el mouse encima (o el foco del teclado) la foto pasa a color y se acerca un poco */
+[data-hero] .puerta:hover .puerta-foto img,
+[data-hero] .puerta:focus-visible .puerta-foto img {
+  filter: none;
+  transform: scale(calc(var(--zoom, 1) * 1.05));
+}
+
+[data-hero] .puerta:hover .puerta-marco::after,
+[data-hero] .puerta:focus-visible .puerta-marco::after {
+  opacity: 0;
+}
+
+[data-hero] .puerta-cartel {
+  position: absolute;
+  inset: calc(100% + 0.42rem) 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+[data-hero] .puerta-cartel i {
+  display: none;
+  font-family: var(--font-sans);
+  font-style: normal;
+  transition: transform 0.35s var(--ease-souple);
+}
+
+/* en compu (el mismo corte que el menú, y más ancho que alto): el collage */
+@media (min-width: 64rem) and (min-aspect-ratio: 1/1) {
+  [data-hero] {
+    display: block;
+    padding: 0;
+  }
+
+  /* el texto va por encima de las fotos, pero su caja no les tapa el mouse: solo el botón se puede tocar */
+  [data-hero] .hero-texto {
+    position: absolute;
+    top: 53%;
+    left: 50%;
+    z-index: 3;
+    width: min(46vw, calc(var(--u) * 46));
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  [data-hero] .hero-acciones a {
+    pointer-events: auto;
+  }
+
+  [data-hero] .hero-titulo {
+    font-size: calc(var(--u) * 6.8);
+  }
+
+  [data-hero] .hero-sub {
+    margin-top: calc(var(--u) * 1.5);
+    font-size: max(1.05rem, calc(var(--u) * 1.32));
+  }
+
+  [data-hero] .hero-acciones {
+    margin-top: calc(var(--u) * 1.7);
+  }
+
+  [data-hero] .hero-puertas {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    margin: 0;
+  }
+
+  [data-hero] .puerta {
+    position: absolute;
+    top: calc((var(--cy) + var(--cy-extra, 0)) * 1%);
+    left: calc((var(--cx) + var(--cx-extra, 0)) * 1%);
+    width: calc(var(--w) * var(--u));
+    aspect-ratio: var(--ar);
+    translate: -50% -50%;
+  }
+
+  /* el cartel es una pastilla pegada al borde de abajo de la foto */
+  [data-hero] .puerta-cartel {
+    inset: auto auto calc(var(--u) * -0.7) 50%;
+    display: inline-flex;
+    padding: 0.42em 0.85em 0.36em;
+    border-radius: 999px;
+    background: var(--color-pagina);
+    box-shadow: 0 3px 16px rgba(57, 70, 58, 0.14);
+    font-size: max(1rem, calc(var(--u) * 1.5));
+    transform: translateX(-50%);
+  }
+
+  [data-hero] .puerta-cartel i {
+    display: inline;
+  }
+
+  [data-hero] .puerta:hover .puerta-cartel,
+  [data-hero] .puerta:focus-visible .puerta-cartel {
+    background: var(--color-verde);
+    color: var(--color-pagina);
+  }
+
+  [data-hero] .puerta:hover .puerta-cartel i,
+  [data-hero] .puerta:focus-visible .puerta-cartel i {
+    transform: translateX(0.18em);
+  }
+}
+
+/* en las compus angostas la píldora del menú (con el selector de idioma) llega hasta las dos fotos de arriba:
+   solo ahí, Ateliers se corre a la izquierda y Cours privés se corre a la derecha y baja un poco (bajar Ateliers
+   la metía en prénatal) */
+@media (min-width: 64rem) and (max-width: 83rem) and (min-aspect-ratio: 1/1) {
+  [data-hero] [data-puerta="ateliers"] {
+    --cx-extra: -4;
+  }
+
+  [data-hero] [data-puerta="prives"] {
+    --cx-extra: 2;
+    --cy-extra: 3;
+  }
+}
+
+/* con la coreografía andando, el marco deja de ocupar la puerta: Hero lo mide y lo mueve desde su centro */
+[data-hero].con-coreografia .puerta-marco,
+[data-hero].con-coreografia .puerta-foto {
+  inset: auto;
+  top: 50%;
+  left: 50%;
+}

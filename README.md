@@ -14,8 +14,8 @@ French is the base language and has no URL prefix. English and Spanish live unde
 
 | Route | Content |
 | --- | --- |
-| `/` | Home: the flower intro, the breathing pregnant figure, the program by trimester |
-| `/yoga-prenatal-geneve` | Prenatal yoga: before you come, signs to stop, trimester by trimester |
+| `/` | Home: the flower intro that opens into six photos (one door to each page), the program by trimester |
+| `/yoga-prenatal-geneve` | Prenatal yoga: the breathing pregnant figure, before you come, signs to stop, trimester by trimester |
 | `/yoga-post-partum-geneve` | Postnatal yoga: when to return, what insurance covers in Switzerland, pelvic floor and diastasis |
 | `/cours-de-yoga-geneve` | Classes: the styles, what yoga brings, in a group, private or in the park |
 | `/cours-prives-yoga-geneve` | Private classes |
@@ -24,12 +24,28 @@ French is the base language and has no URL prefix. English and Spanish live unde
 | `/faq` | Frequently asked questions |
 | `/contact` | A message builder for WhatsApp or email |
 
+## The home photos
+
+Each of the six doors on the home page carries a photo (`public/inicio/`). Sofia has no professional photos yet: two are hers, from her Instagram, and four are placeholders.
+
+| Door | File | Source | Status |
+| --- | --- | --- | --- |
+| Cours privés | `cours-prives-geneve.jpg` | Instagram @sofia.yogaflow, cover of a video from May 2024 (360 × 640) | Sofia's. Ask her for the original |
+| Au parc | `yoga-au-parc-geneve.jpg` | Instagram @sofia.yogaflow, photo from March 2024 (512 × 640) | Sofia's. Ask her for the original |
+| Yoga prénatal | `yoga-prenatal-geneve.jpg` | Unsplash `photo-1710897872898-3bc4353682ce` | Placeholder |
+| Post-partum | `yoga-post-partum-geneve.jpg` | Unsplash `photo-1773243086577-5a98bc868a2f` | Placeholder |
+| Cours en groupe | `cours-en-groupe-geneve.jpg` | Unsplash `photo-1761035005546-62b8018b212a` | Placeholder |
+| Ateliers | `ateliers-yoga-geneve.jpg` | Unsplash `photo-1643682661119-28da0685be2c` | Placeholder |
+
+The placeholders (Unsplash license, free to use) are marked `provisoria: true` in `src/components/hero/puertas.ts` and get replaced by Sofia's photos as soon as they arrive. The site does not go to production with them without deciding so first.
+
 ## Running it
 
 ```bash
 pnpm install
 pnpm dev        # http://localhost:3010
 pnpm build
+pnpm test       # the intro and home geometry tests (node:test)
 ```
 
 The WhatsApp buttons go to Sofia's real number. When testing, do not send the messages.

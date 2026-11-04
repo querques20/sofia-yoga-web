@@ -8,18 +8,34 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { guardarLenis, lenisActual } from "@/lib/lenis";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
+// cuánto queda un ancla por debajo del borde de arriba: el lugar del menú
+const ANCLA_ARRIBA = -88;
+
+// the element the URL's hash points to, if any. The id may come percent-encoded, and a broken sequence makes
+// decodeURIComponent throw: that counts as no anchor
+function anclaDeLaUrl() {
+  if (!location.hash) return null;
+  try {
+    return document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  } catch {
+    return null;
+  }
+}
+
 /** scroll suave en toda la página, enganchado a ScrollTrigger. Si se pidió menos movimiento, queda el scroll normal */
 export function LenisProvider({ children }: { children: ReactNode }) {
   const quieto = useReducedMotion();
   const ruta = usePathname();
   const rutaAnterior = useRef(ruta);
 
-  // al cambiar de página se arranca arriba de todo (aunque Lenis venga frenando un scroll de la anterior),
-  // y las escenas de la página nueva se miden con todo ya armado
+  // al cambiar de página se arranca arriba de todo (aunque Lenis venga frenando un scroll de la anterior), o en
+  // el ancla si la URL trae una (Au parc → #formats), y las escenas de la página nueva se miden con todo ya armado
   useEffect(() => {
     if (rutaAnterior.current === ruta) return;
     rutaAnterior.current = ruta;
-    lenisActual()?.scrollTo(0, { immediate: true, force: true });
+    const ancla = anclaDeLaUrl();
+    if (ancla) lenisActual()?.scrollTo(ancla, { immediate: true, force: true, offset: ANCLA_ARRIBA });
+    else lenisActual()?.scrollTo(0, { immediate: true, force: true });
     const cuadro = requestAnimationFrame(() => ScrollTrigger.refresh());
     return () => cancelAnimationFrame(cuadro);
   }, [ruta]);
@@ -30,7 +46,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
     const lenis = new Lenis({
       lerp: 0.085,
       smoothWheel: true,
-      anchors: { offset: -88 },
+      anchors: { offset: ANCLA_ARRIBA },
     });
     guardarLenis(lenis);
     lenis.on("scroll", ScrollTrigger.update);
