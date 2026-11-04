@@ -16,6 +16,9 @@ The WhatsApp buttons go to Sofia's real number. When testing, do not send the me
 
 - `main` moves through a pull request, merged with **Rebase and merge**, so history stays linear and commits stay
   atomic. No direct pushes, no force-pushes to `main`. Sync with `git pull --rebase`.
+- GitHub enforces this: `main` is protected (pull requests only, linear history, no force-pushes, no deletions,
+  administrators included) and "Rebase and merge" is the only merge method the repository allows. Head branches are
+  deleted after the merge.
 - Branch from an up-to-date `main`: `feat/<topic>`, `fix/<topic>`, `docs/<topic>`, `chore/<topic>`.
 - Keep a PR to one subject. Screenshots help when the change is visual.
 
