@@ -104,6 +104,7 @@ const fr = {
     titulo: "Avant de venir",
     avisos: [
       {
+        id: "acuerdo",
         texto: (
           <>
             Avec l’<Souligne forma="rond">accord</Souligne> de ta sage-femme ou de ta gynécologue.
@@ -112,6 +113,7 @@ const fr = {
         detalle: "Je ne te demande aucun document.",
       },
       {
+        id: "profesion",
         texto: (
           <>
             Je ne suis pas <Souligne>physiothérapeute</Souligne>.
@@ -120,6 +122,7 @@ const fr = {
         detalle: "Je suis professeure de yoga, formée en yoga pré et postnatal.",
       },
       {
+        id: "riesgo",
         texto: (
           <>
             En cas de placenta prævia ou de grossesse <Souligne>à risque</Souligne>, je ne peux pas t’accompagner.
@@ -318,6 +321,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       titulo: "Before you come",
       avisos: [
         {
+          id: "acuerdo",
           texto: (
             <>
               With the <Souligne forma="rond">approval</Souligne> of your midwife or gynaecologist.
@@ -326,6 +330,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
           detalle: "I don’t ask you for any documents.",
         },
         {
+          id: "profesion",
           texto: (
             <>
               I’m not a <Souligne>physiotherapist</Souligne>.
@@ -334,6 +339,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
           detalle: "I’m a yoga teacher, trained in pre- and postnatal yoga.",
         },
         {
+          id: "riesgo",
           texto: (
             <>
               If you have placenta praevia or a <Souligne>high-risk</Souligne> pregnancy, I can’t work with you.
@@ -524,6 +530,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       titulo: "Antes de venir",
       avisos: [
         {
+          id: "acuerdo",
           texto: (
             <>
               Con la <Souligne forma="rond">aprobación</Souligne> de tu matrona o de tu ginecóloga.
@@ -532,6 +539,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
           detalle: "No te pido ningún documento.",
         },
         {
+          id: "profesion",
           texto: (
             <>
               No soy <Souligne>fisioterapeuta</Souligne>.
@@ -540,6 +548,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
           detalle: "Soy profesora de yoga, formada en yoga pre y posnatal.",
         },
         {
+          id: "riesgo",
           texto: (
             <>
               En caso de placenta previa o de embarazo <Souligne>de riesgo</Souligne>, no puedo acompañarte.
@@ -734,9 +743,9 @@ export default async function YogaPrenatal() {
         id="trimestres"
         titulo={t.trimestres.titulo}
         intro={<p>{t.trimestres.intro}</p>}
-        reperes={t.trimestres.reperes.map((repere, i) => ({ clave: t.trimestres.etiquetas[i], ...repere }))}
+        reperes={t.trimestres.reperes.map((repere, i) => ({ id: `t${i + 1}`, clave: t.trimestres.etiquetas[i], ...repere }))}
       />
-      <InfosPratiques datos={t.infos.datos} nota={t.infos.nota}>
+      <InfosPratiques id="infos" datos={t.infos.datos} nota={t.infos.nota}>
         <PedirInfos mensaje={MENSAJES[idioma].prenatal} texto={t.infos.pedir} />
       </InfosPratiques>
       <ProgrammeEnLigne t={{ ...t.programa, trimestres: t.trimestres.etiquetas }} />

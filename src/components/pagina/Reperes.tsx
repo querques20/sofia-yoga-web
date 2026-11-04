@@ -6,12 +6,20 @@ import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export type Repere = {
-  /** lo que se lee primero: una cifra o una idea corta */
-  clave: ReactNode;
   texto: ReactNode;
   /** de dónde sale, en corto (la lista completa va en «Sources») */
   fuente?: string;
-};
+} & (
+  | {
+      /** lo que se lee primero: una cifra o una idea corta */
+      clave: string;
+    }
+  | {
+      clave: ReactNode;
+      /** the list key, needed when `clave` is not plain text */
+      id: string;
+    }
+);
 
 type Props = {
   id?: string;
@@ -55,8 +63,8 @@ export function Reperes({ id, titulo, intro, reperes, fondo = "pagina" }: Props)
           </div>
         </div>
         <ul className="lg:col-span-7">
-          {reperes.map((repere, i) => (
-            <li key={i} className="repere relative grid gap-x-8 gap-y-2 py-7 sm:grid-cols-[minmax(0,13rem)_1fr]">
+          {reperes.map((repere) => (
+            <li key={"id" in repere ? repere.id : repere.clave} className="repere relative grid gap-x-8 gap-y-2 py-7 sm:grid-cols-[minmax(0,13rem)_1fr]">
               <span className="repere-linea absolute inset-x-0 top-0 h-px origin-left bg-verde/25" aria-hidden="true" />
               <p className="titre text-[clamp(1.9rem,3.6vw,2.8rem)] text-violeta">{repere.clave}</p>
               <div>

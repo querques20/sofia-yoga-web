@@ -4,12 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { IDIOMAS, type Idioma, NOMBRES, rutaEn } from "@/lib/idiomas";
+import { ETIQUETA, IDIOMAS, type Idioma, NOMBRES, rutaEn } from "@/lib/idiomas";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { abreAparte, cambiarIdioma } from "./cambiar-idioma";
-
-export const ETIQUETA: Record<Idioma, string> = { fr: "Langue", en: "Language", es: "Idioma" };
 
 const ESTILOS = {
   // en la píldora del menú de escritorio: las siglas, con el resaltado salvia como los links

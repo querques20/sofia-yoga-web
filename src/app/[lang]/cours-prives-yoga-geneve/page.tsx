@@ -213,7 +213,7 @@ export default async function CoursPrives() {
         visual={<VisualDeFlor esterilla className="mx-auto block aspect-[400/420] w-[min(72vw,19rem)] lg:mr-0 lg:w-full lg:max-w-[26rem]" />}
       />
       <Reperes id="pourquoi" titulo={t.porqueTitulo} intro={<p>{t.porqueIntro}</p>} reperes={t.porque} />
-      <InfosPratiques datos={t.datos} nota={t.nota}>
+      <InfosPratiques id="infos" datos={t.datos} nota={t.nota}>
         <PedirInfos mensaje={MENSAJES[idioma].prive} texto={t.pedirInfos} />
       </InfosPratiques>
       <PourContinuer destinos={["cours", "prenatal", "aPropos"]} />

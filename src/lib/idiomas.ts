@@ -12,6 +12,9 @@ export const NOMBRES: Record<Idioma, { nombre: string; sigla: string }> = {
   es: { nombre: "Español", sigla: "ES" },
 };
 
+// the accessible name of the language selector
+export const ETIQUETA: Record<Idioma, string> = { fr: "Langue", en: "Language", es: "Idioma" };
+
 // la cookie con el idioma que la persona eligió (con el selector o con el aviso). Con ella next.config la
 // lleva a su idioma en las visitas siguientes; Google no manda cookies, así que siempre ve todas las versiones
 export const COOKIE_IDIOMA = "idioma";
