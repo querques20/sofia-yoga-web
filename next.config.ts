@@ -12,7 +12,9 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   // la 404 de las URLs que no son ninguna página (app/global-not-found.tsx): con el layout dentro de [lang], es
   // la forma que da Next de tener una sola 404 con los estilos de la web
-  experimental: { globalNotFound: true },
+  // Without optimistic routing: having seen /en, the client reads any one-part URL as /[lang], so a French page
+  // such as /contact (a rewrite to /fr/contact) gets prefetched as a language home and answers 404
+  experimental: { globalNotFound: true, optimisticRouting: false },
   turbopack: {
     rules: {
       "*.css": {
