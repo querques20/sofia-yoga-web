@@ -1,0 +1,2 @@
+# Hooks run under sh: with CRLF they fail with "bad interpreter: /bin/sh^M".
+.githooks/** text eol=lf

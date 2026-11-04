@@ -6,7 +6,10 @@
     "dev": "next dev -p 3010",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "react-doctor": "pnpm dlx react-doctor@0.9.22 --yes --no-supply-chain --blocking warning",
+    "prepare": "node scripts/install-hooks.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
