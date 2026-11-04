@@ -19,7 +19,7 @@ const fr = {
   meta: {
     title: "Sofia Costa, professeure de yoga à Genève",
     description:
-      "Mon parcours, mes formations (enregistrée auprès de Yoga Alliance, 60 h de yoga pré et postnatal) et ma façon d’enseigner le yoga à Genève.",
+      "Mon parcours, mes formations (enregistrée auprès de Yoga Alliance) et ma façon d’enseigner le yoga à Genève.",
   },
   fil: "À propos",
   titulo: (
@@ -97,27 +97,23 @@ const fr = {
   },
   tapis: {
     titulo: "Mes formations",
-    leyenda: "La longueur de chaque tapis correspond à la durée de la formation.",
-    unidad: "h",
-    // sus formaciones con horas (confirmadas el 30/9). Cada esterilla mide lo que duró la formación, y abajo va qué
-    // es cada estilo, con definiciones verificadas (historia del ashtanga y del yin)
+    leyenda: "Les formations que j’ai suivies, et où.",
+    // el título y dónde se formó, sin horas. Abajo va qué es cada estilo, con definiciones verificadas
+    // (historia del ashtanga y del yin)
     formaciones: [
       {
-        horas: 200,
-        titulo: "Ashtanga-Vinyasa",
-        detalle: "En Inde",
+        titulo: "Ashtanga Vinyasa",
+        donde: "En Inde. École",
         texto: "Un style popularisé au XXe siècle par K. Pattabhi Jois, à Mysore : des séries de postures enchaînées au rythme du souffle.",
       },
       {
-        horas: 100,
-        titulo: "Yin yoga et thérapie des fascias",
-        detalle: "En Suisse",
+        titulo: "Yin yoga et fascias",
+        donde: "En Suisse. École",
         texto: "Le yin yoga est lent : les postures sont tenues longtemps, souvent plusieurs minutes, dans le calme.",
       },
       {
-        horas: 60,
         titulo: "Yoga pré et postnatal",
-        detalle: null,
+        donde: "Lieu et école",
         texto: "Pour accompagner la grossesse et l’après-accouchement, avec les précautions propres à chaque étape.",
       },
     ],
@@ -147,7 +143,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     meta: {
       title: "Sofia Costa, yoga teacher in Geneva",
       description:
-        "My journey, my training (registered with Yoga Alliance, 60 hours of prenatal and postnatal yoga) and the way I teach yoga in Geneva.",
+        "My journey, my training (registered with Yoga Alliance) and the way I teach yoga in Geneva.",
     },
     fil: "About",
     titulo: (
@@ -198,12 +194,11 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     },
     tapis: {
       titulo: "My training",
-      leyenda: "The length of each mat matches the length of the training.",
-      unidad: "hrs",
+      leyenda: "The trainings I’ve done, and where.",
       formaciones: [
-        { horas: 200, titulo: "Ashtanga-Vinyasa", detalle: "In India", texto: "A style popularised in the 20th century by K. Pattabhi Jois in Mysore: sequences of postures strung together to the rhythm of the breath." },
-        { horas: 100, titulo: "Yin yoga and fascia therapy", detalle: "In Switzerland", texto: "Yin yoga is slow: the postures are held for a long time, often several minutes, in stillness." },
-        { horas: 60, titulo: "Prenatal and postnatal yoga", detalle: null, texto: "To support pregnancy and the time after birth, with the precautions specific to each stage." },
+        { titulo: "Ashtanga Vinyasa", donde: "In India. School", texto: "A style popularised in the 20th century by K. Pattabhi Jois in Mysore: sequences of postures strung together to the rhythm of the breath." },
+        { titulo: "Yin yoga and fascia", donde: "In Switzerland. School", texto: "Yin yoga is slow: the postures are held for a long time, often several minutes, in stillness." },
+        { titulo: "Prenatal and postnatal yoga", donde: "Place and school", texto: "To support pregnancy and the time after birth, with the precautions specific to each stage." },
       ],
       extras: [
         {
@@ -228,7 +223,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     meta: {
       title: "Sofia Costa, profesora de yoga en Ginebra",
       description:
-        "Mi recorrido, mi formación (registrada en Yoga Alliance, 60 h de yoga prenatal y posparto) y mi manera de enseñar yoga en Ginebra.",
+        "Mi recorrido, mi formación (registrada en Yoga Alliance) y mi manera de enseñar yoga en Ginebra.",
     },
     fil: "Sobre mí",
     titulo: (
@@ -279,12 +274,11 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     },
     tapis: {
       titulo: "Mis formaciones",
-      leyenda: "El largo de cada esterilla corresponde a la duración de la formación.",
-      unidad: "h",
+      leyenda: "Las formaciones que hice, y dónde.",
       formaciones: [
-        { horas: 200, titulo: "Ashtanga-Vinyasa", detalle: "En la India", texto: "Un estilo popularizado en el siglo XX por K. Pattabhi Jois, en Mysore: series de posturas encadenadas al ritmo de la respiración." },
-        { horas: 100, titulo: "Yin yoga y terapia de las fascias", detalle: "En Suiza", texto: "El yin yoga es lento: las posturas se mantienen mucho tiempo, a menudo varios minutos, en calma." },
-        { horas: 60, titulo: "Yoga prenatal y posparto", detalle: null, texto: "Para acompañar el embarazo y el posparto, con las precauciones propias de cada etapa." },
+        { titulo: "Ashtanga Vinyasa", donde: "En la India. Escuela", texto: "Un estilo popularizado en el siglo XX por K. Pattabhi Jois, en Mysore: series de posturas encadenadas al ritmo de la respiración." },
+        { titulo: "Yin yoga y fascias", donde: "En Suiza. Escuela", texto: "El yin yoga es lento: las posturas se mantienen mucho tiempo, a menudo varios minutos, en calma." },
+        { titulo: "Yoga prenatal y posparto", donde: "Lugar y escuela", texto: "Para acompañar el embarazo y el posparto, con las precauciones propias de cada etapa." },
       ],
       extras: [
         {

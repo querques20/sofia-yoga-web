@@ -117,7 +117,7 @@ const fr = {
             Je ne suis pas <Souligne>physiothérapeute</Souligne>.
           </>
         ),
-        detalle: "Je suis professeure de yoga, formée en yoga pré et postnatal (60 h).",
+        detalle: "Je suis professeure de yoga, formée en yoga pré et postnatal.",
       },
       {
         texto: (
@@ -331,7 +331,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
               I’m not a <Souligne>physiotherapist</Souligne>.
             </>
           ),
-          detalle: "I’m a yoga teacher, trained in pre- and postnatal yoga (60 h).",
+          detalle: "I’m a yoga teacher, trained in pre- and postnatal yoga.",
         },
         {
           texto: (
@@ -537,7 +537,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
               No soy <Souligne>fisioterapeuta</Souligne>.
             </>
           ),
-          detalle: "Soy profesora de yoga, formada en yoga pre y posnatal (60 h).",
+          detalle: "Soy profesora de yoga, formada en yoga pre y posnatal.",
         },
         {
           texto: (

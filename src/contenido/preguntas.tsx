@@ -160,7 +160,7 @@ const coursFr: Pregunta[] = [
     pregunta: "Tu proposes du yin yoga ?",
     respuesta: (
       <>
-        Je suis formée en yin yoga (100 h, en Suisse). Pour savoir s’il y aura des cours de yin, c’est encore <AConfirmer />
+        Je suis formée en yin yoga, en Suisse. Pour savoir s’il y aura des cours de yin, c’est encore <AConfirmer />
       </>
     ),
   },
@@ -331,7 +331,7 @@ const coursEn: Pregunta[] = [
     pregunta: "Do you offer yin yoga?",
     respuesta: (
       <>
-        I’m trained in yin yoga (100 h, in Switzerland). As for whether there will be yin classes, it’s still <AConfirmer />
+        I’m trained in yin yoga, in Switzerland. As for whether there will be yin classes, it’s still <AConfirmer />
       </>
     ),
   },
@@ -499,7 +499,7 @@ const coursEs: Pregunta[] = [
     pregunta: "¿Ofreces yin yoga?",
     respuesta: (
       <>
-        Tengo formación en yin yoga (100 h, en Suiza). En cuanto a si habrá clases de yin, todavía está <AConfirmer />
+        Tengo formación en yin yoga, en Suiza. En cuanto a si habrá clases de yin, todavía está <AConfirmer />
       </>
     ),
   },

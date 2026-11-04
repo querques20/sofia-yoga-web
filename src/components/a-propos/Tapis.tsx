@@ -1,21 +1,19 @@
 "use client";
 
 import { useRef } from "react";
+import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 export type TextosTapis = {
   titulo: string;
   leyenda: string;
-  /** la unidad de las horas (la cifra va grande, la unidad al lado) */
-  unidad: string;
-  /** cada esterilla mide lo que duró la formación, y abajo va qué es cada estilo */
-  formaciones: { horas: number; titulo: string; detalle: string | null; texto: string }[];
+  /** `donde` es lo que ya sabemos de cada una: atrás le va la pastilla de lo que falta (la escuela, y a veces el lugar) */
+  formaciones: { titulo: string; donde: string; texto: string }[];
   extras: { titulo: string; texto: string }[];
 };
-const MAS_LARGA = 200;
 
-/** las formaciones como esterillas que se desenrollan al bajar: el largo de cada una es proporcional a sus horas */
+/** las formaciones como esterillas que se desenrollan al bajar, todas del mismo largo */
 export function Tapis({ t }: { t: TextosTapis }) {
   const raiz = useRef<HTMLElement>(null);
   const quieto = useReducedMotion();
@@ -48,13 +46,12 @@ export function Tapis({ t }: { t: TextosTapis }) {
         <ul className="mt-12 space-y-10 lg:mt-16 lg:space-y-12">
           {t.formaciones.map((f) => (
             <li key={f.titulo} className="tapis-fila">
-              <div className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
-                <span className="titre text-[clamp(2.4rem,5vw,3.8rem)]">{f.horas}&nbsp;{t.unidad}</span>
-                <span className="text-[1.2rem] font-bold">{f.titulo}</span>
-                {f.detalle && <span className="text-[1.05rem] opacity-75">{f.detalle}</span>}
-              </div>
+              <h3 className="titre text-[clamp(2rem,4.4vw,3.2rem)]">{f.titulo}</h3>
+              <p className="mt-1 text-[1.05rem] opacity-80">
+                {f.donde} <AConfirmer />
+              </p>
               <p className="mt-2 max-w-[40rem] text-[1.05rem] leading-relaxed opacity-85">{f.texto}</p>
-              <div className="relative mt-4 pr-[clamp(0.8rem,1.4vw,1.1rem)]" style={{ width: `${(f.horas / MAS_LARGA) * 100}%` }}>
+              <div className="relative mt-4 pr-[clamp(0.8rem,1.4vw,1.1rem)]">
                 <div
                   className="tapis h-[clamp(2.2rem,4.4vw,3.4rem)] rounded-[0.8rem] bg-celeste"
                   style={{ backgroundImage: "repeating-linear-gradient(90deg, rgba(57,70,58,0.08) 0 2px, transparent 2px 16px)" }}
