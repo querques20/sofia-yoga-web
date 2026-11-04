@@ -65,3 +65,98 @@ export function PieDeAdelante({ className }: { className?: string }) {
     </g>
   );
 }
+
+/** the background: overlapping ellipses */
+export function MasasDeFondo() {
+  return (
+    <g className="ilus-masas">
+      {/* fondo: masas de elipses encimadas */}
+      <g fill="#DDE4D9">
+        <ellipse cx="146" cy="366" rx="120" ry="108" transform="rotate(-20 146 366)"/>
+        <ellipse cx="112" cy="300" rx="62" ry="50" transform="rotate(30 112 300)"/>
+      </g>
+      <g fill="#DBE9EF">
+        <ellipse cx="220" cy="252" rx="160" ry="192" transform="rotate(-6 220 252)"/>
+        <ellipse cx="290" cy="330" rx="104" ry="116" transform="rotate(18 290 330)"/>
+      </g>
+    </g>
+  );
+}
+
+/** the tall branch, the pale sprig behind the hair and the low leaves */
+export function Ramas() {
+  return (
+    <g className="ilus-ramas">
+      {/* rama alta detrás, a la derecha */}
+      <g>
+        <path d="M352 486 C 356 430 352 370 336 312" fill="none" stroke="#A9BCA1" strokeWidth="3" strokeLinecap="round"/>
+        <g fill="#A9BCA1">
+          <path d="M344 344 C 364 336 376 318 378 298 C 358 304 346 322 344 344 Z"/>
+          <path d="M340 336 C 322 330 312 314 312 296 C 330 302 340 318 340 336 Z"/>
+          <path d="M352 392 C 372 386 386 368 388 348 C 368 354 354 372 352 392 Z"/>
+          <path d="M348 384 C 330 380 318 364 316 346 C 334 352 346 366 348 384 Z"/>
+          <path d="M355 440 C 374 434 388 418 392 398 C 372 404 358 420 355 440 Z"/>
+        </g>
+        <g fill="none" stroke="#39463A" strokeWidth="1.2" strokeLinecap="round" opacity="0.18">
+          <path d="M346 340 C 356 330 366 318 374 302"/>
+          <path d="M338 332 C 330 324 322 314 316 300"/>
+          <path d="M354 388 C 364 378 376 366 384 352"/>
+          <path d="M346 380 C 336 372 326 362 320 350"/>
+          <path d="M357 436 C 368 426 380 414 388 402"/>
+        </g>
+      </g>
+
+      {/* ramita clara detrás del pelo */}
+      <g fill="#DDE4D9">
+        <path d="M128 330 C 126 292 130 256 142 222" fill="none" stroke="#DDE4D9" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M132 270 C 112 262 104 246 106 230 C 124 236 132 252 132 270 Z"/>
+        <path d="M134 250 C 150 242 156 226 154 210 C 138 218 132 234 134 250 Z"/>
+        <path d="M130 300 C 110 296 98 282 98 266 C 116 270 128 284 130 300 Z"/>
+      </g>
+      {/* hojas de abajo */}
+      <g fill="#A9BCA1">
+        <path d="M96 486 C 92 452 98 420 112 392" fill="none" stroke="#A9BCA1" strokeWidth="3" strokeLinecap="round"/>
+        <path d="M100 450 C 76 446 62 430 60 412 C 82 412 98 428 100 450 Z"/>
+        <path d="M104 420 C 120 408 124 390 120 372 C 104 380 98 400 104 420 Z"/>
+        <path d="M98 470 C 80 474 66 468 58 456 C 74 448 92 456 98 470 Z"/>
+      </g>
+      <g fill="none" stroke="#39463A" strokeWidth="1.2" strokeLinecap="round" opacity="0.18">
+        <path d="M98 448 C 88 440 76 428 66 416"/>
+        <path d="M104 416 C 110 404 116 392 119 378"/>
+        <path d="M96 468 C 86 466 74 462 64 457"/>
+      </g>
+    </g>
+  );
+}
+
+/** Sofia's flower and two small ones, in violet line */
+export function FloresVioletas() {
+  return (
+    <g fill="none" stroke="#7A6193" strokeLinecap="round">
+      <g transform="translate(96 116)" strokeWidth="2">
+        <ellipse cx="0" cy="-18" rx="8" ry="18"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(300)"/>
+      </g>
+      <g transform="translate(330 120) scale(0.45)" strokeWidth="3.6">
+        <ellipse cx="0" cy="-18" rx="8" ry="18"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(300)"/>
+      </g>
+      <g transform="translate(56 336) scale(0.38)" strokeWidth="4">
+        <ellipse cx="0" cy="-18" rx="8" ry="18"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(60)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(120)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(180)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(240)"/>
+        <ellipse cx="0" cy="-18" rx="8" ry="18" transform="rotate(300)"/>
+      </g>
+    </g>
+  );
+}

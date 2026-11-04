@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { Children, useRef, type ReactNode } from "react";
 import { enlaceWhatsApp, MENSAJES } from "@/lib/contacto";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { escucharSouffle } from "@/lib/souffle";
@@ -99,8 +99,8 @@ export function ProgrammeEnLigne({ t }: { t: TextosProgrammeEnLigne }) {
         </div>
 
         <ol className="meses mt-16 grid grid-cols-3 gap-3 lg:mt-24 lg:gap-6" aria-label={t.etiquetaTrimestres}>
-          {t.trimestres.map((etiqueta, i) => (
-            <li key={i}>
+          {Children.map(t.trimestres, (etiqueta) => (
+            <li>
               <span className="mes-etiqueta titre block text-[clamp(1.15rem,2.6vw,2rem)]">
                 {etiqueta}
               </span>

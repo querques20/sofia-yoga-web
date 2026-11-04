@@ -17,7 +17,7 @@ import { SelectorDeIdioma } from "../idioma/SelectorDeIdioma";
 export function MenuMovil() {
   const { idioma, ruta } = useRuta();
   const t = useInterfaz();
-  const hoja = useRef<HTMLDivElement>(null);
+  const hoja = useRef<HTMLDialogElement>(null);
   const boton = useRef<HTMLButtonElement>(null);
   const [abierto, setAbierto] = useState(false);
   const [rutaPrevia, setRutaPrevia] = useState(ruta);
@@ -119,13 +119,16 @@ export function MenuMovil() {
         </svg>
       </button>
 
-      <div
+      {/* Not showModal(): the top layer would sit above the language curtain (Entrada, z-[70]). That is why the
+          focus trap, Escape and the inert background stay in the effects above. `flex` keeps it painted while
+          the closing animation runs, after `open` is gone */}
+      <dialog
         id="menu-movil"
         ref={hoja}
-        role="dialog"
+        open={abierto}
         aria-modal="true"
         aria-label={t.nav.menu}
-        className="invisible fixed inset-0 z-[60] flex flex-col bg-verde px-5 pb-10 text-pagina lg:hidden"
+        className="invisible fixed inset-0 z-[60] flex h-auto w-auto flex-col bg-verde px-5 pb-10 text-pagina lg:hidden"
         style={{ clipPath: "inset(0% 0% 100% 0%)" }}
       >
         <div className="flex h-[5rem] items-center justify-between">
@@ -170,7 +173,7 @@ export function MenuMovil() {
             {CONTACTO.telefono} · {CONTACTO.instagramUsuario}
           </p>
         </div>
-      </div>
+      </dialog>
     </>
   );
 }

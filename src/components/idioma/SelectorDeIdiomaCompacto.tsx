@@ -4,11 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { gsap, useGSAP } from "@/lib/gsap";
-import { IDIOMAS, NOMBRES, rutaEn } from "@/lib/idiomas";
+import { ETIQUETA, IDIOMAS, NOMBRES, rutaEn } from "@/lib/idiomas";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { abreAparte, cambiarIdioma } from "./cambiar-idioma";
-import { ETIQUETA } from "./SelectorDeIdioma";
 
 /**
  * El idioma en el celular, a la vista sin abrir el menú: una islita con la sigla actual, al lado del

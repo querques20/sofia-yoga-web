@@ -8,7 +8,8 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { Magnetique } from "./Magnetique";
 import { Parte } from "./programme/Parte";
-import { aparecerPanza, crecerPanza, PanzaQueCrece, respirarPanza } from "./programme/PanzaQueCrece";
+import { aparecerPanza, crecerPanza, respirarPanza } from "./programme/panza";
+import { PanzaQueCrece } from "./programme/PanzaQueCrece";
 
 export type TextosProgramme = {
   intro: [string, string];

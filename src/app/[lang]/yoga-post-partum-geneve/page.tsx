@@ -67,6 +67,7 @@ const fr = {
     intro: <p>Ce que l’assurance de base prévoit après la naissance. Vérifie les détails auprès de ta caisse maladie.</p>,
     reperes: [
       {
+        id: "control",
         clave: (
           <>
             6<sup className="sufijo">e</sup> à 10<sup className="sufijo">e</sup> semaine
@@ -271,6 +272,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       intro: <p>What basic health insurance covers after the birth. Check the details with your health insurer.</p>,
       reperes: [
         {
+          id: "control",
           clave: (
             <>
               6<sup className="sufijo">th</sup> to 10<sup className="sufijo">th</sup> week
@@ -486,6 +488,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       intro: <p>Lo que prevé el seguro básico después del parto. Consulta los detalles con tu aseguradora de salud.</p>,
       reperes: [
         {
+          id: "control",
           clave: (
             <>
               6.<sup className="sufijo">ª</sup> a 10.<sup className="sufijo">ª</sup> semana

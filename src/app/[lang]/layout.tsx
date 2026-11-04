@@ -30,8 +30,7 @@ export function generateStaticParams() {
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/[lang]">) {
-  const idioma = await lang();
-  const t = await interfaz();
+  const [idioma, t] = await Promise.all([lang(), interfaz()]);
   return (
     // MarcasDelDocumento le suma clases antes de hidratar, por eso se avisa que la diferencia es a propósito
     <html lang={idioma} className={FUENTES} suppressHydrationWarning>
