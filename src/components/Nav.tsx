@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
+import { backToTopIfCurrent } from "@/lib/back-to-top";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
 import { CONTACTO_PAGINA, esActual, PAGINAS } from "@/lib/navegacion";
@@ -56,6 +57,7 @@ export function Nav() {
       {/* en el celular la marca es otra islita, como el botón: así no se pisa con los títulos al bajar */}
       <Link
         href={rutaEn(idioma, "/")}
+        onClick={backToTopIfCurrent(enInicio)}
         data-fuera-del-menu
         aria-label={t.nav.marca}
         className="flex h-12 shrink-0 items-center gap-2 rounded-3xl border border-verde/10 bg-pagina/90 pr-4 pl-1.5 shadow-[0_8px_24px_-12px_rgba(57,70,58,0.45)] backdrop-blur-md lg:h-auto lg:gap-0 lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none"
@@ -74,6 +76,7 @@ export function Nav() {
             <li key={pagina.href} data-nav-item>
               <Link
                 href={rutaEn(idioma, pagina.href)}
+                onClick={backToTopIfCurrent(ruta === pagina.href)}
                 aria-current={esActual(ruta, pagina.href) ? "page" : undefined}
                 className="block rounded-xl px-3 py-2 transition-colors duration-300 hover:bg-salvia-clara aria-[current=page]:bg-salvia-clara"
               >
@@ -88,6 +91,7 @@ export function Nav() {
         <Link
           data-nav-item
           href={rutaEn(idioma, CONTACTO_PAGINA.href)}
+          onClick={backToTopIfCurrent(ruta === CONTACTO_PAGINA.href)}
           aria-current={esActual(ruta, CONTACTO_PAGINA.href) ? "page" : undefined}
           className="rounded-xl bg-terracota px-5 py-2.5 text-[15px] font-bold text-white transition-colors duration-300 hover:bg-[#9e5441]"
         >
