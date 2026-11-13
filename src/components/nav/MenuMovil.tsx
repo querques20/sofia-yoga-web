@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { backToTopIfCurrent } from "@/lib/back-to-top";
 import { CONTACTO } from "@/lib/contacto";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
@@ -158,7 +159,10 @@ export function MenuMovil() {
             <li key={pagina.href} className="menu-item overflow-hidden border-t border-pagina/15">
               <Link
                 href={rutaEn(idioma, pagina.href)}
-                onClick={() => setAbierto(false)}
+                onClick={(e) => {
+                  setAbierto(false);
+                  backToTopIfCurrent(ruta === pagina.href)(e);
+                }}
                 aria-current={pagina.href === "/" ? (ruta === "/" ? "page" : undefined) : esActual(ruta, pagina.href) ? "page" : undefined}
                 className="titre block py-3 text-[2.4rem] aria-[current=page]:text-salvia"
               >
@@ -169,7 +173,14 @@ export function MenuMovil() {
         </ul>
         <div className="menu-item mt-auto flex flex-col gap-5">
           <SelectorDeIdioma variante="menu" />
-          <Link href={rutaEn(idioma, CONTACTO_PAGINA.href)} onClick={() => setAbierto(false)} className="boton w-fit">
+          <Link
+            href={rutaEn(idioma, CONTACTO_PAGINA.href)}
+            onClick={(e) => {
+              setAbierto(false);
+              backToTopIfCurrent(ruta === CONTACTO_PAGINA.href)(e);
+            }}
+            className="boton w-fit"
+          >
             {CONTACTO_PAGINA.texto[idioma]}
           </Link>
           <p className="text-[0.98rem] text-pagina/75">
