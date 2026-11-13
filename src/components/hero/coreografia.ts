@@ -37,6 +37,8 @@ export type Foto = {
 // cuánto tarda cada pétalo en abrirse, y cuánto espera cada uno al anterior
 const ABRIR = 1.35;
 const ENTRE_PETALOS = 0.05;
+// how long the float and the breath take to reach full weight once the opening ends
+const RAMP_IN = 1.6;
 
 /** mide cada puerta en su lugar (centro y tamaño, en la ventana) y arma la foto que la coreografía mueve */
 export function medirPuertas(seccion: HTMLElement): Foto[] {
@@ -147,20 +149,27 @@ export function aparecerEnSuLugar(fotos: Foto[], linea: gsap.core.Timeline, desd
   );
 }
 
-/** las fotos respiran con la web y flotan despacito: el hero nunca queda quieto. Devuelve cómo pararlo */
+/**
+ * The photos breathe with the site and float slowly: the hero never sits still. Returns how to stop it.
+ * Both start from the pose the opening leaves (no float, breath at 0) and ease in: the breath is shared and
+ * already mid-cycle, and each photo floats on its own phase, so starting at full weight makes every photo jump
+ */
 export function respirarYFlotar(fotos: Foto[]) {
   let soplo = 0;
+  const ramp = { weight: 0 };
+  const rampIn = gsap.to(ramp, { weight: 1, duration: RAMP_IN, ease: "sine.inOut" });
   const dejarDeEscuchar = escucharSouffle((v) => {
     soplo = v;
   });
   const cuadro = (tiempo: number) => {
     for (const f of fotos) {
-      f.flote = Math.sin(tiempo * 0.55 + f.i * 1.3) * 5;
-      pintar(f, soplo);
+      f.flote = Math.sin(tiempo * 0.55 + f.i * 1.3) * 5 * ramp.weight;
+      pintar(f, soplo * ramp.weight);
     }
   };
   gsap.ticker.add(cuadro);
   return () => {
+    rampIn.kill();
     gsap.ticker.remove(cuadro);
     dejarDeEscuchar();
   };
