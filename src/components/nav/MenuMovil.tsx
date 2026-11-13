@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { backToTopIfCurrent } from "@/lib/back-to-top";
+import { backToTopIfCurrent, cutToSectionIfHere } from "@/lib/back-to-top";
 import { CONTACTO } from "@/lib/contacto";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
@@ -12,6 +12,7 @@ import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "../FleurQuiRespire";
+import { PUERTAS } from "../hero/puertas";
 import { SelectorDeIdioma } from "../idioma/SelectorDeIdioma";
 
 /** el menú del celular: el botón es una islita y abre un panel verde a pantalla completa, como en ED */
@@ -155,7 +156,7 @@ export function MenuMovil() {
           </button>
         </div>
         <ul className="mt-8 flex flex-col">
-          {[{ href: "/", texto: t.nav.inicio }, ...PAGINAS.map((p) => ({ href: p.href, texto: p.texto[idioma] }))].map((pagina) => (
+          {[{ href: "/", texto: t.nav.inicio, submenu: undefined }, ...PAGINAS.map((p) => ({ href: p.href, texto: p.texto[idioma], submenu: p.submenu }))].map((pagina) => (
             <li key={pagina.href} className="menu-item overflow-hidden border-t border-pagina/15">
               <Link
                 href={rutaEn(idioma, pagina.href)}
@@ -168,6 +169,32 @@ export function MenuMovil() {
               >
                 {pagina.texto}
               </Link>
+              {/* the ways to take a class, under Classes as in the sitemap: the same three as the desktop submenu */}
+              {pagina.submenu ? (
+                <ul className="flex flex-wrap gap-x-5 gap-y-1 pb-3.5 text-[1.02rem] font-bold text-pagina/80">
+                  {pagina.submenu.map((clase) => {
+                    const puerta = PUERTAS.find((p) => p.clave === clase.clave);
+                    if (!puerta) return null;
+                    const aqui = ruta === puerta.ruta;
+                    return (
+                      <li key={clase.clave}>
+                        <Link
+                          href={rutaEn(idioma, puerta.ruta) + (puerta.ancla ? `#${puerta.ancla}` : "")}
+                          aria-current={aqui && !puerta.ancla ? "page" : undefined}
+                          onClick={(e) => {
+                            setAbierto(false);
+                            if (puerta.ancla) cutToSectionIfHere(aqui, puerta.ancla)(e);
+                            else backToTopIfCurrent(aqui)(e);
+                          }}
+                          className="block py-1 aria-[current=page]:text-salvia"
+                        >
+                          {clase.texto[idioma]}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
             </li>
           ))}
         </ul>

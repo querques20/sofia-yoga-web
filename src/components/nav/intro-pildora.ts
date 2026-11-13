@@ -36,7 +36,8 @@ export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context, navS
   const q = gsap.utils.selector(nav);
 
   gsap.set(q("[data-nav-marca]"), { width: "auto", autoAlpha: 1 });
-  gsap.set(q("[data-nav-links]"), { width: 0, autoAlpha: 0 });
+  // the links are clipped only while the pill grows: at rest the submenu has to hang out of it
+  gsap.set(q("[data-nav-links]"), { width: 0, autoAlpha: 0, overflow: "hidden" });
   gsap.set(q("[data-nav-item]"), { autoAlpha: 0, x: -8 });
 
   const abrir = () => {
@@ -52,7 +53,8 @@ export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context, navS
         .to(q("[data-nav-marca]"), { width: 0, duration: 0.45 }, "<")
         .set(q("[data-nav-links]"), { autoAlpha: 1 }, "+=0.06")
         .to(q("[data-nav-links]"), { width: "auto", duration: 0.75, ease: "expo.out" }, "<")
-        .to(q("[data-nav-item]"), { autoAlpha: 1, x: 0, duration: 0.55, stagger: 0.07 }, "<0.12");
+        .to(q("[data-nav-item]"), { autoAlpha: 1, x: 0, duration: 0.55, stagger: 0.07 }, "<0.12")
+        .set(q("[data-nav-links]"), { clearProps: "overflow" });
     });
   };
 

@@ -7,6 +7,7 @@ import { persona, negocio } from "@/lib/datos-estructurados";
 import { idiomaActual } from "@/lib/idioma-actual";
 import type { Idioma } from "@/lib/idiomas";
 import { metadatos } from "@/lib/metadatos";
+import { nombreDeClase } from "@/lib/navegacion";
 
 // los textos de la página en cada idioma (EN y ES, borrador para revisión nativa). El título de la pestaña es el del
 // layout; aquí solo va la descripción
@@ -23,9 +24,9 @@ const fr = {
     puertas: {
       prenatal: { nombre: "Yoga prénatal", alt: "Une femme enceinte de profil, une main sous le ventre" },
       postPartum: { nombre: "Post-partum", alt: "Une maman qui tient son nouveau-né dans les bras" },
-      groupe: { nombre: "Cours en groupe", alt: "Des élèves qui s’étirent sur leur tapis, en cours" },
-      prives: { nombre: "Cours privés", alt: "Sofia en équilibre sur les mains, sur un parquet" },
-      parc: { nombre: "Au parc", alt: "Sofia dans la posture du danseur, sur un chemin de campagne" },
+      groupe: { nombre: nombreDeClase("groupe", "fr"), alt: "Des élèves qui s’étirent sur leur tapis, en cours" },
+      prives: { nombre: nombreDeClase("prives", "fr"), alt: "Sofia en équilibre sur les mains, sur un parquet" },
+      parc: { nombre: nombreDeClase("parc", "fr"), alt: "Sofia dans la posture du danseur, sur un chemin de campagne" },
       ateliers: { nombre: "Ateliers", alt: "Un groupe assis en cercle dans une salle lumineuse" },
     },
   } satisfies TextosHero,
@@ -70,9 +71,9 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       puertas: {
         prenatal: { nombre: "Prenatal yoga", alt: "A pregnant woman in profile, one hand under her belly" },
         postPartum: { nombre: "Postpartum", alt: "A mother holding her newborn in her arms" },
-        groupe: { nombre: "Group classes", alt: "Students stretching on their mats during a class" },
-        prives: { nombre: "Private classes", alt: "Sofia balancing on her hands on a wooden floor" },
-        parc: { nombre: "In the park", alt: "Sofia in dancer’s pose on a country path" },
+        groupe: { nombre: nombreDeClase("groupe", "en"), alt: "Students stretching on their mats during a class" },
+        prives: { nombre: nombreDeClase("prives", "en"), alt: "Sofia balancing on her hands on a wooden floor" },
+        parc: { nombre: nombreDeClase("parc", "en"), alt: "Sofia in dancer’s pose on a country path" },
         ateliers: { nombre: "Workshops", alt: "A group sitting in a circle in a bright room" },
       },
     },
@@ -113,9 +114,9 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       puertas: {
         prenatal: { nombre: "Yoga prenatal", alt: "Una mujer embarazada de perfil, con una mano bajo el vientre" },
         postPartum: { nombre: "Posparto", alt: "Una madre con su recién nacido en brazos" },
-        groupe: { nombre: "Clases en grupo", alt: "Alumnas estirándose sobre sus esterillas, en clase" },
-        prives: { nombre: "Clases privadas", alt: "Sofia en equilibrio sobre las manos, sobre un suelo de madera" },
-        parc: { nombre: "En el parque", alt: "Sofia en la postura del bailarín, en un camino de campo" },
+        groupe: { nombre: nombreDeClase("groupe", "es"), alt: "Alumnas estirándose sobre sus esterillas, en clase" },
+        prives: { nombre: nombreDeClase("prives", "es"), alt: "Sofia en equilibrio sobre las manos, sobre un suelo de madera" },
+        parc: { nombre: nombreDeClase("parc", "es"), alt: "Sofia en la postura del bailarín, en un camino de campo" },
         ateliers: { nombre: "Talleres", alt: "Un grupo sentado en círculo en una sala luminosa" },
       },
     },
