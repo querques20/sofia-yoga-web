@@ -3,6 +3,7 @@
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { abrirTelon, avisarHueco, cerrarTelon, escucharCierre, INSPIRA, paginaLista, TAMANO_FLOR, telonVieneCerrado, terminarTelon } from "@/lib/entrada";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { INTRO_KEY, INTRO_TTL_MS, introMark, introSeen } from "@/lib/intro-seen";
 import { lenisActual } from "@/lib/lenis";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Fleur } from "./Fleur";
@@ -10,22 +11,21 @@ import { Fleur } from "./Fleur";
 // lo más que espera la flor a que la página se arme (si alguna no avisa) y después a un momento libre
 const ESPERA_PAGINA_MS = 1000;
 const ESPERA_LIBRE_MS = 300;
-const CLAVE = "sofia-entrada";
 
-// en qué idioma se vio la entrada en esta visita (la entrada se repite al cambiar de idioma)
-function idiomaVisto() {
+// whether the intro was already seen in this visit, in this language and not too long ago (lib/intro-seen)
+function alreadySeen(lang: string) {
   try {
-    return sessionStorage.getItem(CLAVE);
+    return introSeen(sessionStorage.getItem(INTRO_KEY), lang, Date.now(), INTRO_TTL_MS);
   } catch {
-    return null;
+    return false;
   }
 }
 
-function marcarVista(idioma: string) {
+function markSeen(lang: string) {
   try {
-    sessionStorage.setItem(CLAVE, idioma);
+    sessionStorage.setItem(INTRO_KEY, introMark(lang, Date.now()));
   } catch {
-    // sin almacenamiento (navegación privada estricta) se ve en cada carga, nada más
+    // without storage (strict private browsing) it plays on every load, nothing else
   }
 }
 
@@ -61,8 +61,9 @@ const huecoAbierto = () => Math.hypot(window.innerWidth, window.innerHeight) * 2
 
 /**
  * La entrada: el telón verde aparece suave desde el color de la página, la flor se dibuja, inspira, y al expirar
- * la página se abre a través de ella. Una vez por idioma. Al cambiar de idioma, la página primero se cierra por
- * la flor (Cierre) y la entrada nueva arranca ya verde
+ * la página se abre a través de ella. Una vez por visita e idioma, y de nuevo cuando pasó su vigencia
+ * (lib/intro-seen). Al cambiar de idioma, la página primero se cierra por la flor (Cierre) y la entrada nueva
+ * arranca ya verde
  */
 export function Entrada() {
   const telon = useRef<HTMLDivElement>(null);
@@ -73,8 +74,9 @@ export function Entrada() {
   useGSAP(
     () => {
       const idioma = document.documentElement.lang;
-      // con menos movimiento, o si ya se vio en esta visita y en este idioma, el telón se abre enseguida
-      if (quieto || idiomaVisto() === idioma) {
+      // with reduced motion, or if it was seen in this visit and language within its time to live, the curtain
+      // opens at once
+      if (quieto || alreadySeen(idioma)) {
         abrirTelon();
         terminarTelon();
         setTermino(true);
@@ -118,8 +120,8 @@ export function Entrada() {
         // expira: el hueco aparece justo sobre la flor y crece hasta abrir toda la página
         .set(el, { "--flor": `${TAMANO_FLOR * INSPIRA}px` }, 1.02)
         .add(() => {
-          // se da por vista recién al abrirse: si se cierra la pestaña antes, se vuelve a ver
-          marcarVista(idioma);
+          // it only counts as seen once it opens: closing the tab before that plays it again
+          markSeen(idioma);
           abrirTelon();
         }, 1.04)
         .to(
