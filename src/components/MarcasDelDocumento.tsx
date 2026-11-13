@@ -1,13 +1,15 @@
 "use client";
 
 import { useLayoutEffect } from "react";
+import { INTRO_KEY, INTRO_TTL_MS, introSeen } from "@/lib/intro-seen";
 
-// marca que hay JS, así lo que entra animado no aparece y desaparece. Y si la entrada ya se vio en esta visita y
-// en este idioma, lo marca también, así el telón ni se pinta
-function marcar() {
+// Marks that there is JS, so what enters animated does not show and then hide. And if the intro still counts as
+// seen (this visit, this language, within its time to live: lib/intro-seen), marks that too, so the curtain is
+// never painted
+function marcar(seen: typeof introSeen, key: string, ttl: number) {
   document.documentElement.classList.add("js");
   try {
-    if (sessionStorage.getItem("sofia-entrada") === document.documentElement.lang) document.documentElement.classList.add("entrada-vista");
+    if (seen(sessionStorage.getItem(key), document.documentElement.lang, Date.now(), ttl)) document.documentElement.classList.add("entrada-vista");
   } catch {
     // sin almacenamiento la entrada se ve en cada carga, nada más
   }
@@ -17,7 +19,8 @@ function marcarJs() {
   document.documentElement.classList.add("js");
 }
 
-const MARCAR = `(${marcar.toString()})()`;
+// the script has no imports: the check and its values go in as arguments, the check as its own source
+const MARCAR = `(${marcar.toString()})(${introSeen.toString()},${JSON.stringify(INTRO_KEY)},${INTRO_TTL_MS})`;
 
 /**
  * Las marcas de <html> que dependen del navegador. En la carga inicial las pone el script antes de pintar. Al
