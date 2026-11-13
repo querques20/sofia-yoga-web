@@ -4,6 +4,7 @@ import { useRef, type CSSProperties } from "react";
 import { CONTACTO } from "@/lib/contacto";
 import { escucharHueco, hayEntradaPendiente, HUECO_INICIAL, paginaArmada, telonTerminado } from "@/lib/entrada";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { heroEntranceEnds, heroEntranceStarts, heroLeft } from "@/lib/hero-entrance";
 import { rutaEn } from "@/lib/idiomas";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
@@ -66,6 +67,8 @@ export function Hero({ t }: { t: TextosHero }) {
         return;
       }
 
+      // the nav waits for this entrance to end before it shows (nav/show-after-hero.ts)
+      heroEntranceStarts();
       seccion.classList.add("con-coreografia");
       const fotos = medirPuertas(seccion);
       const lineas = q(".hero-linea > span:not(.mano)");
@@ -109,6 +112,7 @@ export function Hero({ t }: { t: TextosHero }) {
       const alTerminar = contextSafe!(() => {
         if (!vivo) return;
         fase = "quieta";
+        heroEntranceEnds();
         dejarDeRespirar();
         dejarDeRespirar = respirarYFlotar(fotos);
         ponerParallax();
@@ -163,6 +167,7 @@ export function Hero({ t }: { t: TextosHero }) {
 
       return () => {
         vivo = false;
+        heroLeft();
         window.removeEventListener("resize", alCambiar);
         dejarDeEscucharHueco();
         dejarDeRespirar();
