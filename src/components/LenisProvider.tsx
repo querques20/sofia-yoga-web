@@ -5,11 +5,8 @@ import { useEffect, useRef, type ReactNode } from "react";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { guardarLenis, lenisActual } from "@/lib/lenis";
+import { ANCLA_ARRIBA, guardarLenis, lenisActual } from "@/lib/lenis";
 import { useReducedMotion } from "@/lib/useReducedMotion";
-
-// cuánto queda un ancla por debajo del borde de arriba: el lugar del menú
-const ANCLA_ARRIBA = -88;
 
 // the element the URL's hash points to, if any. The id may come percent-encoded, and a broken sequence makes
 // decodeURIComponent throw: that counts as no anchor

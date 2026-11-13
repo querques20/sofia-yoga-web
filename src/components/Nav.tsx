@@ -13,6 +13,7 @@ import { FleurQuiRespire } from "./FleurQuiRespire";
 import { SelectorDeIdioma } from "./idioma/SelectorDeIdioma";
 import { SelectorDeIdiomaCompacto } from "./idioma/SelectorDeIdiomaCompacto";
 import { MenuMovil } from "./nav/MenuMovil";
+import { NavSubmenu } from "./nav/NavSubmenu";
 import { crearIntroPildora, introPildoraHecha, saltarIntroPildora } from "./nav/intro-pildora";
 import { showNavAfterHero } from "./nav/show-after-hero";
 
@@ -21,7 +22,7 @@ import { showNavAfterHero } from "./nav/show-after-hero";
  * con la flor, los links y el botón de contacto. En el Inicio arranca cerrada con el nombre y se abre.
  * En el celular la marca va suelta y el botón es una islita. Queda siempre a la vista, también al bajar.
  * The one exception, as in ED: at the top of the Home it waits for the hero's entrance to end
- * (nav/show-after-hero.ts).
+ * (nav/show-after-hero.ts). Classes carries a submenu (nav/NavSubmenu.tsx).
  */
 export function Nav() {
   const ref = useRef<HTMLElement>(null);
@@ -86,20 +87,24 @@ export function Nav() {
         </span>
       </Link>
 
-      <div data-nav-links data-fuera-del-menu className="hidden items-center overflow-hidden whitespace-nowrap lg:flex">
+      <div data-nav-links data-fuera-del-menu className="hidden items-center whitespace-nowrap lg:flex">
         <ul className="flex items-center gap-0.5 pr-2 pl-3 text-[15px] font-bold">
-          {PAGINAS.map((pagina) => (
-            <li key={pagina.href} data-nav-item>
-              <Link
-                href={rutaEn(idioma, pagina.href)}
-                onClick={backToTopIfCurrent(ruta === pagina.href)}
-                aria-current={esActual(ruta, pagina.href) ? "page" : undefined}
-                className="block rounded-xl px-3 py-2 transition-colors duration-300 hover:bg-salvia-clara aria-[current=page]:bg-salvia-clara"
-              >
-                {pagina.texto[idioma]}
-              </Link>
-            </li>
-          ))}
+          {PAGINAS.map((pagina) =>
+            pagina.submenu ? (
+              <NavSubmenu key={pagina.href} pagina={pagina} />
+            ) : (
+              <li key={pagina.href} data-nav-item>
+                <Link
+                  href={rutaEn(idioma, pagina.href)}
+                  onClick={backToTopIfCurrent(ruta === pagina.href)}
+                  aria-current={esActual(ruta, pagina.href) ? "page" : undefined}
+                  className="block rounded-xl px-3 py-2 transition-colors duration-300 hover:bg-salvia-clara aria-[current=page]:bg-salvia-clara"
+                >
+                  {pagina.texto[idioma]}
+                </Link>
+              </li>
+            ),
+          )}
         </ul>
         <div data-nav-item className="mr-2">
           <SelectorDeIdioma variante="pildora" />
