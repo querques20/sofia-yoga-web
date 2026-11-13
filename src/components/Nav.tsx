@@ -14,11 +14,14 @@ import { SelectorDeIdioma } from "./idioma/SelectorDeIdioma";
 import { SelectorDeIdiomaCompacto } from "./idioma/SelectorDeIdiomaCompacto";
 import { MenuMovil } from "./nav/MenuMovil";
 import { crearIntroPildora, introPildoraHecha, saltarIntroPildora } from "./nav/intro-pildora";
+import { showNavAfterHero } from "./nav/show-after-hero";
 
 /**
  * El menú con la forma del de ED: en escritorio, una píldora flotante centrada (crema translúcida y desenfocada)
  * con la flor, los links y el botón de contacto. En el Inicio arranca cerrada con el nombre y se abre.
  * En el celular la marca va suelta y el botón es una islita. Queda siempre a la vista, también al bajar.
+ * The one exception, as in ED: at the top of the Home it waits for the hero's entrance to end
+ * (nav/show-after-hero.ts).
  */
 export function Nav() {
   const ref = useRef<HTMLElement>(null);
@@ -30,19 +33,30 @@ export function Nav() {
   useGSAP(
     (context) => {
       const nav = ref.current;
+      if (!nav) return;
+      // on the Home the nav comes into view when the hero's entrance ends; anywhere else, and with reduced
+      // motion (the hero has no entrance then), it is simply there
+      let shown = () => {};
+      const navShown = new Promise<void>((resolve) => (shown = resolve));
+      let stopWaiting = () => {};
+      if (enInicio && !quieto) stopWaiting = showNavAfterHero(nav, shown);
+      else shown();
       // si se llegó por otra página, o si la entrada ya se vio en esta visita, el menú arranca abierto
       if (!enInicio || document.documentElement.classList.contains("entrada-vista")) {
         saltarIntroPildora();
-        return;
+        return stopWaiting;
       }
-      if (!nav || quieto || introPildoraHecha()) return;
+      if (quieto || introPildoraHecha()) return stopWaiting;
       // solo en compu. El matchMedia se arma por afuera del contexto de useGSAP: anidado, GSAP deshacía
       // la bienvenida dos veces y los links quedaban escondidos al pasar a otra página
       let mm: gsap.MatchMedia | null = null;
       context.ignore(() => {
-        mm = gsap.matchMedia().add("(min-width: 64rem)", (contexto) => crearIntroPildora(nav, contexto));
+        mm = gsap.matchMedia().add("(min-width: 64rem)", (contexto) => crearIntroPildora(nav, contexto, navShown));
       });
-      return () => mm?.revert();
+      return () => {
+        mm?.revert();
+        stopWaiting();
+      };
     },
     // si se cambia de página a mitad de la bienvenida, se deshace y el menú queda abierto
     { dependencies: [quieto, enInicio], revertOnUpdate: true },
@@ -51,6 +65,8 @@ export function Nav() {
   return (
     <nav
       ref={ref}
+      data-nav
+      data-home={enInicio ? "" : undefined}
       aria-label={t.nav.principal}
       className="fixed top-4 right-4 left-4 z-50 flex items-center justify-between gap-3 lg:right-auto lg:left-1/2 lg:w-max lg:max-w-[calc(100vw-2rem)] lg:-translate-x-1/2 lg:justify-start lg:gap-2 lg:rounded-[1.4rem] lg:border lg:border-verde/10 lg:bg-pagina/75 lg:py-2.5 lg:pr-2.5 lg:pl-4 lg:shadow-[0_18px_40px_-28px_rgba(57,70,58,0.55)] lg:backdrop-blur-xl"
     >

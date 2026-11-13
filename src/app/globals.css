@@ -350,6 +350,29 @@ html:not(.js) .entrada {
   }
 }
 
+/* On the Home the nav waits for the hero's entrance to end (Nav.tsx sets data-hero-done), as Empoderamiento
+   Docente's does. It is hidden from the first paint, so it never shows and then hides. Opacity only: hidden, it
+   stays in the tab order, and focusing it shows it. The animation is the way out if the script never arrives */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-nav] {
+    transition: opacity 0.45s var(--ease-souple);
+  }
+
+  .js [data-nav][data-home]:not([data-hero-done]) {
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 0.3s;
+    animation: nav-rescue 0.45s 9s forwards;
+  }
+}
+
+@keyframes nav-rescue {
+  to {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 /* el Inicio con fotos: el título en el medio y las seis puertas alrededor (compu) o en una grilla debajo (celular).
    Las medidas de compu salen de --u = min(1vw, 1.6vh), así el conjunto entra igual en una pantalla ancha y en una
    bajita. Hero.tsx pone --u; cada puerta trae --cx y --cy (su centro, en % del hero), --w (su ancho, en --u), --ar,

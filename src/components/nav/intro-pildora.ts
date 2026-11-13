@@ -1,8 +1,9 @@
-import { telonAbierto, vueltaDeEntrada } from "@/lib/entrada";
+import { vueltaDeEntrada } from "@/lib/entrada";
 import { gsap } from "@/lib/gsap";
 
-// cuánto se ve el nombre antes de plegarse y abrir los links: lo mismo que tarda en asentarse el inicio
-const SOSTEN_MS = 1700;
+// How long the name shows before it folds and the links open. The nav only appears once the Home has settled
+// (show-after-hero.ts) and the curtain already showed the name, so the hold is short
+const SOSTEN_MS = 900;
 // si la persona ya quiere hacer algo, no se la hace esperar más que esto
 const SOSTEN_MINIMO_MS = 600;
 const INTENCION = ["pointermove", "wheel", "touchstart", "keydown"] as const;
@@ -24,9 +25,10 @@ export function saltarIntroPildora() {
  * El nombre se desvanece y se pliega, la píldora crece y los links entran escalonados.
  * Se arma adentro del contexto del matchMedia que la llama: así, si se cambia de página a mitad de camino,
  * todo se deshace una sola vez y en orden (con un contexto propio adentro se deshacía dos veces
- * y los links volvían a quedar escondidos)
+ * y los links volvían a quedar escondidos). `navShown` is the moment the nav comes into view: the hold counts
+ * from there
  */
-export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context) {
+export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context, navShown: Promise<void>) {
   let vivo = true;
   let reloj = 0;
   let quitar = () => {};
@@ -54,7 +56,7 @@ export function crearIntroPildora(nav: HTMLElement, contexto: gsap.Context) {
     });
   };
 
-  telonAbierto().then(() => {
+  navShown.then(() => {
     if (!vivo) return;
     const arranque = performance.now();
     reloj = window.setTimeout(abrir, SOSTEN_MS);
