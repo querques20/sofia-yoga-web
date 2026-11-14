@@ -181,7 +181,7 @@ export function Hero({ t }: { t: TextosHero }) {
 
   return (
     <section ref={raiz} id="inicio" data-hero className="relative min-h-svh overflow-clip" style={UNIDAD}>
-      <div className="hero-texto text-center">
+      <div data-hero-copy className="hero-texto text-center">
         {/* el espacio después de cada línea es para quien lee el HTML sin estilos: las líneas son bloques */}
         <h1 className="hero-titulo titre entra">
           {t.lineas.map((linea) => (
