@@ -62,8 +62,6 @@ const fr = {
     juntas: "Les deux, à chaque trimestre.",
     formato: "Vidéos, PDF et textes, à suivre chez toi.",
     accord: "Avant de commencer : l’accord de ta sage-femme ou de ta gynécologue.",
-    cierre: { antes: "Tu es enceinte,", mano: "pas malade" },
-    avisar: "Être prévenue du lancement",
   } satisfies TextosProgramme,
   // solo lo que da hoy (confirmado el 30/9 y en su tarjeta)
   bande: {
@@ -120,8 +118,6 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       juntas: "Both, in every trimester.",
       formato: "Videos, PDFs and texts, to follow at home.",
       accord: "Before you start: the go-ahead of your midwife or gynaecologist.",
-      cierre: { antes: "You’re pregnant,", mano: "not ill" },
-      avisar: "Tell me when it launches",
     },
     bande: {
       palabras: ["Prenatal yoga", "Postnatal", "Vinyasa", "Yoga flow", "In a group", "One to one", "In the park"],
@@ -174,8 +170,6 @@ const TEXTOS: Record<Idioma, typeof fr> = {
       juntas: "Las dos, en cada trimestre.",
       formato: "Vídeos, PDF y textos, para seguir en casa.",
       accord: "Antes de empezar: el visto bueno de tu matrona o de tu ginecóloga.",
-      cierre: { antes: "Estás embarazada,", mano: "no enferma" },
-      avisar: "Avisarme del lanzamiento",
     },
     bande: {
       palabras: ["Yoga prenatal", "Posparto", "Vinyasa", "Yoga flow", "En grupo", "En privado", "En el parque"],
@@ -194,7 +188,10 @@ export default async function Accueil() {
   return (
     <main>
       <DatosEstructurados datos={[persona(idioma), negocio(idioma)]} />
-      <Hero t={t.hero} />
+      {/* on a computer the cover waits here while the programme's panel rises over it (globals.css) */}
+      <div className="hero-stage">
+        <Hero t={t.hero} />
+      </div>
       <Programme t={t.programme} />
       <Invitation t={t.invitation} />
       <Closing t={t.cierre} />

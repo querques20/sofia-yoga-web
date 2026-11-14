@@ -747,6 +747,25 @@ html:not(.js) .entrada {
   }
 }
 
+/* On a computer the cover stays where it is for one screen of scroll while the programme's panel rises over it
+   as a dome (programme/arrival.ts): the stage is two screens tall, the cover sticks to its top and the panel
+   starts one screen up. The photos leave at their own speeds meanwhile (the cover's parallax) and the cover
+   fades, as the panel at rest is a card with the page around it. Without motion the page is a plain column */
+@media (min-width: 64rem) and (min-aspect-ratio: 1/1) and (prefers-reduced-motion: no-preference) {
+  .js .hero-stage {
+    height: 200svh;
+  }
+
+  .js .hero-stage > [data-hero] {
+    position: sticky;
+    top: 0;
+  }
+
+  .js .hero-stage + #grossesse {
+    margin-top: -100svh;
+  }
+}
+
 /* con la coreografía andando, el marco deja de ocupar la puerta: Hero lo mide y lo mueve desde su centro */
 [data-hero].con-coreografia .puerta-marco,
 [data-hero].con-coreografia .puerta-foto {
