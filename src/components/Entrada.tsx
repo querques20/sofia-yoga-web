@@ -12,6 +12,9 @@ import { Fleur } from "./Fleur";
 const ESPERA_PAGINA_MS = 1000;
 const ESPERA_LIBRE_MS = 300;
 
+// past this many px of scroll the page did not load at its top (a reload keeps the reader's place)
+const LOADED_SCROLLED_PX = 4;
+
 // whether the intro was already seen in this visit, in this language and not too long ago (lib/intro-seen)
 function alreadySeen(lang: string) {
   try {
@@ -75,8 +78,9 @@ export function Entrada() {
     () => {
       const idioma = document.documentElement.lang;
       // with reduced motion, or if it was seen in this visit and language within its time to live, the curtain
-      // opens at once
-      if (quieto || alreadySeen(idioma)) {
+      // opens at once. Also when the page loads scrolled: the intro is the cover's, and further down it would
+      // open onto the middle of the page. It is not marked as seen, so it plays the next time from the top
+      if (quieto || alreadySeen(idioma) || window.scrollY > LOADED_SCROLLED_PX) {
         abrirTelon();
         terminarTelon();
         setTermino(true);
