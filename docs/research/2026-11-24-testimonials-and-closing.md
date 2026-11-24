@@ -91,3 +91,12 @@ motion, leaves every quote readable; it still needs a visible pause control to m
 [inferred · from the two sources read in round one · 2026-11-24 · author]
 
 Captures: `/tmp/claude-1000/refs/` on the workstation (not kept in the repository).
+
+## Chosen (same day)
+
+The owner picked lottiemurphy.com («esa página es top») and asked for its «Preview a class» block too. Applied:
+`Testimonials.tsx` is two rows of cards in three colours going round (CSS, `voix-rang` in `globals.css`), 20 px/s
+on a computer, stopped under the pointer and by a pause button, still with reduced motion; the closing band is
+dark with the ask as a sage card; `PreviewClass.tsx` is the wide frame with the title under it, holding a
+provisional photo and the «à confirmer» pill until Sofia gives a video. Measured in a real Chrome at 1436×880
+and 390×800: rows move, stop under the pointer, stop and restart with the button.
