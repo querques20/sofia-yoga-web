@@ -64,3 +64,30 @@ changes on request.
 
 `src/components/home/Closing.tsx` holds both parts; `src/components/home/Testimonials.tsx` is the carousel
 (a list that scrolls sideways with scroll-snap, two buttons, a counter). Recorded in `DESIGN.md` § Home.
+
+## Third round (same day): visual references
+
+The owner rejected both builds (one bare quote at a time; a row of cream cards with arrows) and asked for
+references to choose from. Twenty home pages were opened in a real Chrome at 1436×880, scrolled to the end, and
+their testimonial section captured [tested · `node ref.mjs <url> <out>` · 2026-11-24 · author]. Yoga and pilates
+sites first, then design-led sites outside the sector. 10 of 20 show no testimonial section on the Home
+(coreatelierpilates.com, melissawoodhealth.com, theclass.com, skyting.com, alomoves.com, headspace.com, calm.com,
+yogawithkassandra.com, ekhartyoga.com, obefitness.com).
+
+| Reference | What it does | Moves by itself |
+|---|---|---|
+| lottiemurphy.com (pilates teacher, online studio) | Dark full-width band, centred title, two rows of cards in three colours running off both edges, the second row offset; the name is written sideways on a tab of each card | Yes: 20 px/s, measured; 0 with the pointer over it |
+| thebloommethod.com (pre and postnatal) | «Real Moms, Real Results»: a wall of outlined cards in three columns of uneven heights, stars, name, «Verified Member» | No |
+| glo.com (yoga platform) | «What members say»: three white cards on a soft tinted band, quote mark, a bold title per card, stars | No: 0 px/s measured |
+| prenatalyogacenter.com (New York) | One white card beside the intro paragraph, one short quote and a first name | No in 2 s (it loads a carousel library; a longer interval was not measured) |
+| bluetigeryoga.com (Lyon, pre/postnatal) | Three ruled columns, a large quote mark, the name as the title, long text | Not measured |
+
+Pattern demos opened but not captured usefully: Framer's «Sticky Testimonial» (cards that pin and stack over
+each other as the page scrolls).
+
+How motion squares with the first round: the study and the criterion are about a panel that is taken away on a
+timer. A slow row that stops under the pointer, under keyboard focus and on a touch, and never runs with reduced
+motion, leaves every quote readable; it still needs a visible pause control to meet WCAG 2.2.2.
+[inferred · from the two sources read in round one · 2026-11-24 · author]
+
+Captures: `/tmp/claude-1000/refs/` on the workstation (not kept in the repository).
