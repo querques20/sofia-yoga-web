@@ -13,8 +13,9 @@ usability study and an accessibility criterion; the placement rests on vendor ca
 
 ## Options
 
-- **A (applied).** Joint band, quotes one at a time in large type with the next one showing at the edge,
-  person-moved, the ask below in the same band.
+- **A (applied).** Joint band, the quotes as a row of cards running off the band's edge, person-moved, the ask
+  below in the same band. A first version with one bare quote at a time in large type was rejected by the owner
+  the same day («tiene que tener cards las cosas»).
 - B. Same band, quotes advancing by themselves every few seconds with a pause button.
 - C. Two scenes as before: a testimonial section on the page, then the band with the ask.
 
@@ -57,7 +58,7 @@ changes on request.
 - The W3C carousel tutorial could not be fetched (the site answered with a browser check); the criterion's own
   text was read from its source repository instead.
 - Whether the comparables' carousels are on their testimonials was not opened in a browser.
-- The three quotes are samples written by us, marked «Exemple». Real ones are needed before publishing.
+- The five quotes are samples written by us, marked «Exemple». Real ones are needed before publishing.
 
 ## Applied
 
