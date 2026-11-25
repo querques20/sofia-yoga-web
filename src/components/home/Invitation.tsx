@@ -7,6 +7,7 @@ import { rutaEn } from "@/lib/idiomas";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { useRuta } from "@/lib/useRuta";
 import { FleurQuiRespire } from "../FleurQuiRespire";
+import { arriveAsDome } from "../programme/arrival";
 
 export type TextosInvitation = {
   /** her sentence, in the lines of the title, and its ending in handwriting */
@@ -18,11 +19,17 @@ export type TextosInvitation = {
   historia: string;
 };
 
+// how far down the screen the band's top is when the band has its whole shape, as a share of the screen
+const BAND_WHOLE_AT = 0.3;
+// how wide the arch is when its top first shows, as a share of the band
+const ARCH_FIRST_WIDTH = 0.62;
+
 /**
  * The Home's third scene, after the programme: Sofia's invitation, in her own words («viens comme tu es»), and
- * who is speaking. A light band, as the programme's is the dark one. The sentence rises line by line
- * when it comes into view and its ending writes itself, as «à Genève» does in the hero; that is the scene's one
- * entrance. The long version of all this lives on the About page: here it is three sentences and a link
+ * who is speaking. A light band, as the programme's is the dark one, and it arrives as the programme's does: a
+ * shape that swells into the band as the page brings it up, here a wide arch (programme/arrival.ts). Once the
+ * band has its shape the sentence rises line by line and its ending writes itself, as «à Genève» does in the
+ * hero. The long version of all this lives on the About page: here it is three sentences and a link
  */
 export function Invitation({ t }: { t: TextosInvitation }) {
   const raiz = useRef<HTMLElement>(null);
@@ -43,24 +50,40 @@ export function Invitation({ t }: { t: TextosInvitation }) {
       gsap.set(resto, { opacity: 0, y: 16 });
       gsap.set(q(".entra"), { visibility: "visible" });
 
+      // the sentence waits until the arch is nearly the band: sooner it would rise unseen, behind the arch's edge
       gsap
-        .timeline({ scrollTrigger: { trigger: raiz.current, start: "top 68%", once: true } })
+        .timeline({ scrollTrigger: { trigger: raiz.current, start: "top 46%", once: true } })
         .to(lineas, { yPercent: 0, duration: 1.05, stagger: 0.09, ease: "power3.out", clearProps: "transform" })
         // the ending does not rise: it writes itself from left to right
         .to(mano, { clipPath: "inset(-30% -5% -30% -5%)", duration: 1.1, ease: "power2.inOut", clearProps: "clipPath" }, 0.4)
         .to(resto, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power3.out", clearProps: "opacity,transform" }, 0.7);
+
+      const [band] = q("[data-band]") as HTMLElement[];
+      if (!raiz.current || !band) return;
+      return arriveAsDome(band, {
+        box: raiz.current,
+        // what the band holds shows as the arch squares, on every pass: the sentence has risen for good after
+        // the first one, and the arch's edge would cut through it
+        riders: q("[data-arrive]") as HTMLElement[],
+        // the band only passes by: it has its shape a third of the way down the screen
+        restTop: () => window.innerHeight * BAND_WHOLE_AT,
+        cover: null,
+        copy: null,
+        lands: false,
+        firstWidth: ARCH_FIRST_WIDTH,
+      });
     },
     { scope: raiz, dependencies: [quieto], revertOnUpdate: true },
   );
 
   return (
     <section ref={raiz} id="sofia" className="px-3 lg:px-6">
-      <div className="relative overflow-hidden rounded-[2rem] bg-salvia-clara lg:rounded-[2.75rem]">
+      <div data-band className="relative overflow-hidden rounded-[2rem] bg-salvia-clara lg:rounded-[2.75rem]">
         {/* the site's flower, breathing with the rest of the page: mostly out of the band, barely there. The
             opacity is on the whole drawing, not on its stroke: petals that cross would add up and show */}
         <FleurQuiRespire className="pointer-events-none absolute -top-[34%] -right-[20%] h-[min(48rem,96vw)] w-[min(48rem,96vw)] text-verde opacity-[0.06]" />
 
-        <div className="contenedor relative py-[clamp(4.5rem,11vw,9rem)]">
+        <div data-arrive className="contenedor relative py-[clamp(4.5rem,11vw,9rem)]">
           <h2 className="titre entra text-[clamp(2.6rem,9vw,8.25rem)]">
             {/* each line is its own mask: the entrance raises them one by one. The space is for whoever reads
                 the HTML without styles: the lines are blocks */}

@@ -51,7 +51,8 @@ export function Bande({ t }: { t: TextosBande }) {
   );
 
   return (
-    <div ref={raiz} className="overflow-hidden border-y border-salvia py-[clamp(1.2rem,3vw,2.4rem)]" role="presentation">
+    // no lines: it sits between two round-cornered bands, and a line would show in their corners
+    <div ref={raiz} className="overflow-hidden py-[clamp(1.2rem,3vw,2.4rem)]" role="presentation">
       <div className="pista flex w-max">
         <Tira palabras={t.palabras} />
         <Tira palabras={t.palabras} oculta />

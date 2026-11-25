@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* the admin has its own stylesheet ((admin)/admin.css): its classes stay out of the public site's CSS */
+@source not "./(admin)";
+@source not "../admin";
+@source not "../../packages";
+
 /* paleta del dossier v2: seis colores, cada uno con una función */
 @theme {
   --color-verde: #39463a; /* texto y títulos */
@@ -144,12 +149,52 @@
   visibility: hidden;
 }
 
+/* the frame's two texts (Parte): a list of three lines, each saying its trimester. Where the scene runs they lie
+   in one cell and it shows one at a time, under the trimester's name, so the name is not said again */
+.marco-pila {
+  display: grid;
+  row-gap: 0.4em;
+}
+
+.marco-cual {
+  display: block;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js .marco-pila > * {
+    grid-area: 1 / 1;
+  }
+
+  .js .marco-pila > *:not(:first-child) {
+    visibility: hidden;
+  }
+
+  .js .marco-cual {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .js .entra {
     visibility: visible;
   }
 
+  /* nothing changes in the frame, so it holds the three trimesters at once: the frame and its card are as tall
+     as that takes, and not the screen's height the scene gives them */
+  .programme-panel,
+  .programme-body,
+  .programme-body .fijo,
+  .marco {
+    height: auto;
+  }
+
+  .programme-body .fijo {
+    padding-block: clamp(3rem, 8vw, 5rem);
+  }
+
   .marco-titulos {
+    margin-bottom: 1.25rem;
     font-size: clamp(1.8rem, 4.4vw, 3rem);
     /* así los meses quedan con su trimestre y no pegados al de abajo */
     row-gap: 0.45em;
@@ -219,6 +264,82 @@ html.lenis:not(.lenis-autoToggle).lenis-stopped {
 .entrada-vista .entrada:not(.entrada-cierre),
 html:not(.js) .entrada {
   display: none;
+}
+
+/* THE ROWS OF TESTIMONIALS (home/Testimonials): each row is its cards written three times over, moved left by
+   one of the three and started again, so it goes round with no end. The second row goes the other way. They
+   stop under the pointer or a finger and with the section's button. With reduced motion they stand still, the
+   copies go, and the row is moved by hand */
+.voix > * {
+  overflow: hidden;
+}
+
+.voix-rang {
+  display: flex;
+  width: max-content;
+  /* four cards of 27.5rem to a turn: about 20px a second */
+  animation: voix-passe 88s linear infinite;
+}
+
+.voix-rang[data-back] {
+  animation-direction: reverse;
+}
+
+.voix:hover .voix-rang {
+  animation-play-state: paused;
+}
+
+/* The strip of class photos in the closing band (Moments), as on lottiemurphy.com: each column goes round on
+   its own, one up and the next down, and no two start at the same point. A column is three photos written
+   twice: about 1020px to a turn, 20px a second */
+.mur-colonne {
+  animation: mur-passe 51s linear infinite;
+}
+
+.mur > :nth-child(even) .mur-colonne {
+  animation-direction: reverse;
+}
+
+.mur > :nth-child(3n + 2) .mur-colonne {
+  animation-delay: -17s;
+}
+
+.mur > :nth-child(3n) .mur-colonne {
+  animation-delay: -34s;
+}
+
+@keyframes mur-passe {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mur-colonne {
+    animation: none;
+  }
+}
+
+@keyframes voix-passe {
+  to {
+    transform: translateX(calc(-100% / 3));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .voix > * {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .voix-rang {
+    animation: none;
+    padding-inline: 1.25rem;
+  }
+
+  .voix-rang [data-copy] {
+    display: none;
+  }
 }
 
 /* al llegar, el telón aparece suave desde el color de la página, en vez de ponerse verde de golpe */
@@ -355,7 +476,9 @@ html:not(.js) .entrada {
    stays in the tab order, and focusing it shows it. The animation is the way out if the script never arrives */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-nav] {
-    transition: opacity 0.45s var(--ease-souple);
+    transition:
+      opacity 0.45s var(--ease-souple),
+      transform 0.45s var(--ease-souple);
   }
 
   .js [data-nav][data-home]:not([data-hero-done]) {
@@ -364,6 +487,13 @@ html:not(.js) .entrada {
     transition-duration: 0.3s;
     animation: nav-rescue 0.45s 9s forwards;
   }
+}
+
+/* The nav out of the way while the page goes down (nav/hide-on-scroll.ts): up past the top of the screen, its
+   shadow included. `transform`, so it adds to the `translate` that centres the pill on a computer. Never with a
+   menu of it open: a transform would also move the phone's menu, which is laid out against the screen */
+[data-nav][data-away]:not(:has([aria-expanded="true"])) {
+  transform: translateY(calc(-100% - 3.5rem));
 }
 
 @keyframes nav-rescue {
@@ -763,6 +893,45 @@ html:not(.js) .entrada {
 
   .js .hero-stage + #grossesse {
     margin-top: -100svh;
+  }
+}
+
+/* On a computer the look at a class fills one screen and stays where it is while the closing band rises over
+   it as a dome, as the cover does for the programme (programme/arrival.ts). It stops first: the band starts
+   half a screen further down the page, so the scroll holds on the look at a class before the band shows. On a
+   screen too short for it, it waits with its foot at the foot of the screen: Closing measures that and gives it
+   as --cover-top. Without motion, and on a phone, the page is a plain column */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  .js .apercu-scene > [data-cover] {
+    position: sticky;
+    top: var(--cover-top, 0px);
+  }
+
+  .js .apercu-scene > [data-cover] + section {
+    margin-top: 50svh;
+  }
+}
+
+/* On a computer «Par où commencer ?» waits under the programme's panel: its stage starts one screen up, and it
+   stays put for the screen of scroll the panel takes to leave from over it as a dome (programme/departure.ts)
+   and for half a screen more, which is the room the stage adds at its foot. Its rows come in as the last of the
+   dome goes (WhereToStartScene), and the half screen is for them: the scene is not seen arriving and scrolling
+   at once. It is taller than the screen: after that it goes on with the page. With reduced motion it is a plain
+   column */
+@media (min-width: 64rem) and (prefers-reduced-motion: no-preference) {
+  .js .ou-stage {
+    margin-top: -100svh;
+  }
+
+  .js .ou-stage::after {
+    display: block;
+    height: 150svh;
+    content: "";
+  }
+
+  .js .ou-stage > [data-stage] {
+    position: sticky;
+    top: 0;
   }
 }
 

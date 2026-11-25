@@ -1,7 +1,7 @@
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { escucharSouffle } from "@/lib/souffle";
 
-// how wide the dome is when its top first shows, as a share of the panel
+// how wide the dome is when its top first shows, as a share of the panel, unless the caller says otherwise
 const FIRST_WIDTH = 0.22;
 // from this point of the way up, the dome's top tightens into the panel's own corners
 const SQUARING_FROM = 0.55;
@@ -18,9 +18,9 @@ const COPY_BAND = 150;
 // how far the cover's text rises as it goes, as a share of the dome's way up
 const COPY_LIFT = 0.1;
 
-const mix = (from: number, to: number, t: number) => from + (to - from) * t;
-const inOut = (t: number) => t * t * (3 - 2 * t);
-const between = (from: number, to: number, t: number) => Math.min(1, Math.max(0, (t - from) / (to - from)));
+export const mix = (from: number, to: number, t: number) => from + (to - from) * t;
+export const inOut = (t: number) => t * t * (3 - 2 * t);
+export const between = (from: number, to: number, t: number) => Math.min(1, Math.max(0, (t - from) / (to - from)));
 
 /**
  * How the programme's panel takes the screen from the cover: it rises as a dome, narrow and round at first,
@@ -39,6 +39,10 @@ const between = (from: number, to: number, t: number) => Math.min(1, Math.max(0,
  * - `lands`: the panel comes to rest where it arrives (it is pinned there). Carried by the scroll alone it would
  *   stop dead, so it runs ahead of the scroll and slows into its place. It needs a transform on the panel, so
  *   it is only for a panel with nothing pinned inside
+ * - `firstWidth`: how wide the shape is when its top first shows, as a share of the panel. The programme's is a
+ *   narrow dome; a band that only passes by starts wider, as an arch
+ * - `contentsFrom`: the point of the way up from which the contents show. Later for a band whose contents begin
+ *   close to its top corners, which the dome's edge would cut through until it is nearly square
  */
 export function arriveAsDome(
   panel: HTMLElement,
@@ -49,6 +53,8 @@ export function arriveAsDome(
     cover,
     copy,
     lands,
+    firstWidth = FIRST_WIDTH,
+    contentsFrom = CONTENTS_FROM,
   }: {
     box: HTMLElement;
     riders: HTMLElement[];
@@ -56,6 +62,8 @@ export function arriveAsDome(
     cover: HTMLElement | null;
     copy: HTMLElement | null;
     lands: boolean;
+    firstWidth?: number;
+    contentsFrom?: number;
   },
 ) {
   let width = 0;
@@ -134,12 +142,12 @@ export function arriveAsDome(
     const ahead = lands ? -travel * (Math.sin((progress * Math.PI) / 2) - progress) : 0;
     if (lands) lead(ahead);
     clearTheWay(screen - travel * progress + ahead);
-    const shown = inOut(between(CONTENTS_FROM, CONTENTS_TO, progress));
+    const shown = inOut(between(contentsFrom, CONTENTS_TO, progress));
     showContents(shown);
     ride.forEach((set) => set((1 - shown) * RIDE));
     const grown = inOut(progress);
     const squared = inOut(Math.max(0, (progress - SQUARING_FROM) / (1 - SQUARING_FROM)));
-    const dome = width * mix(FIRST_WIDTH, 1, grown);
+    const dome = width * mix(firstWidth, 1, grown);
     // while it is a dome it leans a little to one side and back, with the breath
     const lean = (breath - 0.5) * (1 - squared);
     const side = (width - dome) / 2;
