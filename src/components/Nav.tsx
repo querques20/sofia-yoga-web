@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { backToTopIfCurrent } from "@/lib/back-to-top";
 import { gsap, useGSAP } from "@/lib/gsap";
 import { rutaEn } from "@/lib/idiomas";
@@ -14,14 +14,16 @@ import { SelectorDeIdioma } from "./idioma/SelectorDeIdioma";
 import { SelectorDeIdiomaCompacto } from "./idioma/SelectorDeIdiomaCompacto";
 import { MenuMovil } from "./nav/MenuMovil";
 import { NavSubmenu } from "./nav/NavSubmenu";
+import { hideNavOnScroll } from "./nav/hide-on-scroll";
 import { crearIntroPildora, introPildoraHecha, saltarIntroPildora } from "./nav/intro-pildora";
 import { showNavAfterHero } from "./nav/show-after-hero";
 
 /**
  * El menú con la forma del de ED: en escritorio, una píldora flotante centrada (crema translúcida y desenfocada)
  * con la flor, los links y el botón de contacto. En el Inicio arranca cerrada con el nombre y se abre.
- * En el celular la marca va suelta y el botón es una islita. Queda siempre a la vista, también al bajar.
- * The one exception, as in ED: at the top of the Home it waits for the hero's entrance to end
+ * En el celular la marca va suelta y el botón es una islita.
+ * It gets out of the way while the page goes down and comes back when it goes up (nav/hide-on-scroll.ts); with
+ * reduced motion it stays in view. And at the top of the Home it waits for the hero's entrance to end
  * (nav/show-after-hero.ts). Classes carries a submenu (nav/NavSubmenu.tsx).
  */
 export function Nav() {
@@ -62,6 +64,11 @@ export function Nav() {
     // si se cambia de página a mitad de la bienvenida, se deshace y el menú queda abierto
     { dependencies: [quieto, enInicio], revertOnUpdate: true },
   );
+
+  useEffect(() => {
+    if (quieto || !ref.current) return;
+    return hideNavOnScroll(ref.current);
+  }, [quieto]);
 
   return (
     <nav
