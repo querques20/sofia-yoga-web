@@ -82,3 +82,18 @@ The lines of section 2 agree with these three sources where they overlap [inferr
 - No source read gives yoga's effects by trimester: the per-trimester lines are about the body and about
   precautions, not about measured benefits.
 - Nothing was built: the texts, their three languages and the native review are still to do.
+
+## 6. Applied (2026-11-24, the owner chose A)
+
+- The scene is «Ton corps, trimestre par trimestre» in the three languages (`src/components/Programme.tsx`,
+  `programme/Parte.tsx`, texts in `src/app/[lang]/page.tsx`): per trimester the body line and the practice line
+  of section 2, shortened; the closing line is the Swiss recommendations' sentence on complications; the link
+  goes to the prenatal page.
+- Six sources at the Home's foot (`Sources`), the ones behind the lines used.
+- Off the Home: the programme's name, «coming soon», the «be told at launch» link, the yang and yin lines, and
+  «or the programme» in the closing ask.
+- Parked, needing the owner's word: the prenatal page and the FAQ still say the programme is coming; only the
+  prenatal page's link to the Home scene was removed, since that scene is no longer the programme.
+- Checked in headless Chrome [tested · `/tmp/claude-1000/sofia-home-shots/tri.mjs` · 2026-11-24 · author]: at
+  1436 × 880 (fr) and 390 × 800 (es) each trimester shows its two lines and nothing is cut; with reduced motion
+  (1436 × 880 en, 390 × 800 fr) the three trimesters are listed and nothing is cut.
