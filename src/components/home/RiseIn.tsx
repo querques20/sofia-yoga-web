@@ -17,10 +17,12 @@ export function RiseIn({ children, className }: { children: ReactNode; className
     () => {
       if (quieto) return;
       const q = gsap.utils.selector(raiz);
-      gsap
+      const rise = gsap
         .timeline({ scrollTrigger: { trigger: raiz.current, start: "top 72%", once: true } })
-        .fromTo(q("[data-rise]"), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07, ease: "power3.out", clearProps: "opacity,transform" }, 0)
-        .fromTo(q("[data-trait]"), { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: 0.8, stagger: 0.07, ease: "power2.inOut" }, 0.07);
+        .fromTo(q("[data-rise]"), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07, ease: "power3.out", clearProps: "opacity,transform" }, 0);
+      // not every scene has lines to draw: with none, GSAP would warn of a target it cannot find
+      const traits = q("[data-trait]");
+      if (traits.length) rise.fromTo(traits, { scaleX: 0, transformOrigin: "0 50%" }, { scaleX: 1, duration: 0.8, stagger: 0.07, ease: "power2.inOut" }, 0.07);
     },
     { scope: raiz, dependencies: [quieto], revertOnUpdate: true },
   );
