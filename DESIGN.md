@@ -25,5 +25,6 @@ The decisions a change made about how the site looks and where a piece goes, one
 
 ### Every page
 
+- 2026-11-25 — What moves on its own (the breath, the hero's floating photos, the word strip, the rows of cards and photos) rests while it is off screen (`lib/on-screen.ts`); the grain over the page is a plain overlay, not a blend. Both for slow computers: 30–43 fps became 48–56 on the Home with the CPU slowed 12×. (held by gate: none, measured by hand)
 - 2026-11-24 — The nav leaves while the page goes down and returns when it goes up, never while in use; it stays put with reduced motion (`nav/hide-on-scroll.ts`). (held by owner)
 - 2026-11-20 — Every page's content has a way to write to her: About and workshops end with the «write to me» block (`InvitarAEscribir`), private classes has it mid-page. (held by owner)
