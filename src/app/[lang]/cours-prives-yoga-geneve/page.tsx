@@ -4,6 +4,7 @@ import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
 import { InfosPratiques } from "@/components/pagina/InfosPratiques";
+import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { PedirInfos } from "@/components/pagina/PedirInfos";
 import { Reperes } from "@/components/pagina/Reperes";
 import { VisualDeFlor } from "@/components/pagina/VisualDeFlor";
@@ -24,6 +25,8 @@ const fr = {
   nombre: "Cours de yoga privés à Genève",
   tipo: "Cours de yoga privé",
   fil: "Cours privés",
+  // the middle button, as on the other class pages: after the reasons, before the practical facts
+  invitar: "Tu penses qu’un cours privé est pour toi ? Dis-moi ce que tu cherches, je te réponds.",
   titulo: (
     <>
       Cours de yoga <Mano>privés</Mano> à Genève
@@ -79,6 +82,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     nombre: "Private yoga classes in Geneva",
     tipo: "Private yoga class",
     fil: "Private classes",
+    invitar: "Think a private class is for you? Tell me what you’re looking for and I’ll reply.",
     titulo: (
       <>
         <Mano>Private</Mano> yoga classes in Geneva
@@ -129,6 +133,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
     nombre: "Clases de yoga privadas en Ginebra",
     tipo: "Clase de yoga privada",
     fil: "Clases privadas",
+    invitar: "¿Crees que una clase privada es para ti? Dime qué buscas y te respondo.",
     titulo: (
       <>
         Clases de yoga <Mano>privadas</Mano> en Ginebra
@@ -211,6 +216,7 @@ export default async function CoursPrives() {
         visual={<VisualDeFlor esterilla className="mx-auto block aspect-[400/420] w-[min(72vw,19rem)] lg:mr-0 lg:w-full lg:max-w-[26rem]" />}
       />
       <Reperes id="pourquoi" titulo={t.porqueTitulo} intro={<p>{t.porqueIntro}</p>} reperes={t.porque} />
+      <InvitarAEscribir aparte texto={t.invitar} mensaje={MENSAJES[idioma].prive} asunto={t.tipo} />
       <InfosPratiques id="infos" datos={t.datos} nota={t.nota}>
         <PedirInfos mensaje={MENSAJES[idioma].prive} texto={t.pedirInfos} />
       </InfosPratiques>

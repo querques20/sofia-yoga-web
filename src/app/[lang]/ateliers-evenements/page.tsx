@@ -4,7 +4,9 @@ import { Billet, type TextosBillet } from "@/components/ateliers/Billet";
 import { CommentCaMarche, type TextosCommentCaMarche } from "@/components/ateliers/CommentCaMarche";
 import { AConfirmer } from "@/components/pagina/AConfirmer";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
+import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { Reperes } from "@/components/pagina/Reperes";
+import { MENSAJES } from "@/lib/contacto";
 import { idiomaActual } from "@/lib/idioma-actual";
 import type { Idioma } from "@/lib/idiomas";
 import { metadatos } from "@/lib/metadatos";
@@ -17,6 +19,8 @@ const fr = {
       "Les ateliers et événements de yoga de Sofia Costa à Genève. Aucun n’est annoncé pour le moment : écris-moi pour être prévenu.e du prochain.",
   },
   fil: "Ateliers",
+  // the page's last word: the same request as the ticket's, with the e-mail beside it
+  invitar: "Tu veux savoir quand aura lieu le prochain atelier ? Écris-moi, je te préviens.",
   titulo: (
     <>
       Ateliers <Mano>&amp;</Mano> événements
@@ -82,6 +86,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         "Sofia Costa’s yoga workshops and events in Geneva. None is announced for now: write to me and I’ll let you know about the next one.",
     },
     fil: "Workshops",
+    invitar: "Want to know when the next workshop is? Write to me and I’ll let you know.",
     titulo: (
       <>
         Workshops <Mano>&amp;</Mano> events
@@ -141,6 +146,7 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         "Los talleres y eventos de yoga de Sofia Costa en Ginebra. Por ahora no hay ninguno anunciado: escríbeme y te aviso del próximo.",
     },
     fil: "Talleres",
+    invitar: "¿Quieres saber cuándo será el próximo taller? Escríbeme y te aviso.",
     titulo: (
       <>
         Talleres <Mano>&amp;</Mano> eventos
@@ -209,6 +215,9 @@ export default async function Ateliers() {
       <EnteteDePage fil={t.fil} titulo={t.titulo} intro={t.intro} visual={<Billet t={t.billet} />} />
       <Reperes id="atelier" titulo={t.atelier.titulo} intro={t.atelier.intro} reperes={t.atelier.reperes} />
       <CommentCaMarche t={t.comment} />
+      <section className="pb-[clamp(5rem,12vw,9rem)]">
+        <InvitarAEscribir aparte texto={t.invitar} mensaje={MENSAJES[idioma].atelier} asunto={t.fil} />
+      </section>
     </main>
   );
 }
