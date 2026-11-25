@@ -291,6 +291,12 @@ html:not(.js) .entrada {
   animation-play-state: paused;
 }
 
+/* off screen nothing goes round: Closing sets the mark as the band leaves and comes back */
+[data-resting] .voix-rang,
+[data-resting] .mur-colonne {
+  animation-play-state: paused;
+}
+
 /* The strip of class photos in the closing band (Moments), as on lottiemurphy.com: each column goes round on
    its own, one up and the next down, and no two start at the same point. A column is three photos written
    twice: about 1020px to a turn, 20px a second */

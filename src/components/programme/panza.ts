@@ -219,8 +219,11 @@ export function aparecerPanza(q: Elegir, marco: Element) {
   gsap.from(q(".panza-figura"), { y: 22, opacity: 0, duration: 1.2, delay: 0.15, ease: "power3.out", scrollTrigger: alEntrar() });
 }
 
-/** respira con la web, igual que la del inicio: el torso se ensancha apenas, la cabeza sube y el fondo late */
-export function respirarPanza(q: Elegir) {
+/**
+ * respira con la web, igual que la del inicio: el torso se ensancha apenas, la cabeza sube y el fondo late.
+ * Only while `marco`, the frame that holds her, is on screen
+ */
+export function respirarPanza(q: Elegir, marco: Element) {
   const [torso] = q(".panza-torso");
   const [cabeza] = q(".panza-cabeza");
   const masas = q(".panza-masa");
@@ -235,5 +238,5 @@ export function respirarPanza(q: Elegir) {
     alto(1 + v * 0.008);
     sube(-v * 1.6);
     escalas.forEach((escala, i) => escala(i % 2 ? 1.03 - v * 0.05 : 0.97 + v * 0.06));
-  });
+  }, marco);
 }

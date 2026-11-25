@@ -21,7 +21,7 @@ export function FleurQuiRespire({ className }: { className?: string }) {
       return escucharSouffle((v) => {
         escala(0.86 + v * 0.16);
         giro(v * 14);
-      });
+      }, ref.current);
     },
     { dependencies: [quieto], revertOnUpdate: true },
   );

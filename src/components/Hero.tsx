@@ -114,7 +114,7 @@ export function Hero({ t }: { t: TextosHero }) {
         fase = "quieta";
         heroEntranceEnds();
         dejarDeRespirar();
-        dejarDeRespirar = respirarYFlotar(fotos);
+        dejarDeRespirar = respirarYFlotar(fotos, seccion);
         ponerParallax();
       });
 

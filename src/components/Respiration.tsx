@@ -66,7 +66,7 @@ export function Respiration({ t }: { t: TextosRespiration }) {
           faseActual.current = f;
           setFase(f);
         }
-      });
+      }, raiz.current);
       return () => {
         vivo = false;
         dejar();

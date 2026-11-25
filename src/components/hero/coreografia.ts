@@ -1,6 +1,7 @@
 "use client";
 
 import { gsap } from "@/lib/gsap";
+import { watchOnScreen } from "@/lib/on-screen";
 import { escucharSouffle } from "@/lib/souffle";
 import { ladoDeLaFoto, petaloEnFlor, radioOrganico } from "./geometria";
 import { PUERTAS } from "./puertas";
@@ -152,9 +153,10 @@ export function aparecerEnSuLugar(fotos: Foto[], linea: gsap.core.Timeline, desd
 /**
  * The photos breathe with the site and float slowly: the hero never sits still. Returns how to stop it.
  * Both start from the pose the opening leaves (no float, breath at 0) and ease in: the breath is shared and
- * already mid-cycle, and each photo floats on its own phase, so starting at full weight makes every photo jump
+ * already mid-cycle, and each photo floats on its own phase, so starting at full weight makes every photo jump.
+ * Only while `stage`, the section that holds them, is on screen: further down the page they rest
  */
-export function respirarYFlotar(fotos: Foto[]) {
+export function respirarYFlotar(fotos: Foto[], stage: Element) {
   let soplo = 0;
   const ramp = { weight: 0 };
   const rampIn = gsap.to(ramp, { weight: 1, duration: RAMP_IN, ease: "sine.inOut" });
@@ -167,9 +169,13 @@ export function respirarYFlotar(fotos: Foto[]) {
       pintar(f, soplo * ramp.weight);
     }
   };
-  gsap.ticker.add(cuadro);
+  const stopWatching = watchOnScreen(stage, (onScreen) => {
+    if (onScreen) gsap.ticker.add(cuadro);
+    else gsap.ticker.remove(cuadro);
+  });
   return () => {
     rampIn.kill();
+    stopWatching();
     gsap.ticker.remove(cuadro);
     dejarDeEscuchar();
   };

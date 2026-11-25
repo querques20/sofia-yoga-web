@@ -2,6 +2,7 @@
 
 import { Fragment, useRef } from "react";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { watchOnScreen } from "@/lib/on-screen";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Fleur } from "./Fleur";
 
@@ -33,11 +34,20 @@ export function Bande({ t }: { t: TextosBande }) {
       const pista = raiz.current?.querySelector(".pista");
       if (!pista) return;
       const vuelta = gsap.to(pista, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
+      // it goes round only while it is on screen: the rest of the page does not pay for it
+      let onScreen = false;
+      const stopWatching = raiz.current
+        ? watchOnScreen(raiz.current, (now) => {
+            onScreen = now;
+            vuelta.paused(!now);
+          })
+        : () => {};
       let sentido = 1;
       const vigia = ScrollTrigger.create({
         start: 0,
         end: "max",
         onUpdate: (self) => {
+          if (!onScreen) return;
           sentido = self.direction;
           const empuje = 1 + Math.min(5, Math.abs(self.getVelocity()) / 500);
           gsap.to(vuelta, { timeScale: empuje * sentido, duration: 0.25, overwrite: true });
@@ -45,7 +55,10 @@ export function Bande({ t }: { t: TextosBande }) {
           gsap.to(vuelta, { timeScale: sentido, duration: 1.4, delay: 0.25, ease: "power2.out" });
         },
       });
-      return () => vigia.kill();
+      return () => {
+        stopWatching();
+        vigia.kill();
+      };
     },
     { scope: raiz, dependencies: [quieto], revertOnUpdate: true },
   );

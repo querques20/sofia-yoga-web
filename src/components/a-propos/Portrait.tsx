@@ -41,7 +41,7 @@ export function Portrait({ t }: { t: TextosPortrait }) {
 
       const dejar = escucharSouffle((v) => {
         marco.style.borderRadius = radio(FORMA_A.map((a, i) => +(a + (FORMA_B[i] - a) * v).toFixed(2)));
-      });
+      }, raiz.current);
       return () => {
         vivo = false;
         dejar();
