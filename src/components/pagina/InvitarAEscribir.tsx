@@ -13,13 +13,16 @@ type Props = {
   asunto: string;
   /** adentro de la banda que cierra una pila de pasos: sin línea arriba y con la frase más grande */
   enBanda?: boolean;
+  /** after a section, not inside one: the section above already left its air, so it takes none of its own */
+  aparte?: boolean;
 };
 
 /**
  * El botón del medio de las páginas de clases. Va al final de la sección donde la persona se reconoce,
- * con su WhatsApp ya escrito y el mail al lado. Uno solo por página: arriba y al final ya hay otros
+ * con su WhatsApp ya escrito y el mail al lado. Uno solo por página: arriba y al final ya hay otros.
+ * On a page with no class to book (About, workshops) it is the page's last word, after its last section
  */
-export async function InvitarAEscribir({ texto, mensaje, asunto, enBanda = false }: Props) {
+export async function InvitarAEscribir({ texto, mensaje, asunto, enBanda = false, aparte = false }: Props) {
   const t = await interfaz();
   const correo = `mailto:${CONTACTO.email}?subject=${encodeURIComponent(asunto)}`;
   const contenido = (
@@ -38,5 +41,5 @@ export async function InvitarAEscribir({ texto, mensaje, asunto, enBanda = false
       </div>
     </div>
   );
-  return enBanda ? contenido : <div className="contenedor mt-[clamp(3rem,7vw,5rem)]">{contenido}</div>;
+  return enBanda ? contenido : <div className={`contenedor ${aparte ? "" : "mt-[clamp(3rem,7vw,5rem)]"}`}>{contenido}</div>;
 }

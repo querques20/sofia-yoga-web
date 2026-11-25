@@ -3,9 +3,11 @@ import { Histoire, type TextosHistoire } from "@/components/a-propos/Histoire";
 import { Portrait, type TextosPortrait } from "@/components/a-propos/Portrait";
 import { Tapis, type TextosTapis } from "@/components/a-propos/Tapis";
 import { EnteteDePage, Mano } from "@/components/pagina/EnteteDePage";
+import { InvitarAEscribir } from "@/components/pagina/InvitarAEscribir";
 import { Reperes } from "@/components/pagina/Reperes";
 import { Sources } from "@/components/pagina/Sources";
 import { DatosEstructurados } from "@/components/pagina/DatosEstructurados";
+import { MENSAJES } from "@/lib/contacto";
 import { paginaSobreSofia, persona } from "@/lib/datos-estructurados";
 import { idiomaActual } from "@/lib/idioma-actual";
 import type { Idioma } from "@/lib/idiomas";
@@ -20,6 +22,9 @@ const fr = {
       "Mon parcours, mes formations (enregistrée auprès de Yoga Alliance) et ma façon d’enseigner le yoga à Genève.",
   },
   fil: "À propos",
+  // the page's last word: how to write to her, with the e-mail's subject
+  invitar: "Une question sur mon parcours ou sur mes cours ? Écris-moi, je te réponds.",
+  asunto: "Une question",
   titulo: (
     <>
       Le yoga est pour <Mano>touxtes</Mano>
@@ -144,6 +149,8 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         "My journey, my training (registered with Yoga Alliance) and the way I teach yoga in Geneva.",
     },
     fil: "About",
+    invitar: "A question about my path or my classes? Write to me and I’ll reply.",
+    asunto: "A question",
     titulo: (
       <>
         Yoga is for <Mano>everyone</Mano>
@@ -224,6 +231,8 @@ const TEXTOS: Record<Idioma, typeof fr> = {
         "Mi recorrido, mi formación (registrada en Yoga Alliance) y mi manera de enseñar yoga en Ginebra.",
     },
     fil: "Sobre mí",
+    invitar: "¿Una pregunta sobre mi recorrido o mis clases? Escríbeme y te respondo.",
+    asunto: "Una pregunta",
     titulo: (
       <>
         El yoga es para <Mano>todo</Mano> el mundo
@@ -314,6 +323,9 @@ export default async function APropos() {
       <Histoire t={t.histoire} />
       <Reperes id="methode" fondo="salvia" titulo={t.metodo.titulo} intro={t.metodo.intro} reperes={t.metodo.reperes} />
       <Tapis t={t.tapis} />
+      <section className="pb-[clamp(4rem,10vw,7rem)]">
+        <InvitarAEscribir aparte texto={t.invitar} mensaje={MENSAJES[idioma].autre} asunto={t.asunto} />
+      </section>
       <Sources fuentes={t.fuentes} aviso={false} />
     </main>
   );
