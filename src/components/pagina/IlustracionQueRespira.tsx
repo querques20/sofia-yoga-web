@@ -73,7 +73,7 @@ export function IlustracionQueRespira({ children, viewBox, etiqueta, className, 
         anchoPecho?.(1 + v * 0.03);
         altoPecho?.(1 + v * 0.008);
         subeCabeza?.(-v * 1.6);
-      });
+      }, raiz.current);
       return () => {
         vivo = false;
         dejar();

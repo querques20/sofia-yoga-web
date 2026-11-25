@@ -31,7 +31,7 @@ export function Bienvenue({ className = "" }: { className?: string }) {
       );
       gsap.set(corazon, { transformOrigin: "50% 60%" });
       const latido = gsap.quickSetter(corazon, "scale");
-      return escucharSouffle((v) => latido(0.9 + v * 0.16));
+      return escucharSouffle((v) => latido(0.9 + v * 0.16), raiz.current);
     },
     { scope: raiz, dependencies: [quieto], revertOnUpdate: true },
   );

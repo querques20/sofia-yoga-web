@@ -1,6 +1,7 @@
 "use client";
 
 import { gsap } from "@/lib/gsap";
+import { watchOnScreen } from "@/lib/on-screen";
 
 // la respiración que marca el ritmo de la web: 4 s para inspirar y 6 s para expirar
 export const INSPIRAR = 4;
@@ -8,9 +9,11 @@ export const EXPIRAR = 6;
 
 export type Fase = "inspire" | "expire";
 type Oyente = (valor: number, fase: Fase) => void;
+// a listener rests while what it moves is off screen (on-screen.ts)
+type Inscripto = { oyente: Oyente; onScreen: boolean };
 
 const estado = { v: 0 };
-const oyentes = new Set<Oyente>();
+const oyentes = new Set<Inscripto>();
 let fase: Fase = "inspire";
 let anterior = 0;
 let ciclo: gsap.core.Timeline | null = null;
@@ -20,7 +23,9 @@ function avisar() {
   if (estado.v > anterior + 0.0001) fase = "inspire";
   else if (estado.v < anterior - 0.0001) fase = "expire";
   anterior = estado.v;
-  oyentes.forEach((oyente) => oyente(estado.v, fase));
+  oyentes.forEach((inscripto) => {
+    if (inscripto.onScreen) inscripto.oyente(estado.v, fase);
+  });
 }
 
 function arrancarCiclo() {
@@ -31,13 +36,26 @@ function arrancarCiclo() {
     .to(estado, { v: 0, duration: EXPIRAR, ease: "sine.inOut" });
 }
 
-/** se suscribe a la respiración: recibe un valor de 0 (pulmones vacíos) a 1 (llenos) */
-export function escucharSouffle(oyente: Oyente) {
-  oyentes.add(oyente);
+/**
+ * se suscribe a la respiración: recibe un valor de 0 (pulmones vacíos) a 1 (llenos).
+ * `where` is the element the listener moves, or the one that holds it: the listener is only called while it
+ * is on screen, and once more, with the breath as it is, each time it comes back. Without it the
+ * listener is called on every frame, wherever the page is
+ */
+export function escucharSouffle(oyente: Oyente, where?: Element | null) {
+  const inscripto: Inscripto = { oyente, onScreen: !where };
+  oyentes.add(inscripto);
   if (!ciclo && !aMano) arrancarCiclo();
   oyente(estado.v, fase);
+  const stopWatching = where
+    ? watchOnScreen(where, (onScreen) => {
+        inscripto.onScreen = onScreen;
+        if (onScreen) oyente(estado.v, fase);
+      })
+    : null;
   return () => {
-    oyentes.delete(oyente);
+    stopWatching?.();
+    oyentes.delete(inscripto);
     if (oyentes.size === 0) {
       ciclo?.kill();
       ciclo = null;

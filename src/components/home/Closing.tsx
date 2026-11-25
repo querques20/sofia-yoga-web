@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { CONTACTO } from "@/lib/contacto";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
+import { watchOnScreen } from "@/lib/on-screen";
 import { useInterfaz } from "@/lib/useInterfaz";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 import { Magnetique } from "../Magnetique";
@@ -44,6 +45,10 @@ export function Closing({ t, voces }: { t: TextosClosing; voces: TextosTestimoni
       const q = gsap.utils.selector(raiz);
       const [band] = q("[data-band]") as HTMLElement[];
       if (!band) return;
+      // the rows of cards and the columns of photos go round only while the band is on screen
+      // (globals.css stops them on `data-resting`)
+      const section = raiz.current;
+      const stopWatching = watchOnScreen(section, (onScreen) => section.toggleAttribute("data-resting", !onScreen));
       const before = raiz.current.previousElementSibling;
       const cover = before instanceof HTMLElement && before.matches("[data-cover]") ? before : null;
       // the cover fills the screen and waits at its top. On a screen too short for it, it waits with its foot at
@@ -61,6 +66,8 @@ export function Closing({ t, voces }: { t: TextosClosing; voces: TextosTestimoni
         contentsFrom: CONTENTS_FROM,
       });
       return () => {
+        stopWatching();
+        section.removeAttribute("data-resting");
         ScrollTrigger.removeEventListener("refreshInit", placeCover);
         leaveArrival();
         cover?.style.removeProperty("--cover-top");

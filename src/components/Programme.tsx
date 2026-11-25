@@ -143,7 +143,7 @@ export function Programme({ t }: { t: TextosProgramme }) {
         // la embarazada: llega cuando aparece el marco, cambia de trimestre con las letras y respira con la web
         const plantaAlPrincipio = crecerPanza(tl, q, [1, 2.3], 0.8);
         aparecerPanza(q, q(".marco")[0]);
-        const dejarDeRespirar = respirarPanza(q);
+        const dejarDeRespirar = respirarPanza(q, q(".marco")[0]);
 
         // the panel takes the screen from the cover as a dome that swells (programme/arrival.ts). The cover is
         // what comes before this section on the Home
@@ -162,7 +162,7 @@ export function Programme({ t }: { t: TextosProgramme }) {
         const dejar = escucharSouffle((v) => {
           escalaYang(0.88 + v * 0.18);
           escalaYin(1.08 - v * 0.14);
-        });
+        }, q(".marco")[0]);
 
         if (backTo !== null) {
           ScrollTrigger.refresh();
