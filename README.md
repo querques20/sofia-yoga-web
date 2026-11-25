@@ -36,6 +36,10 @@ Each of the six doors on the home page carries a photo (`public/inicio/`). Sofia
 | Cours en groupe | `cours-en-groupe-geneve.jpg` | Unsplash `photo-1761035005546-62b8018b212a` | Placeholder |
 | Ateliers | `ateliers-yoga-geneve.jpg` | Unsplash `photo-1643682661119-28da0685be2c` | Placeholder |
 
+The frame of «Aperçu d'un cours» holds the Ateliers photo at 2560 px (`apercu-cours-yoga-geneve.jpg`), a placeholder too, until Sofia's video arrives.
+
+The strip of class photos in the home's closing band (`public/inicio/moments/`, 24 files of 520 × 693) are placeholders from Pexels (Pexels license, free to use), each named by its Pexels id. They go when Sofia's own class photos arrive.
+
 The placeholders (Unsplash license, free to use) are marked `provisoria: true` in `src/components/hero/puertas.ts` and get replaced by Sofia's photos as soon as they arrive. The site does not go to production with them without deciding so first.
 
 ## Running it
