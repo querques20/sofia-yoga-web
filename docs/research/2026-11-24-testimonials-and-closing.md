@@ -100,3 +100,40 @@ on a computer, stopped under the pointer and by a pause button, still with reduc
 dark with the ask as a sage card; `PreviewClass.tsx` is the wide frame with the title under it, holding a
 provisional photo and the «à confirmer» pill until Sofia gives a video. Measured in a real Chrome at 1436×880
 and 390×800: rows move, stop under the pointer, stop and restart with the button.
+
+## Fourth round (2026-11-24): the photo strip, the look at a class, and the home's order
+
+**The reference's photo strip**, under its testimonials, measured on lottiemurphy.com at 1436 × 880
+[tested · `/tmp/claude-1000/refs/wall.mjs` (headless Chrome, `getBoundingClientRect`) · 2026-11-24 · author]:
+
+- A centred title (48 px), then a strip 528 px tall, cut at both sides and at its foot (`overflow: hidden`).
+- Columns of three photos, each 238 × 317 px with an 8 px radius, 24 px apart both ways; six columns show.
+- Each column is a vertical ticker: in 3 s one column went up 63 px and the next went down 62 px, so about
+  20 px a second, alternating.
+- Over it lies the band's own colour as a gradient: solid at the top, 90 % at 30 % of the height, 24 % at the foot.
+
+Built on the home as `src/components/home/Moments.tsx` with these measures and 24 placeholder photos from Pexels
+(the README lists them). Unsplash's search answered with a bot check, so its photos were not searched; the one
+already in the repository was fetched larger from its image server for the look at a class.
+
+**The home's order today**, at 1436 × 880, in screens from the top (page: 13.7 screens)
+[tested · `/tmp/claude-1000/sofia-home-shots/map.mjs` · 2026-11-24 · author]:
+
+| Starts at | Scene | Tall | Button in it |
+| --- | --- | --- | --- |
+| 0 | Cover: the six doors | 1 | WhatsApp (0.8) |
+| 1.0 | Pregnancy programme, coming soon | 3.7 | «Be told at launch» link (1.6) |
+| 3.7 | «Par où commencer ?» | 2.8 | none |
+| 6.5 | Sofia | 1.1 | none |
+| 7.6 | Practical information | 0.9 | WhatsApp (8.3) |
+| 8.5 | A look at a class | 1 + 0.5 held | «Book my first class» (9.4) |
+| 10.0 | Testimonials (10.3), class photos (11.2), «Write to me» (11.9) | 2.2 | WhatsApp, e-mail, Instagram (12.1) |
+| 12.2 | Word strip, then the footer | 1.5 | — |
+
+The gap the round of 2026-11-20 found is wider now: the programme, which is not on sale, holds screens 1.0 to
+4.7, and the next button about a class is at 8.3. The page grew from 10.7 to 13.7 screens
+[tested; the earlier figure is from `2026-11-20-home-cta-user-journey.md`].
+
+Options put to the owner: A keep the order; B move the programme below the practical information, so that
+«Par où commencer ?» follows the cover (recommended if classes are what sells today) [inferred · author, from the
+NN/g attention figures read on 2026-11-20]; C keep the order and shorten the programme's scroll. Not decided.
