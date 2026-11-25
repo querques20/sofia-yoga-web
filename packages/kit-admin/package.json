@@ -1,0 +1,21 @@
+{
+  "name": "@sofia/kit-admin",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./foto": "./src/foto.ts"
+  },
+  "scripts": {
+    "test": "tsx --test \"src/**/*.test.ts\""
+  },
+  "peerDependencies": {
+    "next": "^16.4.6",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
+  }
+}

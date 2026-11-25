@@ -8,6 +8,8 @@ React 19, TypeScript, Tailwind CSS v4, GSAP and Lenis; every route is prerendere
 
 - `pnpm dev` serves on http://localhost:3010; `pnpm build` is the production build.
 - `pnpm typecheck`, `pnpm lint`, `pnpm react-doctor`: the gate `.githooks/pre-push` runs. `pnpm install` installs it.
+- The admin (`/admin`) needs Postgres: `docker compose -f compose.dev.yaml up -d`, `pnpm migrate:deploy`,
+  `pnpm create-account <email> "<name>" dirige`. README § The admin has the rest.
 
 ## Hard constraints
 
@@ -15,6 +17,7 @@ React 19, TypeScript, Tailwind CSS v4, GSAP and Lenis; every route is prerendere
   no `doctor.config.*`, no `reactDoctor` key in `package.json`, no `eslint-disable` of a gate rule.
 - Commits, PRs, docs, comments and scripts are in English (`CONTRIBUTING.md`). Site copy is in French, English and
   Spanish, and every text change covers the three. Existing Spanish code stays until the code around it changes.
+  The admin's interface is in Spanish only (decided 2026-11-11): its texts are not translated.
 - Never invent what Sofia has not confirmed (places, schedules, prices): it shows the «à confirmer» pill. Texts need
   a native speaker's review before publishing, and health information cites its sources at the foot of the page.
 
@@ -25,6 +28,12 @@ React 19, TypeScript, Tailwind CSS v4, GSAP and Lenis; every route is prerendere
   (`Entrada`, `z-[70]`). Its focus trap, Escape and inert background are hand-written for that reason.
 - GSAP absorbs the CSS `translate` property of whatever it animates (it sets it to `none` and moves the pixels into
   `transform`). Centre with `translate` on a wrapper and animate an inner element, as the home's `.puerta-cuerpo` does.
+- The admin has its own root layout and stylesheet (`src/app/(admin)`). Each stylesheet names what it scans
+  (`@source`), so a class of one never lands in the other; the kit's token names (`azul-principal`,
+  `naranja-boton`) are roles, mapped to Sofia's palette in `admin.css`.
+- Every admin page reads the session, so it exports `instant = false`; the admin layout awaits `connection()` so
+  each response carries the nonce of its Content-Security-Policy.
+- If the dev site looks unstyled or stale after a pull, stop the server and delete `.next/dev`.
 - `next dev` rewrites the block below. Commit it as it comes.
 
 <!-- BEGIN:nextjs-agent-rules -->

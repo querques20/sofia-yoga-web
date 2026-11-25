@@ -1,0 +1,165 @@
+// Las tablas de better-auth.
+//
+// Se conservan SUS nombres (`user`, `session`, `account`, `verification`) y no
+// se traducen al castellano como el resto del esquema: son tablas de la
+// librería, igual que `_prisma_migrations` es de Prisma. Renombrarlas obliga a
+// mantener un mapeo y convierte cada actualización en una revisión de nombres.
+// En el admin, a la gente se le habla de «cuentas»; el nombre de la tabla y el
+// de la pantalla no tienen por qué coincidir.
+//
+// Salió de la definición de better-auth 1.7.5, no del CLI: el CLI separado
+// quedó en la 1.4.21 y ahí `Account` todavía no tenía `issuer`.
+
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+
+  /// dirige | administra | edita. Lo valida `@sofia/auth` en el borde (`esRol`),
+  /// y la columna es texto: un enum de Postgres acá ataría el esquema a lo que
+  /// el adaptador de better-auth decida generar, que cambia entre versiones.
+  /// Dirige es una, siempre: lo garantiza el índice único parcial
+  /// `user_una_sola_dirige`, que no está acá porque Prisma no escribe índices
+  /// parciales sin un preview feature (migración `una_sola_dirige`).
+  rol String @default("edita")
+
+  /// Si entra con código por correo: el plugin de dos factores de better-auth,
+  /// con su nombre. Para dirige y administra es obligatorio, y la base lo
+  /// garantiza con el CHECK `user_segundo_factor_obligatorio` (migración
+  /// `segundo_factor_y_cuentas`), que no está acá porque Prisma no escribe
+  /// CHECK.
+  twoFactorEnabled Boolean @default(false)
+  /// No abre sesión (`@sofia/auth` lo mira al crear una). No se borra para que su
+  /// nombre siga en la historia.
+  suspendida       Boolean @default(false)
+  /// Cuándo vence la última invitación; null si nunca se la invitó. Solo se
+  /// lee mientras no eligió su contraseña. No es de better-auth.
+  invitacionVence  DateTime? @map("invitacion_vence")
+
+  sessions  Session[]
+  accounts  Account[]
+  twoFactor TwoFactor[]
+  /// Lo que hizo en el admin (actividad.prisma). No es de better-auth.
+  actividad Actividad[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  /// Dónde se abrió, de las cabeceras de Vercel (`@sofia/auth`, ubicacion.ts):
+  /// la ciudad decodificada, hasta 80 caracteres. No son de better-auth.
+  ciudad    String?
+  /// El país, en dos letras (ISO 3166-1).
+  pais      String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  /// Lo llena better-auth para proveedores externos (Google, etc.). Para una
+  /// cuenta de credencial NO lo escribe —comprobado contra la 1.7.5—, así que
+  /// lleva default en la base: sin él, dar de alta a alguien con contraseña
+  /// revienta con «issuer is missing». El default va acá y no en nullable para
+  /// no aflojar el @@unique de abajo: en Postgres dos NULL no chocan.
+  issuer                String    @default("")
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  /// El hash, nunca la contraseña. Lo escribe better-auth.
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([issuer, accountId])
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+/// La tabla del plugin de dos factores, con sus nombres. **Queda vacía:** el
+/// admin usa solo el código por correo, que no escribe filas acá; guarda el
+/// secreto de una app de autenticación y los códigos de respaldo, que no se
+/// usan. Existe porque el plugin la consulta al verificar un código.
+model TwoFactor {
+  id                      String    @id
+  secret                  String
+  backupCodes             String
+  userId                  String
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  verified                Boolean   @default(true)
+  failedVerificationCount Int       @default(0)
+  lockedUntil             DateTime?
+
+  @@index([secret])
+  @@index([userId])
+  @@map("twoFactor")
+}
+
+/// El rate limit por IP de better-auth (`rateLimit.storage = "database"`).
+/// En la base y no en memoria porque en Vercel cada instancia tenía su
+/// propia cuenta: con diez instancias, el tope de 3 intentos por minuto era
+/// de 30. Nombres de la librería, como las tablas de arriba.
+model RateLimit {
+  /// better-auth pone un id en toda tabla suya y valida el esquema al arrancar.
+  id          String @id
+  /// La IP y la ruta, armadas por better-auth.
+  key         String @unique
+  count       Int
+  /// Milisegundos desde 1970, como los escribe better-auth: un número, no una fecha.
+  lastRequest BigInt
+
+  @@map("rateLimit")
+}
+
+/// El bloqueo por cuenta (packages/auth/src/bloqueo.ts): una fila por correo
+/// con fallos recientes. **Nunca el correo en claro**: la clave es su HMAC con
+/// el secreto de better-auth, así que esta tabla no sirve para saber quién
+/// tiene cuenta ni quién estuvo probando. Sale de acá entrando bien, con un
+/// reset de contraseña o tras un día sin fallos.
+model BloqueoDeAcceso {
+  /// HMAC-SHA256 del correo normalizado, en hexadecimal.
+  clave    String    @id
+  /// Fallos en la ventana de 15 minutos que corre.
+  fallos   Int
+  /// Cuándo empezó esa ventana, o el último freno.
+  desde    DateTime
+  /// Cuántas veces seguidas se frenó: 15, 30 y 60 minutos, y no más.
+  bloqueos Int
+  /// Frenada hasta; null si no.
+  hasta    DateTime?
+
+  @@map("bloqueos_de_acceso")
+}
