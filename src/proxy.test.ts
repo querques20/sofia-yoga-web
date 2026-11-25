@@ -1,0 +1,114 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { NextRequest } from "next/server";
+import { paginaDeRebote } from "@/lib/seguridad/rebote";
+import { config, proxy } from "./proxy";
+
+const DE_OTRO_SITIO = { "sec-fetch-site": "cross-site", "sec-fetch-mode": "navigate", "sec-fetch-dest": "document" };
+const DEL_MISMO = { ...DE_OTRO_SITIO, "sec-fetch-site": "same-origin" };
+const CON_SESION = { cookie: "better-auth.session_token=cualquiera" };
+
+function pedir(ruta: string, cabeceras: Record<string, string>, metodo = "GET") {
+  return proxy(new NextRequest(`http://localhost:3012${ruta}`, { method: metodo, headers: cabeceras }));
+}
+
+test("de otro sitio y sin cookie, rebota a la misma URL, sin script", async () => {
+  const res = pedir("/admin/paginas?seccion=hero", DE_OTRO_SITIO);
+  assert.equal(res.status, 200);
+  const html = await res.text();
+  assert.ok(html.includes('<meta http-equiv="refresh" content="0;url=/admin/paginas?seccion=hero">'), html);
+  assert.ok(html.includes('<a href="/admin/paginas?seccion=hero">Seguir</a>'), html);
+  assert.ok(!html.includes("<script"));
+  assert.match(res.headers.get("cache-control") ?? "", /no-store/);
+  assert.equal(res.headers.get("x-robots-tag"), "noindex, nofollow");
+  assert.ok(res.headers.get("content-security-policy"));
+});
+
+test("del mismo sitio y sin cookie, va a «entrar» como siempre", () => {
+  const res = pedir("/admin/paginas", DEL_MISMO);
+  assert.equal(res.status, 307);
+  const destino = new URL(res.headers.get("location") ?? "");
+  assert.equal(destino.pathname + destino.search, "/admin/entrar?volver=%2Fadmin%2Fpaginas");
+});
+
+test("con la cookie pasa, venga de donde venga", () => {
+  const res = pedir("/admin/paginas", { ...DE_OTRO_SITIO, ...CON_SESION });
+  assert.equal(res.headers.get("x-middleware-next"), "1");
+});
+
+test("un POST de otro sitio no rebota", () => {
+  assert.equal(pedir("/admin/paginas", DE_OTRO_SITIO, "POST").status, 307);
+  const accion = pedir("/admin/paginas", { ...DE_OTRO_SITIO, "next-action": "abc" }, "POST");
+  assert.equal(accion.headers.get("x-middleware-next"), "1");
+});
+
+test("las pantallas de acceso no rebotan: no hace falta sesión para verlas", () => {
+  const res = pedir("/admin/entrar", DE_OTRO_SITIO);
+  assert.equal(res.headers.get("x-middleware-next"), "1");
+});
+
+/** Los archivos de una carpeta, recursivo. */
+function archivosDe(carpeta: string): string[] {
+  return readdirSync(carpeta, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? archivosDe(path.join(carpeta, e.name)) : [path.join(carpeta, e.name)]));
+}
+
+/** El código sin comentarios. Respeta el `//` de una URL. */
+function codigoDe(archivo: string): string {
+  return readFileSync(archivo, "utf8")
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/(^|[^:])\/\/.*$/gm, "$1");
+}
+
+// El rebote convierte un link de otro sitio en un GET con la sesión puesta:
+// por eso un GET del admin no puede cambiar nada (lib/seguridad/rebote.ts).
+// Lo que contesta un GET son las páginas y las rutas del admin, que leen por
+// datos/consultas/; esto vigila las rutas y las consultas.
+test("un GET del admin no escribe: sus rutas contestan solo GET sin acciones, y las consultas no escriben", () => {
+  const src = path.dirname(fileURLToPath(import.meta.url));
+  const rutas = archivosDe(path.join(src, "app", "(admin)")).filter((a) => path.basename(a) === "route.ts");
+  for (const ruta of rutas) {
+    const codigo = codigoDe(ruta);
+    const metodos = [...codigo.matchAll(/^export (?:async )?(?:function|const) (\w+)/gm)].map(([, nombre]) => nombre);
+    assert.deepEqual(metodos, ["GET"], `${ruta} contesta algo más que GET`);
+    assert.doesNotMatch(codigo, /@\/datos\/acciones\//, `${ruta} usa una acción`);
+  }
+  const escribe = /\.(?:create|createMany|update|updateMany|upsert|delete|deleteMany)\(|\$executeRaw/;
+  for (const consulta of archivosDe(path.join(src, "datos", "consultas")).filter((a) => !a.endsWith(".test.ts"))) {
+    assert.doesNotMatch(codigoDe(consulta), escribe, `${consulta} escribe`);
+  }
+});
+
+test("el destino del rebote es siempre una ruta de este sitio, escapada", async () => {
+  const html = await paginaDeRebote(new URL("http://localhost//otro.sitio/robar?a=1&b=2")).text();
+  assert.ok(html.includes('content="0;url=/otro.sitio/robar?a=1&#38;b=2"'), html);
+  assert.ok(!html.includes("//otro.sitio"));
+});
+
+/** La directiva `script-src` de la CSP de una respuesta. */
+function scriptSrc(res: Response): string {
+  return (res.headers.get("content-security-policy") ?? "").split("; ").find((d) => d.startsWith("script-src")) ?? "";
+}
+
+test("el admin lleva un nonce distinto en cada respuesta, con 'strict-dynamic' y sin 'unsafe-inline'", () => {
+  const a = pedir("/admin/entrar", {});
+  const b = pedir("/admin/entrar", {});
+  assert.match(scriptSrc(a), /^script-src 'self' 'nonce-[A-Za-z0-9+/=]{24}' 'strict-dynamic'$/);
+  assert.notEqual(scriptSrc(a), scriptSrc(b));
+  // Next lee el nonce de la CSP del pedido: tiene que viajar hacia adentro.
+  assert.equal(a.headers.get("x-middleware-request-content-security-policy"), a.headers.get("content-security-policy"));
+});
+
+test("el admin no se deja abrir ni cargar desde otro sitio", () => {
+  for (const res of [pedir("/admin/entrar", {}), pedir("/admin/paginas", DEL_MISMO), pedir("/admin/paginas", DE_OTRO_SITIO)]) {
+    assert.equal(res.headers.get("cross-origin-opener-policy"), "same-origin");
+    assert.equal(res.headers.get("cross-origin-resource-policy"), "same-origin");
+    assert.equal(res.headers.get("x-frame-options"), "DENY");
+  }
+});
+
+test("el proxy corre en el admin y en nada más: el sitio público no pasa por él", () => {
+  assert.deepEqual(config.matcher, ["/admin", "/admin/:ruta*"]);
+});

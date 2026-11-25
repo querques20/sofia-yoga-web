@@ -1,0 +1,32 @@
+// La superficie pública de @sofia/auth.
+//
+// Regla del paquete, igual que en @sofia/db: **nada de dominio de ED adentro.**
+// No importa el cliente generado de Prisma ni sabe qué tablas de contenido
+// existen; recibe la base ya construida (AGENTS.md §3, la primera frontera).
+//
+// Lo que arma la sesión vive en `@sofia/auth/servidor`: esto lo importan también
+// el navegador y el proxy, que no pueden cargar un módulo nativo.
+
+export { hayCookieDeSesion } from "./guarda";
+export { CODIGO_NO_SALIO, CONTRASENA_FILTRADA, CUENTA_SUSPENDIDA, SEGUNDO_FACTOR_OBLIGATORIO } from "./errores";
+export { crearClienteDeAuth } from "./cliente";
+export type { ClienteDeAuth } from "./cliente";
+export {
+  ROLES,
+  ROL_POR_DEFECTO,
+  ROL_DE_LA_DIRECCION,
+  ROL_AL_DEJAR_LA_DIRECCION,
+  PUEDE,
+  QUE_PUEDE,
+  QUE_PERMITE,
+  SIN_PERMISO,
+  esRol,
+  esUnaSola,
+  puede,
+  quienPuede,
+  segundoFactorObligatorio,
+  LARGO_MINIMO_CONTRASENA,
+} from "./permisos";
+export type { Capacidad, Rol } from "./permisos";
+export { ROLES_QUE_SE_ASIGNAN, darloPideContrasena, queSePuede, seAsigna } from "./cuentas";
+export type { CuentaObjetivo, EstadoDeCuenta, LoQueSePuede } from "./cuentas";

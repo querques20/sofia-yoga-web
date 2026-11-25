@@ -3,6 +3,8 @@ import { COOKIE_IDIOMA, IDIOMA_BASE, IDIOMAS, rutaEn, SLUGS } from "./src/lib/id
 import { PAGINAS_INDEXABLES } from "./src/lib/sitio";
 
 const OTROS = IDIOMAS.filter((idioma) => idioma !== IDIOMA_BASE);
+// the first path segments that are not pages of the public site: they have no language and no rewrite
+const FUERA_DEL_SITIO = ["admin", "api"];
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -60,7 +62,9 @@ const nextConfig: NextConfig = {
         })),
       ),
       { source: "/", destination: `/${IDIOMA_BASE}` },
-      { source: `/:ruta((?!(?:${IDIOMAS.join("|")})(?:/|$)).+)`, destination: `/${IDIOMA_BASE}/:ruta` },
+      // everything else is a French page, except the admin and the API: without the exception their dynamic
+      // routes (/admin/cuentas/<id>, /api/auth/…) would be read as French pages and answer 404
+      { source: `/:ruta((?!(?:${[...IDIOMAS, ...FUERA_DEL_SITIO].join("|")})(?:/|$)).+)`, destination: `/${IDIOMA_BASE}/:ruta` },
     ];
   },
 };

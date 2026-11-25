@@ -1,3 +1,11 @@
+packages:
+  - "packages/*"
+
 allowBuilds:
   sharp: false
   unrs-resolver: false
+  esbuild: true
+  # Prisma downloads its engines in its postinstall. Without this the CLI installs but does not run, and the
+  # failure only shows when migrating.
+  "@prisma/engines": true
+  prisma: true

@@ -14,7 +14,7 @@ French is the base language and has no URL prefix. English and Spanish live unde
 
 | Route | Content |
 | --- | --- |
-| `/` | Home: the flower intro that opens into six photos (one door to each page), the program by trimester and the word strip |
+| `/` | Home: the flower intro that opens into six photos (one door to each page), the program by trimester, where to start, Sofia's invitation, the practical info, the place for testimonials, how to write to her and the word strip |
 | `/yoga-prenatal-geneve` | Prenatal yoga: the breathing pregnant figure, before you come, signs to stop, trimester by trimester |
 | `/yoga-post-partum-geneve` | Postnatal yoga: when to return, what insurance covers in Switzerland, pelvic floor and diastasis |
 | `/cours-de-yoga-geneve` | Classes: the styles, what yoga brings, in a group, private or in the park |
@@ -44,12 +44,35 @@ The placeholders (Unsplash license, free to use) are marked `provisoria: true` i
 pnpm install
 pnpm dev        # http://localhost:3010
 pnpm build
-pnpm test       # the intro and home geometry tests (node:test)
+pnpm test       # node:test: the intro and home geometry, the admin's rules, the packages
 ```
 
 The WhatsApp buttons go to Sofia's real number. When testing, do not send the messages.
 
 To contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## The admin
+
+`/admin` is the private side: sign-in, accounts with three roles (`dirige`, `administra`, `edita`), invitations, each
+person's own account and the activity log. It does not edit the site's content yet; that is built on top. Its
+interface is in Spanish, and it has its own stylesheet (`src/app/(admin)/admin.css`) with Sofia's palette and
+typefaces, in three themes.
+
+The public site builds and runs without it. The admin needs a database and the variables of `.env.example`:
+
+```bash
+cp .env.example .env.local                      # fill in DATABASE_URL and BETTER_AUTH_SECRET
+docker compose -f compose.dev.yaml up -d        # Postgres on localhost:5434
+pnpm migrate:deploy                             # creates the tables
+pnpm create-account you@example.com "Your Name" dirige
+```
+
+Then open `/admin/olvide-mi-contrasena` and ask for the link to choose a password. Without a Resend key, every email
+(that link, and the sign-in code) is printed on the dev server's console instead of being sent. There is no public
+sign-up: an account exists because someone who runs the admin invited it, or because of the command above.
+
+The admin came from the Empoderamiento Docente project (commit `ecc6c7f0`): the three packages and the access,
+accounts and activity screens, without that project's own modules.
 
 ## How it is built
 
@@ -63,6 +86,10 @@ Folders:
 - `src/app`: the pages and the layout.
 - `src/components`: the sections, one folder per page. `pagina/` holds the shared pieces and `ilustraciones/` the SVG drawings.
 - `src/lib`: the breathing that sets the site's rhythm, contact details and navigation.
-- `scripts`: `install-hooks.mjs` installs the git hooks.
+- `src/app/(admin)`, `src/admin`, `src/datos`, `src/correos`: the admin's routes, screens, data layer and emails.
+- `packages`: `auth` (sessions, roles and permissions), `db` (the Prisma client) and `kit-admin` (the admin's controls).
+- `prisma`: the schema and its migrations.
+- `scripts`: `install-hooks.mjs` installs the git hooks; `create-account.mts` and `appoint-director.mts` are the
+  admin's two command-line doors.
 
 The typefaces (D-DIN and Caveat) are free to use (SIL OFL) and live in `src/app/fonts` with their licenses.

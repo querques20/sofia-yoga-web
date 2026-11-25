@@ -1,0 +1,196 @@
+@import "tailwindcss" source(none);
+
+/* The admin's own stylesheet. The public site's is ../globals.css: the two never load together, because the
+   admin has its own root layout. It reads classes from the admin's three places only (below), so the public
+   site's classes stay out of it; the kit lives in a package and has to be named either way.
+
+   The admin's controls live in a package (@sofia/kit-admin) and ask for their tokens by a fixed name
+   (packages/kit-admin/README.md): `azul-principal`, `azul-medio`, `naranja-boton`… Those names come from the
+   project the kit was born in and say a role, not a hue. Here each role takes a colour of Sofia's palette (the
+   dossier v2, the same six as the site), so the kit stays untouched:
+
+     azul-principal   text and strong fill        verde
+     azul-medio       accent, focus, links         violeta
+     azul-claro       borders and soft fills       salvia
+     gris-fondo       behind the card, sidebar     the cream of the page
+     naranja-boton    the primary button           terracota: buttons, and nothing else
+     gris-texto       secondary text               a grey taken from the verde
+
+   Contrast, measured: text 9.95:1 on the card and 8.72:1 on the cream; secondary 5.78:1 and 5.07:1; accent
+   5.30:1 and 4.65:1; white on the button 4.55:1 (6.0:1 on hover); error 6.57:1. */
+@source "./";
+@source "../../admin";
+@source "../../../packages/kit-admin/src";
+
+@theme {
+  --color-azul-principal: #39463a;
+  --color-azul-medio: #7a6193;
+  --color-azul-claro: #a9bca1;
+  --color-verde-concepto: #a9bca1;
+  --color-naranja-boton: #b0604a;
+  --color-naranja-boton-hover: #9e5441;
+  /* The text on the button: white in the three themes. Not `white`, which the dark theme turns into the dark
+     surface. */
+  --color-sobre-naranja: #ffffff;
+  --color-gris-fondo: #f5efe9;
+  --color-gris-texto: #5f685f;
+  /* Errors and destructive actions only. */
+  --color-rojo-error: #b42318;
+
+  /* The admin's scale: fixed, four sizes and no more. Titles go in D-DIN Condensed, which reads smaller than
+     its size, so the two title steps are one notch above the kit's original. */
+  --text-admin-titulo: 1.75rem;
+  --text-admin-titulo--line-height: 2rem;
+  --text-admin-titulo--letter-spacing: 0.005em;
+  --text-admin-seccion: 1.25rem;
+  --text-admin-seccion--line-height: 1.75rem;
+  --text-admin-seccion--letter-spacing: 0.005em;
+  --text-admin-cuerpo: 1rem;
+  --text-admin-cuerpo--line-height: 1.5rem;
+  --text-admin-meta: 0.875rem;
+  --text-admin-meta--line-height: 1.25rem;
+}
+
+/* The site's typefaces (app/fuentes.ts): D-DIN for the interface, D-DIN Condensed for titles, Caveat for the
+   one handwritten word of the access screen. */
+@theme inline {
+  --font-sans: var(--font-ddin), system-ui, sans-serif;
+  --font-display: var(--font-ddin-cond), var(--font-ddin), sans-serif;
+  --font-mano: var(--font-caveat), cursive;
+}
+
+/* The admin's three themes: light, mixed and dark. There is no second palette in the classes: each theme gives
+   the same tokens other values and the admin redraws itself.
+   - claro: the palette as it is.
+   - oscuro: everything inverts. `white` is the surface (the card), `gris-fondo` what is behind it,
+     `azul-principal` the text and the strong fill, `azul-claro` the borders. Text 12.53:1 on the card,
+     secondary 6.85:1, accent 7.29:1, error 6.16:1.
+   - mixto, the default: the content in light and the sidebar (what carries `data-barra`) inverted on the verde
+     of the brand. Text 9.95:1, secondary 6.79:1, accent 6.5:1.
+   What the inversion does not cover uses the `dark:` variant, which holds for everything on a dark ground. */
+@custom-variant dark (&:where([data-tema="oscuro"], [data-tema="oscuro"] *, [data-tema="mixto"] [data-barra], [data-tema="mixto"] [data-barra] *));
+/* The frame itself in the mixed theme: what shows behind the card's round corners. */
+@custom-variant mixto (&:where([data-tema="mixto"]));
+
+[data-tema="oscuro"] {
+  color-scheme: dark;
+  --color-white: #232b24;
+  --color-gris-fondo: #171d18;
+  --color-azul-principal: #ecefe8;
+  --color-gris-texto: #aab5a8;
+  --color-azul-medio: #c3b0d8;
+  --color-azul-claro: #445246;
+  --color-rojo-error: #f58b80;
+}
+
+[data-tema="mixto"] [data-barra] {
+  color-scheme: dark;
+  --color-white: #4c5c4d;
+  --color-gris-fondo: #39463a;
+  --color-azul-principal: #ffffff;
+  --color-gris-texto: #cfd8cb;
+  --color-azul-medio: #d8c9e6;
+  --color-azul-claro: #5a6b5b;
+}
+
+@layer base {
+  body {
+    background: var(--color-gris-fondo);
+    color: var(--color-azul-principal);
+    font-family: var(--font-sans);
+  }
+}
+
+/* The scroll of a panel of its own (the rail of a record): thin, no arrows, a transparent track. */
+@utility barra-discreta {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-azul-claro) transparent;
+}
+
+/* One round corner of the admin's card: a quarter circle of the colour behind, painted on top of everything,
+   with a soft 1px edge. The card is square on purpose: if it clipped itself with the curve, its white and a
+   dark header's would be cut by the same soft edge and the white would show in a thread. This is the top one;
+   with `-scale-y-100`, the bottom one. */
+@utility esquina-de-la-tarjeta {
+  mask-image: radial-gradient(circle at 100% 100%, transparent calc(1rem - 0.5px), black calc(1rem + 0.5px));
+}
+
+/* What unfolds in the admin: every section, item, panel or "more actions" that is a `details` opens and
+   closes with a short animation of its height and opacity. `interpolate-size` lets the height animate to
+   `auto`; closing waits for it to finish (`content-visibility`, `allow-discrete`). A menu (`data-menu`) only
+   fades: its list is absolute and has no height. No motion for whoever asked for none; without
+   `::details-content` (an old browser), at once. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-tema] {
+    interpolate-size: allow-keywords;
+  }
+  [data-tema] details::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    opacity: 0;
+    transition:
+      block-size 220ms ease-out,
+      opacity 220ms ease-out,
+      content-visibility 220ms allow-discrete;
+  }
+  [data-tema] details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+  [data-tema] details[data-menu]::details-content {
+    block-size: auto;
+    overflow-y: visible;
+  }
+}
+
+/* The open list of an admin dropdown: the customizable select draws its list like an admin menu. Only where it
+   exists: without `base-select`, the closed control keeps its design and the list is the native one. The arrow
+   is the control's (an icon), so the browser's goes: `none` is the fallback and `base-select` overrides it. */
+@utility desplegable-propio {
+  appearance: none;
+  @supports (appearance: base-select) {
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+    &::picker-icon {
+      display: none;
+    }
+    &::picker(select) {
+      margin-block: calc(var(--spacing) * 1);
+      padding: calc(var(--spacing) * 1);
+      border: 1px solid color-mix(in srgb, var(--color-azul-claro) 60%, transparent);
+      border-radius: var(--radius-xl);
+      background-color: var(--color-white);
+      color: var(--color-azul-principal);
+      box-shadow: var(--shadow-sm);
+    }
+    & option {
+      min-height: calc(var(--spacing) * 10);
+      padding-inline: calc(var(--spacing) * 3);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-admin-meta);
+      line-height: var(--text-admin-meta--line-height);
+    }
+    /* The empty option is the only grey one: the rest, in the body colour. */
+    & option[value=""] {
+      color: var(--color-gris-texto);
+    }
+    & option:hover,
+    & option:focus-visible {
+      background-color: color-mix(in srgb, var(--color-azul-claro) 30%, transparent);
+      color: var(--color-azul-principal);
+    }
+    & option:focus-visible {
+      outline: 2px solid var(--color-azul-medio);
+      outline-offset: -2px;
+    }
+    & option:checked {
+      font-weight: 500;
+      color: var(--color-azul-principal);
+    }
+    & option::checkmark {
+      color: var(--color-azul-medio);
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@sofia/db",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./slug": "./src/slug.ts"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "7.10.1"
+  }
+}
